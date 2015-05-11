@@ -1,0 +1,308 @@
+/****************** Progress Bar ****************************/
+
+
+/***** IE animate **********/
+.progress.active .bar {
+    -webkit-animation: progress-bar-stripes 2s linear infinite;
+    -moz-animation: progress-bar-stripes 2s linear infinite;
+    animation: progress-bar-stripes 2s linear infinite;
+}
+/***** End IE animate  ************/
+
+.progress-half-rounded {
+    background: none repeat scroll 0 0 #b4c1d6;
+    border-radius: 10px;
+    box-shadow:0 1px 2px 0 rgba(128, 128, 128, 0.79) inset !important;
+}
+
+.progress {
+    background-repeat: repeat-x;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
+    margin-bottom: 18px;
+    overflow: hidden;
+    border: 1px solid #999;
+    margin-bottom: 35px !important;
+    overflow: hidden;
+    text-indent: -9999px;
+    height: 18px;
+}
+
+.progress-bar {
+    background-repeat: repeat-x;
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15) inset;
+    box-sizing: border-box;
+    color: #ffffff;
+    font-size: 12px;
+    height: 100%;
+    line-height: 18px;
+    text-align: center;
+    position: relative;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    transition: width 0.6s ease 0s;
+    max-width:100%;
+}
+
+.mg_percentage {
+    text-indent: 0 !important;
+}
+
+.striped .progress-bar  {
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+    background-size: 42px 42px;
+}
+
+.animated-striped .progress-bar, .active .progress-bar {
+    -webkit-animation:progress-bar-stripes 2s linear 0s normal none infinite running ;
+     animation:progress-bar-stripes 2s linear 0s normal none infinite running ;
+    -moz-animation:progress-bar-stripes 2s linear 0s normal none infinite running ;
+    -o-animation:progress-bar-stripes 2s linear 0s normal none infinite running ;
+    -ms-animation:progress-bar-stripes 2s linear 0s normal none infinite running ;
+}
+
+@-webkit-keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}@-moz-keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}@-ms-keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}@-o-keyframes progress-bar-stripes{from{background-position:0 0}to{background-position:40px 0}}@keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}
+
+.mg_pulse .progress-bar:after {
+     animation:3s ease-out 0s normal none infinite progress-active;
+     -webkit-animation:4s ease-out 0s normal none infinite progress-active;
+      -moz-animation:4s ease-out 0s normal none infinite progress-active;
+       -ms-animation:4s ease-out 0s normal none infinite progress-active;
+        -o-animation:4s ease-out 0s normal none infinite progress-active;
+    background: none repeat scroll 0 0 #fff;
+    border-radius: 3px;
+    bottom: 0;
+    content: "";
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+@-webkit-keyframes progress-active {
+0% {
+    opacity: 0;
+    width: 0;
+}
+50% {
+    opacity: 0.3;
+}
+100% {
+    opacity: 0;
+    width: 100%;
+}
+}
+
+@-ms-keyframes  progress-active {
+0% {
+    opacity: 0;
+    width: 0;
+}
+50% {
+    opacity: 0.3;
+}
+100% {
+    opacity: 0;
+    width: 100%;
+}
+}
+
+@keyframes progress-active {
+0% {
+    opacity: 0;
+    width: 0;
+}
+50% {
+    opacity: 0.3;
+}
+100% {
+    opacity: 0;
+    width: 100%;
+}
+}
+
+@keyframes progress-active {
+0% {
+    opacity: 0;
+    width: 0;
+}
+50% {
+    opacity: 0.3;
+}
+100% {
+    opacity: 0;
+    width: 100%;
+}
+}
+
+
+/* End Progress Bars */
+
+/******** Progress bar Widget ***********/
+
+.totaldonations_bar_widget p.progress-sidebar {
+    margin-bottom: 1.5em;
+}
+
+/******** buttons ****************/
+
+/* start grey button */
+
+.mg-btn-grey {
+color: #8b7f7f !important;
+ padding: 12px 20px !important;
+  border-top: solid 1px #d2d2d2 !important;
+  border-left: solid 1px #c3c3c3 !important;
+  border-right: solid 1px #c3c3c3 !important;
+  border-bottom: solid 1px #9f9f9f !important;
+  background: #ffffff !important;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #dfdfdf), color-stop(1, #ffffff)) !important;
+  background: -ms-linear-gradient(bottom, #dfdfdf, #ffffff);
+  background: -moz-linear-gradient(center bottom, #dfdfdf 0%, #ffffff 100%) !important;
+  background: -o-linear-gradient(#ffffff, #dfdfdf) !important;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#dfdfdf', GradientType=0) !important;
+  -webkit-border-radius: 3px !important;
+  -moz-border-radius: 3px !important;
+  border-radius: 3px !important;
+  font-size: 12px !important;
+  font-weight: bold !important;
+  color: #646464 !important;
+  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.125), inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+  -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.125), inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.125), inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+  width: auto !important;
+  text-decoration: none !important;
+  /* Improves usability and consistency of cursor style between image-type 'input' and others */
+  cursor: pointer !important;
+
+  -webkit-appearance: button;
+  line-height: 1 !important;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+}
+.mg-btn-grey:hover {
+  /* Button hover style */
+  border-top: solid 1px #dadada !important;
+  border-left: solid 1px #cfcfcf !important;
+  border-right: solid 1px #cfcfcf !important;
+  border-bottom: solid 1px #a8a8a8 !important;
+  background: #ffffff !important;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ebebeb), color-stop(1, #ffffff)) !important;
+  background: -ms-linear-gradient(bottom, #ebebeb, #ffffff) !important;
+  background: -moz-linear-gradient(center bottom, #ebebeb 0%, #ffffff 100%) !important;
+  background: -o-linear-gradient(#ffffff, #ebebeb) !important;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ebebeb', GradientType=0) !important;
+}
+.mg-btn-grey:focus,
+.mg-btn-grey:active,
+html input[type="button"]:active,
+input[type="reset"]:active,
+input[type="submit"]:active {
+  /* Button click style */
+  border-top: solid 1px #aaaaaa !important;
+  border-left: solid 1px #bbbbbb !important;
+  border-right: solid 1px #bbbbbb !important;
+  border-bottom: solid 1px #bbbbbb !important;
+  -webkit-box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.5), inset 0 2px 5px rgba(0, 0, 0, 0.15) !important;
+  -moz-box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.5), inset 0 2px 5px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.5), inset 0 2px 5px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* end grey button */
+
+/*********** Top Donors and Recent Donor Widget *************/
+
+.mg_widgetDate {
+     color: #bebebe;
+     font-size: 75%;
+     float: right !important;
+}
+
+.mg_widgetAmount {
+    font-weight: bold;
+}
+
+.mg_widgetName {
+
+}
+
+.mg_latest_donations_widget, .mg_top_donors_widget {
+    margin-bottom: 25px !important;
+}
+
+.mg_widgetButton {
+
+}
+
+.mg_top_donors_widget .mg_widgetAmount {
+    float: right;
+}
+
+.totaldonations_topdonor_widget ol.mg_top_donors_widget li  {
+    list-style: inside none number;
+}
+
+div.mg_widgetName {
+    margin: 0 0 1.5em;
+}
+
+ol.mg_top_donors_widget {
+    margin: 15px 0 0 !important;
+    padding: 0 !important;
+}
+
+.mg_donations_wrap {
+    margin: 15px 0 0 !important;
+}
+
+/*********** Top Donors and Recent Donor Shortcode *************/
+
+.mg_recent_donors_date {
+     color: #bebebe;
+     font-size: 75%;
+     float: right !important;
+}
+
+.mg_top_donors_amount .mg_recent_donors_amount{
+    font-weight: bold;
+}
+
+.mg_top_donors_name .mg_recent_donors_name{
+
+}
+
+.mg_latest_donations, .mg_top_donors .mg_recent_donors {
+    margin-bottom: 25px !important;
+}
+
+.mg_widgetButton {
+
+}
+
+.mg_top_donors .mg_top_donors_amount .mg_recent_donors_amount {
+    float: right;
+}
+
+.totaldonations_top_donors ol.mg_top_donors li  {
+    list-style: inside none number;
+}
+
+div.mg_top_donors_name div.mg_recent_donors_name{
+    margin: 0 0 1.5em;
+}
+
+ol.mg_top_donors_widget {
+    margin: 15px 0 25px !important;
+    padding: 0 !important;
+}
+
+.mg_donations_wrap {
+    margin: 15px 0 0 !important;
+}
+
+.mg_widgetPanel {
+    text-align: left;
+}
+
+.mg_top_donors > li {
+    list-style: inside none number;
+}

@@ -1,0 +1,1485 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Total Donations v1.4.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2015-03-01 21:53:58+0000\n"
+"Last-Translator: astried <astried.silvanie.bk@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: CSL v1.x\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: UNITED STATES\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
+"X-Poedit-Basepath: \n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Textdomain-Support: yes"
+
+#: admin-files/admin-campaigns.php:12
+#: admin-files/admin-campaigns.php:13
+#@ migla-donation
+msgid "Campaigns"
+msgstr ""
+
+#: admin-files/admin-campaigns.php:42
+#: admin-files/admin-custom-theme.php:58
+#: admin-files/admin-form-options.php:100
+#: admin-files/admin-help.php:21
+#: admin-files/admin-offline-donations.php:42
+#: admin-files/admin-reports.php:43
+#: admin-files/admin-settings.php:21
+#@ migla-donation
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""
+
+#: admin-files/admin-campaigns.php:48
+#: admin-files/admin-campaigns.php:102
+#: admin-files/admin-offline-donations.php:203
+#: admin-files/admin-offline-donations.php:224
+#: admin-files/admin-reports.php:73
+#: admin-files/admin-reports.php:97
+#@ migla-donation
+msgid "Campaign"
+msgstr ""
+
+#: admin-files/admin-campaigns.php:53
+#@ migla-donation
+msgid "Add New Campaigns"
+msgstr ""
+
+#: admin-files/admin-campaigns.php:58
+#@ migla-donation
+msgid "Campaign Name"
+msgstr ""
+
+#: admin-files/admin-campaigns.php:61
+#@ migla-donation
+msgid "Enter the name of the Campaign (e.g. Bulid a School)"
+msgstr ""
+
+#: admin-files/admin-campaigns.php:63
+#@ migla-donation
+msgid "Donation Target"
+msgstr ""
+
+#: admin-files/admin-campaigns.php:66
+#@ migla-donation
+msgid "No currency symbol or decimal place. Leave blank if you don't want the progress bar."
+msgstr ""
+
+#: admin-files/admin-campaigns.php:68
+#: admin-files/admin-custom-theme.php:85
+#: admin-files/admin-custom-theme.php:124
+#: admin-files/admin-custom-theme.php:148
+#: admin-files/admin-custom-theme.php:199
+#: admin-files/admin-custom-theme.php:220
+#: admin-files/admin-custom-theme.php:368
+#: admin-files/admin-custom-theme.php:385
+#: admin-files/admin-custom-theme.php:394
+#: admin-files/admin-form-options.php:222
+#: admin-files/admin-form-options.php:248
+#: admin-files/admin-form-options.php:275
+#: admin-files/admin-form-options.php:606
+#: admin-files/admin-form-options.php:619
+#: admin-files/admin-form-options.php:634
+#: admin-files/admin-settings.php:43
+#: admin-files/admin-settings.php:69
+#: admin-files/admin-settings.php:113
+#: admin-files/admin-settings.php:141
+#: admin-files/admin-settings.php:146
+#: admin-files/admin-settings.php:197
+#: admin-files/admin-settings.php:342
+#@ migla-donation
+msgid " save"
+msgstr ""
+
+#: admin-files/admin-campaigns.php:75
+#@ migla-donation
+msgid "List of Available Campaigns"
+msgstr ""
+
+#: admin-files/admin-campaigns.php:86
+#@ migla-donation
+msgid "You do not have any campaigns yet"
+msgstr ""
+
+#: admin-files/admin-campaigns.php:106
+#@ migla-donation
+msgid "Target"
+msgstr ""
+
+#: admin-files/admin-campaigns.php:117
+#: admin-files/admin-form-options.php:437
+#: admin-files/admin-form-options.php:444
+#: admin-files/admin-form-options.php:450
+#: admin-files/admin-form-options.php:456
+#: admin-files/admin-form-options.php:471
+#@ migla-donation
+msgid " Show"
+msgstr ""
+
+#: admin-files/admin-campaigns.php:118
+#@ migla-donation
+msgid " Deactivate"
+msgstr ""
+
+#: admin-files/admin-campaigns.php:131
+#@ migla-donation
+msgid " update list of campaigns"
+msgstr ""
+
+#: admin-files/admin-campaigns.php:147
+#: admin-files/admin-reports.php:229
+#@ migla-donation
+msgid "Confirm Delete"
+msgstr ""
+
+#: admin-files/admin-campaigns.php:154
+#@ migla-donation
+msgid "Are you sure you want to delete this campaign? Deleting this campaign will not delete it from the reports"
+msgstr ""
+
+#: admin-files/admin-campaigns.php:159
+#: admin-files/admin-custom-theme.php:697
+#: admin-files/admin-form-options.php:288
+#: admin-files/admin-form-options.php:671
+#: admin-files/admin-offline-donations.php:373
+#: admin-files/admin-reports.php:247
+#: admin-files/admin-reports.php:282
+#@ migla-donation
+msgid "Cancel"
+msgstr ""
+
+#: admin-files/admin-campaigns.php:160
+#: admin-files/admin-reports.php:248
+#@ migla-donation
+msgid "Delete"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:11
+#: admin-files/admin-custom-theme.php:12
+#@ migla-donation
+msgid "Customize Theme"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:63
+#@ migla-donation
+msgid "Theme Customization"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:72
+#@ migla-donation
+msgid "Customize the Form"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:82
+#@ migla-donation
+msgid "Panel Background:"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:87
+#@ migla-donation
+msgid "This is the background color of the panel in the form. Default is grey."
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:96
+#@ migla-donation
+msgid "Panel Border"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:102
+#: admin-files/admin-custom-theme.php:177
+#@ migla-donation
+msgid "Width"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:125
+#@ migla-donation
+msgid " This is the panel's border color and width in the form."
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:144
+#@ migla-donation
+msgid "Giving Level Background:"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:150
+#@ migla-donation
+msgid "  This is the background color of the suggested giving level."
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:171
+#@ migla-donation
+msgid "Giving Level Border"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:199
+#@ migla-donation
+msgid "  This is the panel's border color and width for the suggested giving level. "
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:210
+#@ migla-donation
+msgid " Customize Progress Bar"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:217
+#@ migla-donation
+msgid "Progress Bar info:"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:222
+#@ migla-donation
+msgid " This is the information that is above the progress bar. You can use the following shortcodes:"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:235
+#@ migla-donation
+msgid "  Well Border Radius:"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:239
+#@ migla-donation
+msgid "top-left"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:271
+#@ migla-donation
+msgid "top-right"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:318
+#@ migla-donation
+msgid "bottom-left"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:351
+#@ migla-donation
+msgid "bottom-right"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:383
+#@ migla-donation
+msgid "Bar Color:"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:386
+#@ migla-donation
+msgid " This is the color of the progress bar. "
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:392
+#@ migla-donation
+msgid "Well Background:"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:395
+#@ migla-donation
+msgid " This is for the background inlay of the progress bar."
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:403
+#@ migla-donation
+msgid "Well Box Shadow:"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:419
+#@ migla-donation
+msgid "h-shadow"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:450
+#@ migla-donation
+msgid "v-shadow"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:496
+#@ migla-donation
+msgid "Blur"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:527
+#@ migla-donation
+msgid "Spread"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:556
+#: admin-files/admin-settings.php:278
+#@ migla-donation
+msgid "save"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:572
+#@ migla-donation
+msgid "This controls the inlay shadow."
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:593
+#@ migla-donation
+msgid "Bar Styling and Effects:"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:607
+#@ migla-donation
+msgid "Stripes"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:610
+#@ migla-donation
+msgid "Pulse"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:613
+#@ migla-donation
+msgid "Animated Stripes"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:613
+#@ migla-donation
+msgid "(Stripes must be on)"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:616
+#@ migla-donation
+msgid "Percentage"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:619
+#@ migla-donation
+msgid "This controls the progress bar's effects and styling. Settings are automatically saved."
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:656
+#@ migla-donation
+msgid "Preview:"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:663
+#@ migla-donation
+msgid "Restore to Default"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:679
+#@ migla-donation
+msgid "Confirm Restore"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:691
+#@ migla-donation
+msgid "Are you sure you want to restore all of the styling to their default styles? This can not be undone"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:698
+#: admin-files/admin-form-options.php:672
+#@ migla-donation
+msgid "Restore to default"
+msgstr ""
+
+#: admin-files/admin-form-options.php:13
+#: admin-files/admin-form-options.php:14
+#@ migla-donation
+msgid "Form Options"
+msgstr ""
+
+#: admin-files/admin-form-options.php:50
+#: admin-files/admin-form-options.php:54
+#: admin-files/admin-form-options.php:56
+#: migla-bar-widget.php:195
+#: migla-form.php:404
+#: migla-form.php:408
+#: migla-form.php:410
+#@ default
+msgid "name"
+msgstr ""
+
+#: admin-files/admin-form-options.php:106
+#@ migla-donation
+msgid " Form options"
+msgstr ""
+
+#: admin-files/admin-form-options.php:120
+#@ migla-donation
+msgid "Suggested Giving Levels"
+msgstr ""
+
+#: admin-files/admin-form-options.php:122
+#@ migla-donation
+msgid "Add a suggested giving level"
+msgstr ""
+
+#: admin-files/admin-form-options.php:152
+#@ migla-donation
+msgid "No amounts have been added. Add some amounts above."
+msgstr ""
+
+#: admin-files/admin-form-options.php:163
+#@ migla-donation
+msgid "Default Currency Selection"
+msgstr ""
+
+#: admin-files/admin-form-options.php:165
+#@ migla-donation
+msgid "Set currency"
+msgstr ""
+
+#: admin-files/admin-form-options.php:204
+#@ migla-donation
+msgid "Sign Location"
+msgstr ""
+
+#: admin-files/admin-form-options.php:207
+#: admin-files/admin-form-options.php:209
+#@ migla-donation
+msgid "Before"
+msgstr ""
+
+#: admin-files/admin-form-options.php:207
+#: admin-files/admin-form-options.php:209
+#@ migla-donation
+msgid "After"
+msgstr ""
+
+#: admin-files/admin-form-options.php:213
+#@ migla-donation
+msgid "Separators"
+msgstr ""
+
+#: admin-files/admin-form-options.php:219
+#@ migla-donation
+msgid "Show Decimal Place"
+msgstr ""
+
+#: admin-files/admin-form-options.php:232
+#@ migla-donation
+msgid "Default Country Section"
+msgstr ""
+
+#: admin-files/admin-form-options.php:234
+#@ migla-donation
+msgid "Set country"
+msgstr ""
+
+#: admin-files/admin-form-options.php:266
+#@ migla-donation
+msgid "Undesignated Category Options"
+msgstr ""
+
+#: admin-files/admin-form-options.php:266
+#: admin-files/admin-form-options.php:367
+#@ migla-donation
+msgid "Label:"
+msgstr ""
+
+#: admin-files/admin-form-options.php:267
+#@ migla-donation
+msgid "Hide Category on Form"
+msgstr ""
+
+#: admin-files/admin-form-options.php:281
+#@ migla-donation
+msgid "Form Fields"
+msgstr ""
+
+#: admin-files/admin-form-options.php:281
+#@ migla-donation
+msgid "Drag and drop fields and groups or add new ones"
+msgstr ""
+
+#: admin-files/admin-form-options.php:281
+#@ migla-donation
+msgid " save form"
+msgstr ""
+
+#: admin-files/admin-form-options.php:281
+#@ migla-donation
+msgid "Add Group"
+msgstr ""
+
+#: admin-files/admin-form-options.php:286
+#@ migla-donation
+msgid "insert new header for group"
+msgstr ""
+
+#: admin-files/admin-form-options.php:287
+#: admin-files/admin-form-options.php:321
+#: admin-files/admin-form-options.php:323
+#: admin-files/admin-form-options.php:325
+#@ migla-donation
+msgid "Toggle"
+msgstr ""
+
+#: admin-files/admin-form-options.php:288
+#@ migla-donation
+msgid " Save Group"
+msgstr ""
+
+#: admin-files/admin-form-options.php:329
+#@ migla-donation
+msgid "Add Field"
+msgstr ""
+
+#: admin-files/admin-form-options.php:336
+#: admin-files/admin-form-options.php:339
+#@ migla-donation
+msgid "Delete Group"
+msgstr ""
+
+#: admin-files/admin-form-options.php:439
+#: admin-files/admin-form-options.php:446
+#: admin-files/admin-form-options.php:452
+#: admin-files/admin-form-options.php:458
+#: admin-files/admin-form-options.php:473
+#@ migla-donation
+msgid " Mandatory"
+msgstr ""
+
+#: admin-files/admin-form-options.php:438
+#: admin-files/admin-form-options.php:445
+#: admin-files/admin-form-options.php:451
+#: admin-files/admin-form-options.php:457
+#: admin-files/admin-form-options.php:472
+#@ migla-donation
+msgid " Hide"
+msgstr ""
+
+#: admin-files/admin-form-options.php:492
+#@ migla-donation
+msgid "  save form"
+msgstr ""
+
+#: admin-files/admin-form-options.php:492
+#@ migla-donation
+msgid "  Restore to Default"
+msgstr ""
+
+#: admin-files/admin-form-options.php:551
+#: admin-files/admin-form-options.php:625
+#@ migla-donation
+msgid "Button"
+msgstr ""
+
+#: admin-files/admin-form-options.php:556
+#@ migla-donation
+msgid "Use Paypal Button"
+msgstr ""
+
+#: admin-files/admin-form-options.php:610
+#@ migla-donation
+msgid "Upload Your Own Button"
+msgstr ""
+
+#: admin-files/admin-form-options.php:612
+#@ migla-donation
+msgid "Upload:"
+msgstr ""
+
+#: admin-files/admin-form-options.php:618
+#@ migla-donation
+msgid " upload"
+msgstr ""
+
+#: admin-files/admin-form-options.php:623
+#@ migla-donation
+msgid "Choose a CSS Button"
+msgstr ""
+
+#: admin-files/admin-form-options.php:628
+#: admin-files/admin-form-options.php:630
+#@ migla-donation
+msgid "Your Default Form Button"
+msgstr ""
+
+#: admin-files/admin-form-options.php:628
+#: admin-files/admin-form-options.php:630
+#@ migla-donation
+msgid "Grey Button"
+msgstr ""
+
+#: admin-files/admin-form-options.php:634
+#@ migla-donation
+msgid "Button Text"
+msgstr ""
+
+#: admin-files/admin-form-options.php:634
+#@ migla-donation
+msgid "Add CSS class (theme button only)"
+msgstr ""
+
+#: admin-files/admin-form-options.php:655
+#@ migla-donation
+msgid " Confirm Restore"
+msgstr ""
+
+#: admin-files/admin-form-options.php:665
+#@ migla-donation
+msgid "Are you sure you want to restore to default fields? This cannot be undone"
+msgstr ""
+
+#: admin-files/admin-help.php:11
+#: admin-files/admin-help.php:12
+#: admin-files/admin-help.php:26
+#@ migla-donation
+msgid "Help"
+msgstr ""
+
+#: admin-files/admin-help.php:46
+#@ migla-donation
+msgid "Visit "
+msgstr ""
+
+#: admin-files/admin-help.php:46
+#@ migla-donation
+msgid "here for complete documentation "
+msgstr ""
+
+#: admin-files/admin-help.php:110
+#@ migla-donation
+msgid "ShortCode List"
+msgstr ""
+
+#: admin-files/admin-help.php:110
+#@ migla-donation
+msgid "These are all the shortcodes available currently"
+msgstr ""
+
+#: admin-files/admin-main.php:11
+#: admin-files/admin-main.php:12
+#@ migla-donation
+msgid "Total Donations"
+msgstr ""
+
+#: admin-files/admin-main.php:54
+#@ migla-donation
+msgid "Total Donations Dashboard"
+msgstr ""
+
+#: admin-files/admin-main.php:70
+#@ migla-donation
+msgid "Latest Online Donations"
+msgstr ""
+
+#: admin-files/admin-main.php:73
+#@ migla-donation
+msgid "Timeline"
+msgstr ""
+
+#: admin-files/admin-main.php:83
+#@ migla-donation
+msgid " Read More"
+msgstr ""
+
+#: admin-files/admin-main.php:107
+#@ migla-donation
+msgid "Total Donations:"
+msgstr ""
+
+#: admin-files/admin-main.php:115
+#: admin-files/admin-main.php:142
+#@ migla-donation
+msgid " view reports"
+msgstr ""
+
+#: admin-files/admin-main.php:134
+#@ migla-donation
+msgid "This Month:"
+msgstr ""
+
+#: admin-files/admin-main.php:158
+#@ migla-donation
+msgid "Campaign Progress"
+msgstr ""
+
+#: admin-files/admin-main.php:166
+#@ migla-donation
+msgid "Project"
+msgstr ""
+
+#: admin-files/admin-main.php:167
+#@ migla-donation
+msgid "Status"
+msgstr ""
+
+#: admin-files/admin-main.php:168
+#@ migla-donation
+msgid "Progress"
+msgstr ""
+
+#: admin-files/admin-main.php:215
+#: admin-files/admin-main.php:278
+#@ migla-donation
+msgid "Change TimeZone"
+msgstr ""
+
+#: admin-files/admin-main.php:240
+#@ migla-donation
+msgid "Donation Graph"
+msgstr ""
+
+#: admin-files/admin-main.php:247
+#@ migla-donation
+msgid "Time Period"
+msgstr ""
+
+#: admin-files/admin-main.php:248
+#: admin-files/admin-main.php:250
+#@ migla-donation
+msgid "One Month"
+msgstr ""
+
+#: admin-files/admin-main.php:249
+#: admin-files/admin-main.php:250
+#@ migla-donation
+msgid "Six Months"
+msgstr ""
+
+#: admin-files/admin-main.php:250
+#@ migla-donation
+msgid "Time Period "
+msgstr ""
+
+#: admin-files/admin-main.php:250
+#@ migla-donation
+msgid "One Year"
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:13
+#: admin-files/admin-offline-donations.php:14
+#@ migla-donation
+msgid "Offline Donations"
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:52
+#@ migla-donation
+msgid "Add a donation"
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:57
+#@ migla-donation
+msgid "First Name: "
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:60
+#@ migla-donation
+msgid "Last Name: "
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:63
+#@ migla-donation
+msgid "Amount: "
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:66
+#@ migla-donation
+msgid "Date: "
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:74
+#@ migla-donation
+msgid "Check this if you want the name to be hidden from the public. It will still be shown in the reports"
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:76
+#@ migla-donation
+msgid "Campaign : "
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:98
+#@ migla-donation
+msgid "Address: "
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:101
+#@ migla-donation
+msgid "Email: "
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:104
+#@ migla-donation
+msgid "Country: "
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:119
+#@ migla-donation
+msgid "States "
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:130
+#@ migla-donation
+msgid "Provinces"
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:142
+#@ migla-donation
+msgid "Postal Code: "
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:167
+#@ migla-donation
+msgid " save "
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:187
+#@ migla-donation
+msgid "Reports "
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:236
+#@ migla-donation
+msgid " remove "
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:239
+#: admin-files/admin-reports.php:113
+#@ migla-donation
+msgid " Unselect All "
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:267
+#@ migla-donation
+msgid " This Report"
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:272
+#: admin-files/admin-reports.php:147
+#@ migla-donation
+msgid " All Donations"
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:285
+#: admin-files/admin-reports.php:160
+#@ migla-donation
+msgid " Grand Total:"
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:320
+#@ migla-donation
+msgid " All Offline Donations:"
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:355
+#@ migla-donation
+msgid " Confirm Delete"
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:367
+#@ migla-donation
+msgid " Are you sure you want to delete? This cannot be undone"
+msgstr ""
+
+#: admin-files/admin-reports.php:13
+#: admin-files/admin-reports.php:14
+#: admin-files/admin-reports.php:49
+#@ migla-donation
+msgid "Online Donations"
+msgstr ""
+
+#: admin-files/admin-settings.php:11
+#: admin-files/admin-settings.php:12
+#: admin-files/admin-settings.php:25
+#@ migla-donation
+msgid "Settings"
+msgstr ""
+
+#: admin-files/admin-settings.php:40
+#@ migla-donation
+msgid "Business Email"
+msgstr ""
+
+#: admin-files/admin-settings.php:79
+#@ migla-donation
+msgid "Notifications"
+msgstr ""
+
+#: admin-files/admin-settings.php:84
+#@ migla-donation
+msgid "emails to notify upon new donations"
+msgstr ""
+
+#: admin-files/admin-settings.php:87
+#@ migla-donation
+msgid "Use commas to separate emails"
+msgstr ""
+
+#: admin-files/admin-settings.php:92
+#@ migla-donation
+msgid "Thank You Page"
+msgstr ""
+
+#: admin-files/admin-settings.php:92
+#@ migla-donation
+msgid "The page that appears after you donate"
+msgstr ""
+
+#: admin-files/admin-settings.php:119
+#@ migla-donation
+msgid " Preview"
+msgstr ""
+
+#: admin-files/admin-settings.php:134
+#@ migla-donation
+msgid "Thank you Email"
+msgstr ""
+
+#: admin-files/admin-settings.php:137
+#@ migla-donation
+msgid "Email Address: "
+msgstr ""
+
+#: admin-files/admin-settings.php:141
+#@ migla-donation
+msgid "The name your email will appeear from when your donor receives an email"
+msgstr ""
+
+#: admin-files/admin-settings.php:143
+#@ migla-donation
+msgid "Email Name : "
+msgstr ""
+
+#: admin-files/admin-settings.php:146
+#@ migla-donation
+msgid "This is the name your thank you emails will appear from"
+msgstr ""
+
+#: admin-files/admin-settings.php:150
+#@ migla-donation
+msgid " Email Subject:"
+msgstr ""
+
+#: admin-files/admin-settings.php:152
+#@ migla-donation
+msgid " Thank you Email Text Body: "
+msgstr ""
+
+#: admin-files/admin-settings.php:161
+#: admin-files/admin-settings.php:241
+#@ migla-donation
+msgid "Repeating Donations:"
+msgstr ""
+
+#: admin-files/admin-settings.php:166
+#: admin-files/admin-settings.php:249
+#@ migla-donation
+msgid "Anonymous Donations:"
+msgstr ""
+
+#: admin-files/admin-settings.php:185
+#: admin-files/admin-settings.php:268
+#@ migla-donation
+msgid "Signature:"
+msgstr ""
+
+#: admin-files/admin-settings.php:189
+#: admin-files/admin-settings.php:272
+#@ migla-donation
+msgid " Use the following shortcodes in the email body:"
+msgstr ""
+
+#: admin-files/admin-settings.php:191
+#: admin-files/admin-settings.php:274
+#@ migla-donation
+msgid " Donor's First Name"
+msgstr ""
+
+#: admin-files/admin-settings.php:191
+#: admin-files/admin-settings.php:274
+#@ migla-donation
+msgid " Donor's Last Name"
+msgstr ""
+
+#: admin-files/admin-settings.php:191
+#@ migla-donation
+msgid " Donation Amount"
+msgstr ""
+
+#: admin-files/admin-settings.php:191
+#@ migla-donation
+msgid " Donation date "
+msgstr ""
+
+#: admin-files/admin-settings.php:191
+#@ migla-donation
+msgid " Line Break "
+msgstr ""
+
+#: admin-files/admin-settings.php:210
+#@ migla-donation
+msgid "Email address for Test:"
+msgstr ""
+
+#: admin-files/admin-settings.php:213
+#: admin-files/admin-settings.php:292
+#@ migla-donation
+msgid " Preview Email"
+msgstr ""
+
+#: admin-files/admin-settings.php:213
+#@ migla-donation
+msgid " Use this to preivew what your donors will see when they donate."
+msgstr ""
+
+#: admin-files/admin-settings.php:226
+#@ migla-donation
+msgid "Honoree Email"
+msgstr ""
+
+#: admin-files/admin-settings.php:232
+#@ migla-donation
+msgid "Thank you Email Text Body: "
+msgstr ""
+
+#: admin-files/admin-settings.php:244
+#@ migla-donation
+msgid "Custom Message Intro:"
+msgstr ""
+
+#: admin-files/admin-settings.php:274
+#@ migla-donation
+msgid " Honoree's Name"
+msgstr ""
+
+#: admin-files/admin-settings.php:274
+#@ migla-donation
+msgid "Donation Amount"
+msgstr ""
+
+#: admin-files/admin-settings.php:274
+#@ migla-donation
+msgid " Line Break"
+msgstr ""
+
+#: admin-files/admin-settings.php:289
+#@ migla-donation
+msgid "Email address for Honoree Email Test:"
+msgstr ""
+
+#: admin-files/admin-settings.php:292
+#@ migla-donation
+msgid " Use this to preivew what the honoree will see when they receive a message."
+msgstr ""
+
+#: admin-files/admin-settings.php:327
+#@ migla-donation
+msgid " Default Time Zone Section"
+msgstr ""
+
+#: admin-files/admin-settings.php:329
+#@ migla-donation
+msgid "Set Time Zone"
+msgstr ""
+
+#: admin-files/admin-settings.php:332
+#@ migla-donation
+msgid "Server Time"
+msgstr ""
+
+#: admin-files/admin-settings.php:344
+#@ migla-donation
+msgid " Set your timezone here"
+msgstr ""
+
+#: migla-bar-widget.php:37
+#@ localization
+msgid "A widget that displays progress bar for total donation"
+msgstr ""
+
+#: migla-bar-widget.php:43
+#@ localization
+msgid "Total Donations Bar Widget"
+msgstr ""
+
+#: migla-bar-widget.php:172
+#@ localization
+msgid "Title of the progress bar:"
+msgstr ""
+
+#: migla-bar-widget.php:176
+#@ localization
+msgid "Current Campaign : "
+msgstr ""
+
+#: migla-bar-widget.php:179
+#@ localization
+msgid "Choose a campaign to show :"
+msgstr ""
+
+#: migla-bar-widget.php:235
+#: migla-donation-widget.php:274
+#: migla-top-donor-widget.php:254
+#@ localization
+msgid "Text of button:"
+msgstr ""
+
+#: migla-donation.php:93
+#@ migla-donation
+msgid "Please fill in your paypal account details in Total Donations. It is required to begin accepting donations. Go to "
+msgstr ""
+
+#: migla-donation.php:94
+#: migla-donation.php:100
+#@ migla-donation
+msgid " Settings"
+msgstr ""
+
+#: migla-donation.php:99
+#@ migla-donation
+msgid "Total Donations is currently in sandbox testing mode. To switch to production mode, please go to "
+msgstr ""
+
+#: migla-donation.php:100
+#@ migla-donation
+msgid " and change the payment method to Paypal"
+msgstr ""
+
+#: migla-donation.php:104
+#@ migla-donation
+msgid "Warning "
+msgstr ""
+
+#: migla-form.php:591
+#@ migla-donation
+msgid "Please insert all the required fields"
+msgstr ""
+
+#: migla-form.php:592
+#@ migla-donation
+msgid "Please insert correct email"
+msgstr ""
+
+#: admin-files/admin-reports.php:58
+#@ migla-donation
+msgid "Reports"
+msgstr ""
+
+#: admin-files/admin-reports.php:110
+#@ migla-donation
+msgid "REMOVE "
+msgstr ""
+
+#: admin-files/admin-reports.php:142
+#@ migla-donation
+msgid " This Report "
+msgstr ""
+
+#: admin-files/admin-reports.php:166
+#@ migla-donation
+msgid " Export table to CSV file"
+msgstr ""
+
+#: admin-files/admin-reports.php:195
+#@ migla-donation
+msgid " All Online Donations:"
+msgstr ""
+
+#: admin-files/admin-reports.php:201
+#@ migla-donation
+msgid "Export all to CSV file"
+msgstr ""
+
+#: admin-files/admin-reports.php:241
+#@ migla-donation
+msgid "Are you sure you want to delete? This cannot be undone"
+msgstr ""
+
+#: admin-files/admin-custom-theme.php:368
+#@ migla-donation
+msgid "This controls the round corners of the bar."
+msgstr ""
+
+#: admin-files/admin-form-options.php:395
+#: admin-files/admin-form-options.php:403
+#@ migla-donation
+msgid "text"
+msgstr ""
+
+#: admin-files/admin-form-options.php:396
+#: admin-files/admin-form-options.php:404
+#@ migla-donation
+msgid "checkbox"
+msgstr ""
+
+#: admin-files/admin-form-options.php:398
+#: admin-files/admin-form-options.php:405
+#@ migla-donation
+msgid "textarea"
+msgstr ""
+
+#: admin-files/admin-form-options.php:399
+#@ migla-donation
+msgid "radio"
+msgstr ""
+
+#: admin-files/admin-form-options.php:400
+#@ migla-donation
+msgid "select"
+msgstr ""
+
+#: admin-files/admin-form-options.php:556
+#@ migla-donation
+msgid "Language"
+msgstr ""
+
+#: admin-files/admin-form-options.php:560
+#@ migla-donation
+msgid "English"
+msgstr ""
+
+#: admin-files/admin-form-options.php:564
+#@ migla-donation
+msgid "Chinese (Simplified)"
+msgstr ""
+
+#: admin-files/admin-form-options.php:568
+#@ migla-donation
+msgid "Chinese (Traditional)"
+msgstr ""
+
+#: admin-files/admin-form-options.php:572
+#@ migla-donation
+msgid "Dutch"
+msgstr ""
+
+#: admin-files/admin-form-options.php:576
+#@ migla-donation
+msgid "French"
+msgstr ""
+
+#: admin-files/admin-form-options.php:580
+#@ migla-donation
+msgid "Hebrew"
+msgstr ""
+
+#: admin-files/admin-form-options.php:584
+#@ migla-donation
+msgid "Norwegian"
+msgstr ""
+
+#: admin-files/admin-form-options.php:588
+#@ migla-donation
+msgid "Polish"
+msgstr ""
+
+#: admin-files/admin-form-options.php:592
+#@ migla-donation
+msgid "Russian"
+msgstr ""
+
+#: admin-files/admin-form-options.php:596
+#@ migla-donation
+msgid "Spanish"
+msgstr ""
+
+#: admin-files/admin-form-options.php:600
+#@ migla-donation
+msgid "Swedish"
+msgstr ""
+
+#: admin-files/admin-form-options.php:604
+#@ migla-donation
+msgid "Turkish"
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:69
+#@ migla-donation
+msgid "Organization: "
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:122
+#: admin-files/admin-offline-donations.php:133
+#: admin-files/admin-offline-donations.php:159
+#@ migla-donation
+msgid "Please pick one"
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:147
+#@ migla-donation
+msgid "Employer: "
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:152
+#@ migla-donation
+msgid "Occupation: "
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:157
+#@ migla-donation
+msgid "Type of payment : "
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:160
+#@ migla-donation
+msgid "Cash"
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:161
+#@ migla-donation
+msgid "Cheque"
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:162
+#@ migla-donation
+msgid "Credit Card"
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:343
+#: admin-files/admin-reports.php:255
+#@ migla-donation
+msgid "You will delete these records:"
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:344
+#: admin-files/admin-reports.php:256
+#@ migla-donation
+msgid "Do you want to proceed?"
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:345
+#: admin-files/admin-reports.php:257
+#@ migla-donation
+msgid "A donation you wish to delete is reoccurring. Deleting this record will <strong>NOT</strong> stop those donations. Reoccurring donations must be stopped by PayPal"
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:201
+#: admin-files/admin-offline-donations.php:222
+#: admin-files/admin-reports.php:71
+#: admin-files/admin-reports.php:95
+#@ migla-donation
+msgid "FirstName"
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:202
+#: admin-files/admin-offline-donations.php:223
+#: admin-files/admin-reports.php:72
+#: admin-files/admin-reports.php:96
+#@ migla-donation
+msgid "LastName"
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:204
+#: admin-files/admin-offline-donations.php:225
+#: admin-files/admin-reports.php:74
+#: admin-files/admin-reports.php:98
+#@ migla-donation
+msgid "Amount"
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:205
+#: admin-files/admin-offline-donations.php:226
+#: admin-files/admin-reports.php:75
+#: admin-files/admin-reports.php:99
+#@ migla-donation
+msgid "Country"
+msgstr ""
+
+#: admin-files/admin-reports.php:76
+#: admin-files/admin-reports.php:100
+#@ migla-donation
+msgid "Transaction"
+msgstr ""
+
+#: admin-files/admin-reports.php:265
+#@ migla-donation
+msgid "Edit Record Form"
+msgstr ""
+
+#: admin-files/admin-reports.php:283
+#@ migla-donation
+msgid " Save changes"
+msgstr ""
+
+#: admin-files/admin-settings.php:51
+#@ migla-donation
+msgid "Sand Box PayPal"
+msgstr ""
+
+#: admin-files/admin-settings.php:57
+#@ migla-donation
+msgid "Paypal"
+msgstr ""
+
+#: admin-files/admin-settings.php:230
+#@ migla-donation
+msgid "Email Subject:"
+msgstr ""
+
+#: migla-donation-widget.php:37
+#@ localization
+msgid "A widget that displays list of recent donations in total donation"
+msgstr ""
+
+#: migla-donation-widget.php:43
+#@ localization
+msgid "Total Donations Recent Donors Wall"
+msgstr ""
+
+#: migla-donation-widget.php:220
+#: migla-top-donor-widget.php:200
+#@ localization
+msgid "Title of the Donor Wall:"
+msgstr ""
+
+#: migla-donation-widget.php:280
+#@ localization
+msgid "Hide Date:"
+msgstr ""
+
+#: migla-form.php:506
+#@ migla-donation
+msgid "please wait, redirecting to paypal"
+msgstr ""
+
+#: migla-form.php:593
+#@ migla-donation
+msgid "Please fill in a valid amount"
+msgstr ""
+
+#: migla-top-donor-widget.php:37
+#@ localization
+msgid "A widget that displays list of top donor in total donation"
+msgstr ""
+
+#: migla-top-donor-widget.php:43
+#@ localization
+msgid "Total Donations Top Donor Wall"
+msgstr ""
+
+#: admin-files/admin-help.php:75
+#@ migla-donation
+msgid "Show Recovery Buttons"
+msgstr ""
+
+#: admin-files/admin-help.php:82
+#@ migla-donation
+msgid "This buttons will show on edit form (report)"
+msgstr ""
+
+#: admin-files/admin-help.php:84
+#@ migla-donation
+msgid "Use nonce on front end"
+msgstr ""
+
+#: admin-files/admin-offline-donations.php:200
+#: admin-files/admin-reports.php:70
+#@ migla-donation
+msgid "Date"
+msgstr ""
+
+#: admin-files/admin-reports.php:274
+#@ migla-donation
+msgid " Recover from transient"
+msgstr ""
+
+#: admin-files/admin-reports.php:276
+#@ migla-donation
+msgid " Recover from paypal"
+msgstr ""
+
+#: admin-files/admin-reports.php:278
+#@ migla-donation
+msgid " Recover initial data"
+msgstr ""
+
