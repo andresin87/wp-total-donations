@@ -358,11 +358,11 @@ $fields = array (
         'toggle' => '-1'
     ),
     '2' => array (
-        'title' => 'Is this in honor of someone?',
+        'title' => 'És en nom d[q]algú?',
         'child' => array(
-                   '0' => array( 'type'=>'checkbox','id'=>'memorialgift', 'label'=>"Is this a Memorial Gift?", 'status'=>'1', 'code' => 'miglad_' ),
-                   '1' => array( 'type'=>'text','id'=>'honoreename', 'label'=>"Honoree[q]s Name", 'status'=>'1', 'code' => 'miglad_' ),
-                   '2' => array( 'type'=>'text','id'=>'honoreeemail', 'label'=>"Honoree[q]s Email", 'status'=>'1', 'code' => 'miglad_' ),
+                   '0' => array( 'type'=>'checkbox','id'=>'memorialgift', 'label'=>"És una aportació com a entitat??", 'status'=>'1', 'code' => 'miglad_' ),
+                   '1' => array( 'type'=>'text','id'=>'honoreename', 'label'=>"Nom de la entitat", 'status'=>'1', 'code' => 'miglad_' ),
+                   '2' => array( 'type'=>'text','id'=>'honoreeemail', 'label'=>"Correu", 'status'=>'1', 'code' => 'miglad_' ),
                    '3' => array( 'type'=>'textarea','id'=>'honoreeletter', 'label'=>"Write a custom note to the Honoree here", 'status'=>'1', 'code' => 'miglad_' ),
                    '4' => array( 'type'=>'text','id'=>'honoreeaddress', 'label'=>"Honoree[q]s Address", 'status'=>'1', 'code' => 'miglad_' ),
                    '5' => array( 'type'=>'text','id'=>'honoreecountry', 'label'=>"Honoree[q]s Country", 'status'=>'1', 'code' => 'miglad_' ),
@@ -375,10 +375,10 @@ $fields = array (
 
     ),
     '3' => array (
-        'title' => 'Is this a matching gift?',
+        'title' => 'És una aportació com a entitat?',
         'child' => array(
-                   '0' => array( 'type'=>'text','id'=>'employer', 'label'=>'Employer[q]s Name', 'status'=>'1', 'code' => 'miglad_' ),
-                   '1' => array( 'type'=>'text','id'=>'occupation', 'label'=>'Occupation', 'status'=>'1', 'code' => 'miglad_' )
+                   '0' => array( 'type'=>'text','id'=>'employer', 'label'=>'Nom del col·laborador', 'status'=>'1', 'code' => 'miglad_' ),
+                   '1' => array( 'type'=>'text','id'=>'occupation', 'label'=>'Càrrec', 'status'=>'1', 'code' => 'miglad_' )
                  ),
         'parent_id' => 'NULL',
         'depth' => 3,
@@ -401,7 +401,7 @@ miglainit_option( 'migla_campaign' , '' );
  miglainit_option( 'migla_2ndbgcolorb' , '#eeeeee,1,1' ); 
  miglainit_option( 'migla_borderRadius' , '8,8,8,8' );
 
- $barinfo = "We have collected [total] of our [target] target. It is [percentage] of our goal for the [campaign] campaign";
+ $barinfo = "Hem aconseguit [total] dels [target] necessaris. Això comporta un [percentage] del total per portal a terme la campanya [campaign].";
  miglainit_option('migla_progbar_info', $barinfo); 
  miglainit_option( 'migla_bar_color' , '#428bca,1' );
  miglainit_option( 'migla_progressbar_background', '#bec7d3,1');
