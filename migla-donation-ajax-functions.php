@@ -339,7 +339,7 @@ function miglaA_reset_theme() {
  update_option( 'migla_2ndbgcolorb' , '#DDDDDD,1,1' ); 
  update_option( 'migla_borderRadius' , '8,8,8,8' );
 
- $barinfo = "Hem aconseguit [total] dels [target] necessaris. Això comporta un [percentage] del total per portal a terme la campanya [campaign].";
+ $barinfo = "We have collected [total] of our [target] target. It is [percentage] of our goal for the [campaign] campaign";
  update_option('migla_progbar_info', $barinfo); 
  update_option( 'migla_bar_color' , '#428bca,1' );
  update_option( 'migla_progressbar_background', '#bec7d3,1');
