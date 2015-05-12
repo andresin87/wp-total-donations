@@ -5,6 +5,7 @@
 var dataArr;
 var inQuery;
 var ajaxData = {}; var form = {}; var orphan = {}; var alldata = {}; var fieldType = {}; var campaigns = {};
+var custom_types = {};
 var undesignatedLabel; var recurring = {};
 var countries = {}; var states = {}; var provinces = {};
 var oTable; 
@@ -21,7 +22,8 @@ var allAmount = 0;
 
 function mdataTable( x ){
 
-   var table = jQuery('#miglaReportTable').DataTable(
+   var table;
+   table = jQuery('#miglaReportTable').DataTable(
       {
       "scrollX": true ,
       "data": x,
@@ -47,10 +49,16 @@ function mdataTable( x ){
             { "data": 'miglad_amount' , sDefaultContent: ""},
             { "data": 'miglad_country' , sDefaultContent: ""},
             { "data": function ( row, type, val, meta ) {
-                        var r = "One time donation";
-                        if( row.miglad_transactionType == 'subscr_payment' ){ r = "Recurring Payment"; }
+                        var r = row.miglad_transactionType ;
+						if( r == 'web_accept' ){
+						    r = 'One time (Paypal)';
+						}else if( r == 'subscr_payment' ){
+						    r = 'Recurring (Paypal)';
+						}
+                  		r = r + " <i class='fa fa-check-circle'></i>";
+                        if( row.miglad_charge_dispute == 'dispute' ){ r = row.miglad_transactionType + " <i class='fa fa-exclamation-triangle'></i>"; }
                         return r;
-                      }           
+                     }
             },
             { "data": 'id' }
             ],
@@ -304,30 +312,51 @@ function format ( d, idx  , form ) {
       }
       check = check + 1;
     }//for child
+
     check = 0;
-  }//ifelse
+  }//if else
+
  }//for form
 
- /////CUSTOM FIELD
-
+   /////CUSTOM FIELD
    check = 0;   
-   for( key4 in orphan[idx]){
+   for( key4 in orphan[idx] )
+   {
      if( orphan[idx][key4] != "" ){
-      if( check == 0 ){
-        str = str + "<tr class='reportGroupHeader'> <td >Deleted User Custom Fields</td></tr>";
+          check = check + 1;
       }
+   }
+
+  if( check != 0 ){
+         str = str + "<tr class='reportGroupHeader'> <td >User Custom Fields</td></tr>";
+  }
+   for( key4 in orphan[idx] )
+   {
+     if( orphan[idx][key4] != "" ){
        str = str + "<tr>" + "<td >" + key4.slice(7) + " : " + orphan[idx][key4] + "</td>" + "</tr>";
-            check = check + 1;
      }//if orphan not empty
    }
   
   ///PAYMENT Information
   str = str + "<tr class='reportGroupHeader'> <td >Payment Information</td></tr>";
-  str = str + "<tr>" + "<td >Session ID : " + getData( d[idx], "miglad_session_id") + "</td>" + "</tr>";
+  //str = str + "<tr>" + "<td >Session ID : " + getData( d[idx], "miglad_session_id") + "</td>" + "</tr>";
+
+  var _status_payment = getData( d[idx], "miglad_charge_dispute");
+  if( _status_payment == '' ){  
+     str = str + "<tr>" + "<td >Status : Completed</td>" + "</tr>";
+  }else{
+     str = str + "<tr>" + "<td >Status : " + _status_payment + "</td>" + "</tr>";
+  }
   str = str + "<tr>" + "<td >Payment Method : " + getData( d[idx], "miglad_paymentmethod") + "</td>" + "</tr>";
-  str = str + "<tr>" + "<td >Transaction Type : " + getData( d[idx], "miglad_transactionType") + "</td>" + "</tr>";
+
+  var transType = getData( d[idx], "miglad_transactionType");
+
+  str = str + "<tr>" + "<td >Transaction Type : " + transType + "</td>" + "</tr>";
   str = str + "<tr>" + "<td >Transaction ID : " + getData( d[idx], "miglad_transactionId") + "</td>" + "</tr>";
 
+  if( transType.search( 'Recurring' ) >= 0 ){
+     str = str + "<tr>" + "<td >Subscription ID : " + getData( d[idx], "miglad_subscription_id") + "</td>" + "</tr>";
+  }
   str = str +  '</table>';
 
   str = str +  '<br>';
@@ -338,21 +367,27 @@ function format ( d, idx  , form ) {
   
  str = str + "</div>";
 
-  var subcr_id = getData( d[idx], "miglad_subscr_id");
-  var amount_each = getData( d[idx], "miglad_amount");
-  if( subcr_id != null )
+  if( transType == 'Recurring (Stripe)' || transType == 'Recurring (Paypal)' )
   {
-   var rec_info = recurring[ subcr_id ];
-   str = str +  '<div class="col-sm-6"><h4>Reoccuring Donations </h4>';
-   str = str +  '<h6>Subscription ID : ' + subcr_id + '</h6>';
-   str = str + '<table cellspacing="0" cellpadding="5" border="0" style="padding-left:50px;"><tbody><tr><td>Date : </td><td>Time</td><td>Amount</td></tr>';
-   for( key3 in rec_info){
-     if( typeof rec_info[key3]['date'] != 'undefined' ){
-       str = str + '<tr><td>' + rec_info[key3]['date'] + '</td><td>'+rec_info[key3]['time']+'</td>'+'<td>'+amount_each+'</td>'+'</tr>';
-     }
-   } 
-   str = str + '</tbody></table>';
-   str = str + '</div> <!-- / col-sm-6 -->';
+    var subcr_id     = getData( d[idx], "miglad_subscription_id");
+    var amount_each  = getData( d[idx], "miglad_amount");
+    var total_amount = 0;
+    if( subcr_id != null )
+    {
+      var rec_info = recurring[ subcr_id ];
+      str = str +  '<div class="col-sm-6"><h4>Reoccuring Donations </h4>';
+      str = str +  '<h6>Subscription ID : ' + subcr_id + '</h6>';
+      str = str + '<table cellspacing="0" cellpadding="5" border="0" style="padding-left:50px;"><tbody><tr><td>Date : </td><td>Time</td><td>Amount</td></tr>';
+      for( key3 in rec_info){
+         if( typeof rec_info[key3]['date'] != 'undefined' ){
+           str = str + '<tr><td>' + rec_info[key3]['date'] + '</td><td>'+rec_info[key3]['time']+'</td>'+'<td>'+amount_each+'</td>'+'</tr>';
+           total_amount = total_amount + Number(amount_each);
+         }
+      } 
+      str = str + '<tr><td></td><td>Total Amount : </td>'+'<td>'+total_amount+'</td>'+'</tr>';
+      str = str + '</tbody></table>';
+      str = str + '</div> <!-- / col-sm-6 -->';
+    }
   }
 
   str = str + '</td>';
@@ -372,7 +407,11 @@ function findWithAttr(array, attr, value) {
             r = r + array[i]['miglad_lastname']+"</td>";
 
             var status = "One time donation";
-            if( array[i]['miglad_transactionType'] == 'subscr_payment' ){ status = "Recurring Payment";  out[1] = true; }
+            var trans  = new String(array[i]['miglad_transactionType']);
+            if( trans == 'subscr_payment' ||  trans == 'Recurring (Paypal)' || trans == "Recurring (Stripe)" )
+            { 
+               status = "Recurring Payment";  out[1] = true; 
+            }
 
             r = r + "<td>" + status +"</td>";
             r = r + "<td width=''>"+array[i]['miglad_amount']+"</td>";
@@ -411,19 +450,18 @@ var num = 0;
 return num;	
 }
 
-jQuery(document).ready(
-function() {
+jQuery(document).ready( function() {
 
-if( jQuery('#placement').text() == 'before'){ before =jQuery('div#symbol').html();after=''; }else{ after =jQuery('div#symbol').html();before=''; }
-thouSep = jQuery('#thousandSep').text(); decSep = jQuery('#decimalSep').text();
-showDec = 0;
-if( jQuery('#showDecimal').text() == 'yes' ){ showDec = 2; }
+  if( jQuery('#placement').text() == 'before'){ before =jQuery('div#symbol').html();after=''; }else{ after =jQuery('div#symbol').html();before=''; } 
+  thouSep = jQuery('#thousandSep').text(); decSep = jQuery('#decimalSep').text();
+  showDec = 0;
+  if( jQuery('#showDecimal').text() == 'yes' ){ showDec = 2; }
 
-jQuery('#confirm-delete').modal({show: false});
+  jQuery('#confirm-delete').modal({show: false});
 
-jQuery('#sdate, #edate').val("");
+  jQuery('#sdate, #edate').val("");
 
-Number.prototype.formatMoney = function(decPlaces, thouSeparator, decSeparator) {
+  Number.prototype.formatMoney = function(decPlaces, thouSeparator, decSeparator) {
     var n = this,
         decPlaces = isNaN(decPlaces = Math.abs(decPlaces)) ? 2 : decPlaces,
         decSeparator = decSeparator == undefined ? "." : decSeparator,
@@ -434,18 +472,18 @@ Number.prototype.formatMoney = function(decPlaces, thouSeparator, decSeparator) 
     var result = sign + (j ? i.substr(0, j) + thouSeparator : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" 
             + thouSeparator) + (decPlaces ? decSeparator + Math.abs(n - i).toFixed(decPlaces).slice(2) : "");
     return result;
-};
+  };
 
        jQuery('input[type=checkbox]').each(function () {
          jQuery(this).checked = false;
        });
 
  Array.prototype.remove = function(value) {
-  var idx = this.indexOf(value);
-  if (idx != -1) {
-    return this.splice(idx, 1); // The second parameter is the number of elements to remove.
-  }
- return false;
+    var idx = this.indexOf(value);
+    if (idx != -1) {
+       return this.splice(idx, 1); // The second parameter is the number of elements to remove.
+    }
+   return false;
  }
 
 
@@ -456,21 +494,28 @@ jQuery.ajax({
    url :  miglaAdminAjax.ajaxurl,  
    data :  { action:'miglaA_report' },
      success: function(msg) {
-      var output = eval(msg);
+      var output = JSON.parse(msg);
       alldata = output[0] ; form = output[1]; orphan = output[2]; fieldType = output[3]; campaigns = output[4]; undesignatedLabel = output[5];
       recurring = output[6];
-
-    //alert( JSON.stringify(output[6]) );
 
     if( alldata.length > 0){ 
        alldata.sort(function (a, b) {
          return (new Date(b.miglad_date + ' ' + b.miglad_time) - new Date(a.miglad_date + ' ' + a.miglad_time) );
        });
      }
-
+/*
+    var list_ = "";
+    for(key in alldata){
+     //if( alldata[key]['miglad_firstname'] == 'Johny' ){
+       for(key2 in alldata[key] ){
+          list_ = list_ + " " + alldata[key][key2] + " ; ";
+       }
+       list_ = list_ + "<br>";
+      //}
+    }
+    jQuery(list_).appendTo( jQuery('#mg_list') );
+*/
      ajaxData = alldata;
-
-//alert(JSON.stringify( ajaxData[1]['id'] ) );
 
             jQuery('#miglaReportTable tfoot th').each( function () {
                var title = jQuery('#miglaReportTable thead th').eq( (jQuery(this).index()+2) ).text();
@@ -534,7 +579,8 @@ jQuery.fn.dataTable.ext.search.push(
       jQuery('th.detailsHeader').removeClass('sorting_asc');
       jQuery('th.detailsHeader').removeClass('sorting_desc');                 
              
-    }
+    },
+    async : false
 }); //ajax  
 
 
@@ -549,8 +595,9 @@ jQuery.fn.dataTable.ext.search.push(
      data : {action: "miglaA_get_data_for_edit_form" },
 	success: function(msg) {
            var output = eval(msg);
-           countries = output[0] ; states = output[1]; provinces = output[2];
+           countries = output[0] ; states = output[1]; provinces = output[2]; custom_types = output[3];
 	}//success
+        
      })  ; //ajax       
 
 
@@ -634,21 +681,21 @@ jQuery('.danger').click( function(){
 });
 
 jQuery('#confirm-delete').on('show.bs.modal', function(e) {
-var msg = "";
-var l = "";        inQuery = "";     var output = []; var isExistRepeat = false;
-jQuery(this).find('.modal-body').empty();
+ var msg = "";
+ var l = "";        inQuery = "";     var output = []; var isExistRepeat = false;
+ 
+  jQuery(this).find('.modal-body').empty();
+  
+  if( removeList.length > 0 )
+  {
+    inQuery = "( " + removeList[0]; 
 
-if( removeList.length > 0 )
-{
+    output  = findWithAttr(ajaxData, "id", removeList[0]);
+    l = l + "<table>" + output[0];
 
-  inQuery = "( " + removeList[0]; 
+    isExistRepeat = isExistRepeat || output[1];
 
-  output  = findWithAttr(ajaxData, "id", removeList[0]);
-  l = l + "<table>" + output[0];
-
-   isExistRepeat = isExistRepeat || output[1];
-
-  output.length = 0;
+    output.length = 0;
 
   for(var i = 1; i < removeList.length; i++){
 
@@ -700,6 +747,9 @@ if( removeList.length > 0 )
 
 
  jQuery('#mg-edit-record').on('show.bs.modal', function(e) {
+
+   //alert( JSON.stringify(custom_types) );
+
    var id    = jQuery("#recordID").val() ;
    var index = getIndex( Number(id) );
    var form  = "";
@@ -715,7 +765,9 @@ if( removeList.length > 0 )
 
    for( key in edited ){
 
-    if( key == 'miglad_campaign' ){
+    if( key.substr(0,4) == 'uid:' ){
+
+    }else if( key == 'miglad_campaign' ){
 
       form = form + "<div class='form-group touching'>";
       form = form + "<div class='col-sm-3 col-xs-12'><label class='control-label text-right-sm text-center-xs'>"+key.slice(7)+"</label></div>";
@@ -726,8 +778,12 @@ if( removeList.length > 0 )
       var isthere = false;
       for( key2 in campaigns ){
          if(campaigns[key2]['name']!=''){ 
-           var cname = campaigns[key2]['name'];
-           cname = cname.replace( "[q]", "'" );
+           var cname = new String( campaigns[key2]['name'] );
+
+           var re = /[q]/g;
+           cname = cname.replace(re, "'");
+           //cname = cname.replace( "[q]", "'" );
+
            if( cname  == ajaxData[index][key] ){ 
               isthere = true;  form = form + "<option selected value='"+campaigns[key2]['name']+"'>" + cname + "</option>"; 
            }else{
@@ -784,7 +840,7 @@ if( removeList.length > 0 )
     }else{
       if( key=='remove' || key=='detail' ||  key=='id' || key=='miglad_session_id' || key=='miglad_paymentmethod' ||  
             key=='miglad_transactionType' || key == 'miglad_transactionId'  || key == 'miglad_timezone' || key == 'miglad_date' 
-            || key == 'miglad_time' || key == 'paypaldata' || key == 'miglad_subscr_id' || key == 'miglad_repeating'
+            || key == 'miglad_time' || key == 'paypaldata' || key == 'miglad_subscr_id' || key == 'miglad_repeating' || key == 'miglad_subscription_id'
        )
       {
           if( key=='miglad_session_id'){
@@ -813,12 +869,132 @@ if( removeList.length > 0 )
             form = form + "<div style='display:none' class='mg_edit_old_value'>" + ajaxData[index][key] + "</div>";
   
             if(  ajaxData[index][key] == 'yes' ){
-               form = form + "<input class='mg_field_to_edit' type='checkbox' id='" + key + "' checked />" ;
+               form = form + "<input class='mg_field_to_edit' name='"+key+"' type='checkbox' id='" + key + "' checked value='yes' />" ;
             }else{
-               form = form + "<input class='mg_field_to_edit' type='checkbox' id='" + key + "' />" ;
+               form = form + "<input class='mg_field_to_edit' name='"+key+"' type='checkbox' id='" + key + "' value='yes' />" ;
             }
             form = form + "</div>";
             form = form + "<div class='col-sm-3 hidden-xs'></div></div>";
+          
+          }else if( fieldType[index][key] == 'select' ){
+
+            var _uid = 'mgval_' + ajaxData[index][('uid:' + key )];
+            if( String(custom_types[ _uid ]) != '' && typeof custom_types[ _uid ] != 'undefined' )
+            {
+              var label = key.slice(7);
+              form = form + "<div class='form-group touching'>";
+              form = form + "<div class='col-sm-3 col-xs-12'><label class='control-label text-right-sm text-center-xs'>"+label+"</label></div>";
+              form = form + "<div class='col-sm-6 col-xs-12 mg_field_to_edit_div'>";
+              form = form + "<div style='display:none' class='mg_edit_old_value'>" + ajaxData[index][key] + "</div>";
+       
+              var _values = custom_types[ _uid ].split(";");
+              var i = 0; var isthere = false;
+
+               form = form + "<select class='mg_field_to_edit' id='"+key+"' >";
+               for( _key in _values ){
+                 if( i < (_values.length-1) )
+                 {
+                   var pair = _values[_key].split("::");
+                   if( ajaxData[index][key] == pair[0] ){
+                      form = form + "<option value='" + pair[0] + "' selected>" + pair[1] + "</option>";
+                      isthere = true;
+                   }else{
+                      form = form + "<option value='" + pair[0] + "'>" + pair[1] + "</option>";
+                   }
+                 }
+                 i++;
+               }
+
+               if( isthere ){
+                   form = form + "<option value='' >Please Choose One</option>";
+               }else{
+                   form = form + "<option value='' selected>Please Choose One</option>";
+               }
+
+               form = form + "</select>";  
+
+               form = form + "</div>";
+               form = form + "<div class='col-sm-3 hidden-xs'></div></div>";
+            }
+
+          }else if( fieldType[index][key] == 'radio' ){
+
+            var _uid = 'mgval_' + ajaxData[index][('uid:' + key )];
+            if( String(custom_types[ _uid ]) != '' && typeof custom_types[ _uid ] != 'undefined' )
+            {
+              var label = key.slice(7);
+              form = form + "<div class='form-group touching'>";
+              form = form + "<div class='col-sm-3 col-xs-12'><label class='control-label text-right-sm text-center-xs'>"+label+"</label></div>";
+              form = form + "<div class='col-sm-6 col-xs-12 mg_field_to_edit_div'>";
+              form = form + "<div style='display:none' class='mg_edit_old_value'>" + ajaxData[index][key] + "</div>";
+           
+              var _values = custom_types[ _uid ].split(";");
+              var i = 0; var isthere = false;
+              for( _key in _values ){
+                if( i < (_values.length-1) )
+                {
+                  var pair = _values[_key].split("::");
+                  form = form + "<div class='radio'><label for='"+key+i+"'>";
+                  if( ajaxData[index][key] == pair[0] ){
+                     form = form + "<input name='"+key+"' id='"+key+i+"' value='" + pair[0] + "' checked='checked' type='radio' class='mg_field_to_edit'>";
+                     isthere = true;
+                  }else{
+                     form = form + "<input name='"+key+"' id='"+key+i+"' value='" + pair[0] + "' type='radio' class='mg_field_to_edit'>";
+                  }
+                  form = form + pair[1];
+                  form = form + "</label></div>";      
+                }
+                i++;
+              }
+              form = form + "<div class='radio'><label for='"+key+i+"' >";
+              if( isthere ){
+                   form = form + "<input name='"+key+"' id='"+key+i+"' value='' type='radio' class='mg_field_to_edit'>";
+              }else{
+                   form = form + "<input name='"+key+"' id='"+key+i+"' value='' checked='checked' type='radio' class='mg_field_to_edit'>";
+              }
+              form = form + 'none';
+              form = form + "</label></div>";  
+
+              form = form + "</div>";
+              form = form + "<div class='col-sm-3 hidden-xs'></div></div>";
+            }
+
+          }else if( fieldType[index][key] == 'multiplecheckbox' ){
+
+            var _uid = 'mgval_' + ajaxData[index][('uid:' + key )];
+            if( String(custom_types[ _uid ]) != '' && typeof custom_types[ _uid ] != 'undefined' )
+            {
+              var label = key.slice(7);
+               form = form + "<div class='form-group touching'>";
+               form = form + "<div class='col-sm-3 col-xs-12'><label class='control-label text-right-sm text-center-xs'>"+label+"</label></div>";
+               form = form + "<div class='col-sm-6 col-xs-12 mg_field_to_edit_div'>";
+               form = form + "<div style='display:none' class='mg_edit_old_value'>" + ajaxData[index][key] + "</div>";
+
+               var _values = custom_types[ _uid ].split(";");
+               var i = 0; var isthere = false;
+               for( _key in _values ){
+                 if( i < (_values.length-1) )
+                 {
+                    var pair = _values[_key].split("::");
+                    form = form + "<div class='checkbox'><label for='"+key+i+"' >";
+                    if( ajaxData[index][key].search( pair[0] ) >= 0 && ajaxData[index][key] != '' )
+                    {
+                      form = form + "<input id='"+key+i+"' name='"+key+"' value='" + pair[0] + "' checked='checked' type='checkbox' class='mg_field_to_edit'>";
+                      isthere = true;
+                    }else{
+                      form = form + "<input id='"+key+i+"' name='"+key+"' value='" + pair[0] + "' type='checkbox'  class='mg_field_to_edit'>";
+                    }
+                    form = form + pair[1];
+                    form = form + "</label></div>";      
+                 }
+                 i++;
+              }
+
+              form = form + "</label></div>"; 
+ 
+              form = form + "</div>";
+              form = form + "<!--<div class='col-sm-3 hidden-xs'></div></div>-->";
+            }
 
           }else {
             form = form + "<div class='form-group touching'>";
@@ -841,7 +1017,7 @@ if( removeList.length > 0 )
    jQuery( form ).prependTo( jQuery(this).find('.modal-body') );
 
 ///////////////////////////////////////////////////////////////////////////
-//                      CEK COUNTRY                                     //
+//                      CHECK COUNTRY                                    //
 ///////////////////////////////////////////////////////////////////////////
 
    if( jQuery( "#miglad_country" ).val() == 'Canada' ){
@@ -959,7 +1135,6 @@ if( removeList.length > 0 )
 //                              UPDATE                                  //
 ///////////////////////////////////////////////////////////////////////////
  jQuery('#mg_update_record').click(function(){
-
     var data_for_update = get_data_for_update();
 
     //alert( JSON.stringify(data_for_update) );
@@ -974,7 +1149,6 @@ if( removeList.length > 0 )
         jQuery('#mg-edit-record-close').trigger('click');
       }
     }); //ajax 
-
  });
 
 
@@ -994,20 +1168,85 @@ function get_data_for_update(){
 
      var ajaxIdx = jQuery('#edit_record_ajaxindex').val();
 
-     if( val != old_val ){
           ////////// PUSH IT ////////////////////////
-          if( new_val.attr('type') == 'checkbox' || new_val.attr('type') == 'radio' ){
-            //if( old_val != '' ){  
-              if( new_val.is(":checked") ){ val = 'yes'; }else{ val = 'no'; }
-            //}
+          if( new_val.attr('type') == 'checkbox' )
+          {
+                val = ""; 
+                if( new_val.length > 1 )
+                {
+                    id  = jQuery(this).find('.mg_field_to_edit:first').attr('name');
+                    new_val.each(function(){
+                        if( jQuery(this).is(':checked') )
+                        {
+                            val = val + jQuery(this).val() + ", ";
+                            id  = jQuery(this).attr('name');
+                        }
+                    });
+                }else{
+                  id  = new_val.attr('name');
+                  if( new_val.is(':checked') ){
+                     val     = new_val.val();
+                  }else{
+                     val     = 'no';
+                  }
+                }
+
+            //if( val != old_val ){
+                val = new String( val );
+                var re = /[q]/g;
+                var cval = val.replace(re, "'");
+                //var cval =  val.replace( "[q]", "'" );
+                ajaxData[ajaxIdx][id] = cval;
+             
+                var e = [ id , val ];  
+                updatedFields.push(e);
+             //}
+            
+          }else if ( new_val.attr('type') == 'radio' )
+          {  
+              id  = new_val.attr('name');             
+              val = jQuery(this).find("input[name='"+id+"']:checked").val();
+
+            if( val != old_val ){
+                val = new String( val );
+                var re = /[q]/g;
+                var cval = val.replace(re, "'");
+                //var cval =  val.replace( "[q]", "'" );
+                ajaxData[ajaxIdx][id] = cval;
+             
+                var e = [ id , val ];  
+                updatedFields.push(e);
+             }
+
+          }else if( new_val.attr('type') == 'text' ){
+            if( val != old_val ){
+                val = new String( val );
+                var re = /[q]/g;
+                var cval = val.replace(re, "'");
+                //var cval =  val.replace( "[q]", "'" );
+                ajaxData[ajaxIdx][id] = cval;
+             
+                var e = [ id , val ];  
+                updatedFields.push(e);
+             }
+
+          }else
+          {
+              val = jQuery( ('#' + id) ).val();
+
+            if( val != old_val ){
+                val = new String( val );
+                var re = /[q]/g;
+                var cval = val.replace(re, "'");
+                //var cval =  val.replace( "[q]", "'" );
+                ajaxData[ajaxIdx][id] = cval;
+             
+                var e = [ id , val ];  
+                updatedFields.push(e);
+             }
+
           }
 
-           var cval =  val.replace( "[q]", "'" );
-           ajaxData[ajaxIdx][id] = cval;
-             
-           var e = [ id , val ];  
-           updatedFields.push(e);
-     }  
 
   });
   return updatedFields;
@@ -1015,7 +1254,7 @@ function get_data_for_update(){
 
 function get_provinces(id, current){
 
-   /////// cek country ///////////////////////////////////////////
+   /////// check country ///////////////////////////////////////////
    var province_selection = "";   
         province_selection = province_selection + "<div class='form-group touching' id='"+id+"_div'>";
         province_selection = province_selection + "<div class='col-sm-3 col-xs-12'><label class='control-label text-right-sm text-center-xs'>Province</label></div>";

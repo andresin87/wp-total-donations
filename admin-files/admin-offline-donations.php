@@ -54,26 +54,26 @@ function menu_page() {
    echo "<div id='row-upper'>";
    //echo "<form onSubmit='ajaxAdd(); return false;'>";
    echo "<div class='form-horizontal'> <div class='form-group touching'><div class='col-sm-3 col-xs-12'>";
-   echo "<label class='control-label  text-right-sm text-center-xs required'>". __( "First Name: ", "migla-donation")."</label></div>";
-   echo "<div class='col-sm-6 col-xs-12'><input name='miglad_firstname' type='text' class='required' /></div><div class='col-sm-3 hidden-xs'></div></div>";
+   echo "<label for='miglad_firstname' class='control-label  text-right-sm text-center-xs required'>". __( "First Name: ", "migla-donation")."</label></div>";
+   echo "<div class='col-sm-6 col-xs-12'><input name='miglad_firstname' ID='miglad_firstname' type='text' class='required' /></div><div class='col-sm-3 hidden-xs'></div></div>";
 
-   echo "<div class='form-group  touching'><div class='col-sm-3 col-xs-12'><label class='control-label  text-right-sm text-center-xs required'>". __( "Last Name: ", "migla-donation")."</label></div>";
-   echo "<div class='col-sm-6 col-xs-12'><input name='miglad_lastname' type='text' class='required' /></div><div class='col-sm-3 hidden-xs'></div></div>";
+   echo "<div class='form-group  touching'><div class='col-sm-3 col-xs-12'><label for='miglad_lastname' class='control-label  text-right-sm text-center-xs required'>". __( "Last Name: ", "migla-donation")."</label></div>";
+   echo "<div class='col-sm-6 col-xs-12'><input name='miglad_lastname' id='miglad_lastname' type='text' class='required' /></div><div class='col-sm-3 hidden-xs'></div></div>";
 
-   echo "<div class='form-group  touching'><div class='col-sm-3 col-xs-12'><label  class='control-label  text-right-sm text-center-xs required'>". __( "Amount: ", "migla-donation")."</label></div>";
-   echo "<div class='col-sm-6 col-xs-12'><input class='form-control miglaNAD2 required' type='text' name='miglad_amount' size='10' value='' placeholder='' /></div><div class='col-sm-3 hidden-xs'></div></div>";
+   echo "<div class='form-group  touching'><div class='col-sm-3 col-xs-12'><label for='miglad_amount' class='control-label  text-right-sm text-center-xs required'>". __( "Amount: ", "migla-donation")."</label></div>";
+   echo "<div class='col-sm-6 col-xs-12'><input class='form-control miglaNAD2 required' type='text' name='miglad_amount' id='miglad_amount' size='10' value='' placeholder='' /></div><div class='col-sm-3 hidden-xs'></div></div>";
 
-  echo "<div class='form-group  touching'><div class='col-sm-3 col-xs-12'><label  class='control-label  text-right-sm text-center-xs required' for='miglad_date'>". __( "Date: ", "migla-donation")."</label></div>";
+  echo "<div class='form-group  touching'><div class='col-sm-3 col-xs-12'><label class='control-label  text-right-sm text-center-xs required' for='miglad_date'>". __( "Date: ", "migla-donation")."</label></div>";
    echo "<div class='col-sm-6 col-xs-12'><span class='input-group input-group-control mb-md'><span class='input-group-addon btn-success dashicons dashicons-calendar '></span><input class='miglaOffdate form-control custom_date required' type='text' name='miglad_date' size='10' value='' placeholder='' id='miglad_date'  /></span></div><div class='col-sm-3 hidden-xs'></div></div>";
 
    echo "<div class='form-group  touching'><div class='col-sm-3 col-xs-12'><label class='control-label  text-right-sm text-center-xs' for='miglad_orgname'>". __( "Organization: ", "migla-donation")."</label></div>";
-   echo "<div class='col-sm-6 col-xs-12'><input name='miglad_orgname' type='text'  size='10' value='' />";
+   echo "<div class='col-sm-6 col-xs-12'><input id='miglad_orgname' name='miglad_orgname' type='text'  size='10' value='' />";
    echo "</span></div><div class='col-sm-3 hidden-xs'></div></div>";
 
-   echo "<div class='form-group  touching'><div class='col-sm-3 col-xs-12'><label class='control-label  text-right-sm text-center-xs'>Anonymous: </label></div>";
-   echo "<div class='col-sm-6 col-xs-12'><span class='checkbox-inline'><label><input type='checkbox' value='' name='miglad_anonymous'><small>". __( "Check this if you want the name to be hidden from the public. It will still be shown in the reports", "migla-donation")."</small></label></span></div><div class='col-sm-3 hidden-xs'></div></div>";
+   echo "<div class='form-group  touching'><div class='col-sm-3 col-xs-12'><label for='miglad_anonymous' class='control-label  text-right-sm text-center-xs'>Anonymous: </label></div>";
+   echo "<div class='col-sm-6 col-xs-12'><span class='checkbox-inline'><label><input id='miglad_anonymous' type='checkbox' value='' name='miglad_anonymous'><small>". __( "Check this if you want the name to be hidden from the public. It will still be shown in the reports", "migla-donation")."</small></label></span></div><div class='col-sm-3 hidden-xs'></div></div>";
 
-   echo "<div class='form-group  touching'><div class='col-sm-3 col-xs-12'><label id='mcampaign'  class='control-label  text-right-sm text-center-xs ' >". __( "Campaign : ", "migla-donation")."</label></div><div class='col-sm-6 col-xs-12'>";
+   echo "<div class='form-group  touching'><div class='col-sm-3 col-xs-12'><label id='mcampaign'  for='miglad_campaign' class='control-label text-right-sm text-center-xs ' >". __( "Campaign: ", "migla-donation")."</label></div><div class='col-sm-6 col-xs-12'>";
 
   $label = get_option('migla_undesignLabel');
   if( $label == false ){ add_option('migla_undesignLabel', 'undesignated'); }
@@ -95,13 +95,13 @@ if( empty($fund_array[0]) ){}else{
 }	   
 	    echo "</select></div><div class='col-sm-3 hidden-xs'></div></div>"; 
 	    
-   echo "<div class='form-group  touching'><div class='col-sm-3 col-xs-12'><label class='control-label  text-right-sm text-center-xs'>". __( "Address: ", "migla-donation")."</label></div>";
-   echo "<div class='col-sm-6 col-xs-12'><input name='miglad_address' type='textarea' /></div><div class='col-sm-3 hidden-xs'></div></div>";
+   echo "<div class='form-group  touching'><div class='col-sm-3 col-xs-12'><label for='miglad_address' class='control-label   text-right-sm text-center-xs'>". __( "Address: ", "migla-donation")."</label></div>";
+   echo "<div class='col-sm-6 col-xs-12'><input name='miglad_address' id='miglad_address' type='textarea' /></div><div class='col-sm-3 hidden-xs'></div></div>";
 
-   echo "<div class='form-group  touching'><div class='col-sm-3 col-xs-12'><label class='control-label  text-right-sm text-center-xs '>". __( "Email: ", "migla-donation")."</label></div>";
-   echo "<div class='col-sm-6 col-xs-12'><input placeholder='' name='miglad_email' type='text' class='form-control'></div><div class='col-sm-3 hidden-xs'></div></div>";
+   echo "<div class='form-group  touching'><div class='col-sm-3 col-xs-12'><label for='miglad_email' class='control-label  text-right-sm text-center-xs '>". __( "Email: ", "migla-donation")."</label></div>";
+   echo "<div class='col-sm-6 col-xs-12'><input placeholder='' id='miglad_email' name='miglad_email' type='text' class='form-control'></div><div class='col-sm-3 hidden-xs'></div></div>";
 
-   echo "<div class='form-group  touching'><div class='col-sm-3 col-xs-12'><label class='control-label  text-right-sm text-center-xs '>". __( "Country: ", "migla-donation")."</label></div><div class='col-sm-6 col-xs-12'>";
+   echo "<div class='form-group  touching'><div class='col-sm-3 col-xs-12'><label for='country' class='control-label  text-right-sm text-center-xs '>". __( "Country: ", "migla-donation")."</label></div><div class='col-sm-6 col-xs-12'>";
    $countries = get_option( 'migla_world_countries' );
    echo "<select id='country' name='miglad_country'> "; 
 	   
@@ -116,9 +116,9 @@ if( empty($fund_array[0]) ){}else{
    echo "</select></div><div class='col-sm-3 hidden-xs'></div></div>"; 		
  
 
-   echo "<div id='state' style='display:none'><div class='form-group  touching'><div class='col-sm-3 col-xs-12'> <label class='control-label  text-right-sm text-center-xs' >". __( "States ", "migla-donation")."</label></div>";
+   echo "<div id='state' style='display:none'><div class='form-group  touching'><div class='col-sm-3 col-xs-12'> <label for='miglad_state' class='control-label  text-right-sm text-center-xs' >". __( "States ", "migla-donation")."</label></div>";
 	   $states = get_option( 'migla_US_states' );
-   echo "<div class='col-sm-6 col-xs-12'><select id='' name='miglad_state'>"; 
+   echo "<div class='col-sm-6 col-xs-12'><select id='miglad_state' name='miglad_state'>"; 
    echo "<option value=''>".__("Please pick one", "migla-donation")."</option>";
 	   foreach ( $states as $key => $value ) 
 	   { 
@@ -127,9 +127,9 @@ if( empty($fund_array[0]) ){}else{
    echo "</select></div><div class='col-sm-3 hidden-xs'></div></div>"; 		
   echo "</div>";	   
 	   
-   echo "<div id='province' style='display:none'><div class='form-group  touching'><div class='col-sm-3 col-xs-12'><label class='control-label  text-right-sm text-center-xs'>". __( "Provinces", "migla-donation")."</label></div>";
+   echo "<div id='province' style='display:none'><div class='form-group  touching'><div class='col-sm-3 col-xs-12'><label for='miglad_province' class='control-label  text-right-sm text-center-xs'>". __( "Provinces", "migla-donation")."</label></div>";
 	   $states = get_option( 'migla_Canada_provinces' );
-   echo "<div class='col-sm-6 col-xs-12'><select id='' name='miglad_province'>"; 
+   echo "<div class='col-sm-6 col-xs-12'><select id='miglad_province' name='miglad_province'>"; 
    echo "<option value=''>".__("Please pick one", "migla-donation")."</option>";
 	   foreach ( $states as $key => $value ) 
 	   { 
@@ -139,18 +139,18 @@ if( empty($fund_array[0]) ){}else{
    echo "</div>";	 
 
   // echo "<span>";
-   echo "<div class='form-group  touching'><div class='col-sm-3 col-xs-12'><label class='control-label  text-right-sm text-center-xs' for='miglaOffzip'>". __( "Postal Code: ", "migla-donation")."</label></div>";
-   echo "<div class='col-sm-6 col-xs-12'><input name='miglad_zip' type='text'  size='10' value='' />";
+   echo "<div class='form-group  touching'><div class='col-sm-3 col-xs-12'><label for='miglad_zip' class='control-label  text-right-sm text-center-xs' for='miglaOffzip'>". __( "Postal Code: ", "migla-donation")."</label></div>";
+   echo "<div class='col-sm-6 col-xs-12'><input name='miglad_zip' id='miglad_zip' type='text'  size='10' value='' />";
    echo "</span></div><div class='col-sm-3 hidden-xs'></div></div>";
 
 
    echo "<div class='form-group  touching'><div class='col-sm-3 col-xs-12'><label class='control-label  text-right-sm text-center-xs' for='miglad_employer'>". __( "Employer: ", "migla-donation")."</label></div>";
-   echo "<div class='col-sm-6 col-xs-12'><input name='miglad_employer' type='text'  size='10' value='' />";
+   echo "<div class='col-sm-6 col-xs-12'><input name='miglad_employer' type='text' id='miglad_employer' size='10' value='' />";
    echo "</span></div><div class='col-sm-3 hidden-xs'></div></div>";
 
 
    echo "<div class='form-group  touching'><div class='col-sm-3 col-xs-12'><label class='control-label  text-right-sm text-center-xs' for='miglad_occupation'>". __( "Occupation: ", "migla-donation")."</label></div>";
-   echo "<div class='col-sm-6 col-xs-12'><input name='miglad_occupation' type='text'  size='10' value='' />";
+   echo "<div class='col-sm-6 col-xs-12'><input name='miglad_occupation' id='miglad_occupation' type='text'  size='10' value='' />";
    echo "</span></div><div class='col-sm-3 hidden-xs'></div></div>";
 
 

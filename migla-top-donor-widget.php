@@ -52,14 +52,21 @@ class totaldonations_topdonor_widget extends WP_Widget {
 		extract( $args );
 
 
-  if( wp_script_is( 'mg_progress-bar', 'registered' ) ){
-  }else{
-    wp_register_style( 'mg_progress-bar', plugins_url( 'totaldonations/css/mg_progress-bar.css' , dirname(__FILE__)) );
-  }
 
-  if( wp_script_is( 'mg_progress-bar', 'queue' ) ){}else{
-    wp_enqueue_style( 'mg_progress-bar' );
-  }
+       if( wp_script_is( 'migla-front-end-css', 'registered' ) && wp_script_is( 'migla-front-end-css', 'queue' )  )
+       {
+       }else{
+          //make sure it only load once
+          if( wp_script_is( 'mg_progress-bar', 'registered' ) ){
+          }else{
+              wp_register_style( 'mg_progress-bar', plugins_url( 'totaldonations/css/mg_progress-bar.css' , dirname(__FILE__)) );
+          }
+
+          if( wp_script_is( 'mg_progress-bar', 'queue' ) ){
+          }else{
+              wp_enqueue_style( 'mg_progress-bar' );
+          }          
+       }
 
 		/* Our variables from the widget settings. */
         $title = apply_filters('widget_title', $instance['title'] );
@@ -70,7 +77,7 @@ class totaldonations_topdonor_widget extends WP_Widget {
         $btnclass = $instance['btnclass'];
 	$btnstyle = $instance['btnstyle'];
         $btntext = $instance['btntext'];
-
+        $urlLink     = $instance['urlLink'];
 
      /* Before widget (defined by themes). */
      echo $before_widget;
@@ -114,11 +121,9 @@ class totaldonations_topdonor_widget extends WP_Widget {
 
      $class2 = "";
      if( $btnstyle == 'GreyButton' ){  $class2 = ' mg-btn-grey';	  }	  
-
-      $url = get_option( 'migla_form_url' );
 	
       if( $link=='on' ){
-        echo "<form action='".$url."' method='post'>";
+        echo "<form action='".esc_url($urlLink)."' method='post'>";
           if( $btntext == '' ){ $btntext = 'Donate'; }
         echo "<input type='hidden' name='thanks' value='widget_bar' />";
         echo "<button class='migla_donate_now ".$btnclass . $class2."'>".$btntext."</button>";
@@ -149,15 +154,16 @@ jQuery('.migla_donate_now').click(function(e) {
 		$instance = $old_instance;
 
 		/* Strip tags for title and name to remove HTML (important for text inputs). */
-   $instance['title'] = strip_tags( $new_instance['title'] );
-   $instance['numberOfRecords'] = strip_tags( $new_instance['numberOfRecords'] );	
-   $instance['filter'] = strip_tags( $new_instance['filter'] );	
-   $instance['donationType'] = strip_tags( $new_instance['donationType'] );
+          $instance['title'] = strip_tags( $new_instance['title'] );
+          $instance['numberOfRecords'] = strip_tags( $new_instance['numberOfRecords'] );	
+          $instance['filter'] = strip_tags( $new_instance['filter'] );	
+          $instance['donationType'] = strip_tags( $new_instance['donationType'] );
 
-        $instance['link'] =  strip_tags( $new_instance['link'] ) ;		
-        $instance['btnclass'] =  strip_tags( $new_instance['btnclass'] );
-        $instance['btnstyle'] =  strip_tags( $new_instance['btnstyle'] );
-        $instance['btntext'] = $new_instance['btntext'];
+          $instance['link'] =  strip_tags( $new_instance['link'] ) ;		
+          $instance['btnclass'] =  strip_tags( $new_instance['btnclass'] );
+          $instance['btnstyle'] =  strip_tags( $new_instance['btnstyle'] );
+          $instance['btntext'] = $new_instance['btntext'];
+          $instance['urlLink']     = strip_tags( $new_instance['urlLink'] );
 
           return $instance;
 	}
@@ -175,25 +181,25 @@ jQuery('.migla_donate_now').click(function(e) {
 
       // Check values 
       if( $instance) { 
-        $title = esc_attr($instance['title']); 
+        $title           = esc_attr($instance['title']); 
         $numberOfRecords = $instance['numberOfRecords'];
-        $filter = $instance['filter'];
-        $donationType = $instance['donationType'];
-       $link = esc_attr($instance['link']); 
-       $btnclass = esc_attr($instance['btnclass']); 
-       $btnstyle = esc_attr($instance['btnstyle']); 
-       $btntext = esc_attr($instance['btntext']);
-
+        $filter          = $instance['filter'];
+        $donationType    = $instance['donationType'];
+        $link            = esc_attr($instance['link']); 
+        $btnclass        = esc_attr($instance['btnclass']); 
+        $btnstyle        = esc_attr($instance['btnstyle']); 
+        $btntext         = esc_attr($instance['btntext']);
+        $urlLink         = $instance['urlLink'];
       } else { 
-        $title = "Total Donations Donor Wall"; 
-        $numberOfRecords = 10;
-        $filter = 'recent';
-        $donationType = 'online';
-       $link = ''; 
-       $btnclass = ''; 
-       $btnstyle = ''; 
-       $btntext = '';
-
+          $title      = "Total Donations Donor Wall"; 
+          $numberOfRecords = 10;
+          $filter     = 'recent';
+          $donationType = 'online';
+          $link       = ''; 
+          $btnclass   = ''; 
+          $btnstyle   = ''; 
+          $btntext    = '';
+          $urlLink    = get_option('migla_form_url');
       } 
 ?>
 
@@ -251,6 +257,11 @@ jQuery('.migla_donate_now').click(function(e) {
 	 <?php } ?>
 	 </select>
 	</p>
+
+        <p>
+        <div><label>Url that link will open:</label>
+        <input input='text' class='widefat' type='text' id="<?php echo $this->get_field_id( 'urlLink' ); ?>" name="<?php echo $this->get_field_name( 'urlLink' ); ?>" value="<?php echo $urlLink;  ?>"></input></div> 
+        </p>
 
       <p>
 	<label for="<?php echo $this->get_field_id( 'btntext' ); ?>"><?php _e('Text of button:', 'localization') ?></label>

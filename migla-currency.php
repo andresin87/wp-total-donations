@@ -22,7 +22,7 @@ function migla_get_currency_array(){
 		'RUB' => array( 'code' =>'RUB' , 'name' => 'Russian Ruble', 'symbol' => 'RUB', 'faicon' => ''),
 		'SGD' => array( 'code' =>'SGD' , 'name' => 'Singapore Dollar', 'symbol' => '$', 'faicon' => ''),
 		'SEK' => array( 'code' =>'SEK' , 'name' => 'Swedish Krona', 'symbol' => 'kr', 'faicon' => ''),
-		'CHF' => array( 'code' =>'CHF' , 'name' => 'Swiss Franc', 'symbol' => '&#8355;', 'faicon' => ''),
+		'CHF' => array( 'code' =>'CHF' , 'name' => 'Swiss Franc', 'symbol' => 'CHF', 'faicon' => ''),
 		'TWD' => array( 'code' =>'TWD' , 'name' => 'Taiwan New Dollar', 'symbol' => '$', 'faicon' => ''),
 		'THB' => array( 'code' =>'THB' , 'name' => 'Thai Baht', 'symbol' => '&#3647;', 'faicon' => ''),
 		'TRY' => array( 'code' =>'TRY' , 'name' => 'Turkish Lira', 'symbol' => '&#8378;', 'faicon' => 'fa-try'),

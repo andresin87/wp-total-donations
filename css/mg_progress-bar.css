@@ -1,5 +1,8 @@
 /****************** Progress Bar ****************************/
 
+p.progress-bar-text {
+    margin-bottom: 1.5em !important;
+}
 
 /***** IE animate **********/
 .progress.active .bar {
@@ -26,6 +29,7 @@
     overflow: hidden;
     text-indent: -9999px;
     height: 18px;
+    padding: 0 !important;
 }
 
 .progress-bar {
@@ -157,7 +161,7 @@ color: #8b7f7f !important;
   border-bottom: solid 1px #9f9f9f !important;
   background: #ffffff !important;
   background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #dfdfdf), color-stop(1, #ffffff)) !important;
-  background: -ms-linear-gradient(bottom, #dfdfdf, #ffffff);
+  background: -ms-linear-gradient(bottom, #dfdfdf, #ffffff) !important;
   background: -moz-linear-gradient(center bottom, #dfdfdf 0%, #ffffff 100%) !important;
   background: -o-linear-gradient(#ffffff, #dfdfdf) !important;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#dfdfdf', GradientType=0) !important;
@@ -211,18 +215,20 @@ input[type="submit"]:active {
 
 /*********** Top Donors and Recent Donor Widget *************/
 
+.sidebar div.mg_widgetAmount {
+    margin-bottom: 0;
+}
+
 .mg_widgetDate {
-     color: #bebebe;
-     font-size: 75%;
+     font-size: 80%;
      float: right !important;
 }
 
 .mg_widgetAmount {
-    font-weight: bold;
+     font-weight: bold;
 }
 
-.mg_widgetName {
-
+span.mg_widgetName {
 }
 
 .mg_latest_donations_widget, .mg_top_donors_widget {
@@ -237,18 +243,21 @@ input[type="submit"]:active {
     float: right;
 }
 
-.totaldonations_topdonor_widget ol.mg_top_donors_widget li  {
+ol.mg_top_donors_widget li  {
     list-style: inside none number;
+    margin-left:0px;
+}
+
+.mg_top_donors_widget li {
+    list-style-position: inside;
 }
 
 div.mg_widgetName {
     margin: 0 0 1.5em;
 }
 
-ol.mg_top_donors_widget {
-    margin: 15px 0 0 !important;
-    padding: 0 !important;
-}
+
+
 
 .mg_donations_wrap {
     margin: 15px 0 0 !important;
@@ -291,7 +300,10 @@ div.mg_top_donors_name div.mg_recent_donors_name{
 }
 
 ol.mg_top_donors_widget {
-    margin: 15px 0 25px !important;
+    margin-bottom: 25px !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-top: 15px !important;
     padding: 0 !important;
 }
 
@@ -301,6 +313,10 @@ ol.mg_top_donors_widget {
 
 .mg_widgetPanel {
     text-align: left;
+}
+
+form button.migla_donate_now {
+    margin-bottom: 15px;
 }
 
 .mg_top_donors > li {

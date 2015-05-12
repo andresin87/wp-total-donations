@@ -45,6 +45,8 @@ function menu_page() {
 
   
  echo "<div class='wrap'><div class='container-fluid'>";
+
+ echo "<div id='mg_list'></div>";
    
     echo "<h2 class='migla'>". __( "Online Donations","migla-donation")."</h2>";
 
@@ -74,6 +76,7 @@ echo "<section class='panel'>
    echo "<th class=''>". __("Amount","migla-donation")."</th>";
    echo "<th class=''>". __("Country","migla-donation")."</th>";
    echo "<th class=''>". __("Transaction","migla-donation")."</th>";
+   //echo "<th>". __("Status","migla-donation")."</th>";
    echo "<th></th>";
    echo "</tr>"; 
    echo "</thead>";
@@ -99,6 +102,7 @@ echo "<section class='panel'>
    echo "<th id='f7'>". __("Country","migla-donation")."</th>";
    echo "<th id='f8'>". __("Transaction","migla-donation")."</th>";
    echo "<th id='f9'></th>";
+  // echo "<th id='f10'>". __("Status","migla-donation")."</th>";
    
    echo "</tr></tfoot>";
    echo "</table>";
@@ -254,7 +258,7 @@ echo "</div>";
 
 echo "<div id='mg-warningconfirm1' style='display:none'>".__("You will delete these records:","migla-donation")."</div>";
 echo "<div id='mg-warningconfirm2' style='display:none'>".__("Do you want to proceed?","migla-donation")."</div>";
-echo "<div id='mg-warningconfirm3' style='display:none'>".__("A donation you wish to delete is reoccurring. Deleting this record will <strong>NOT</strong> stop those donations. Reoccurring donations must be stopped by PayPal","migla-donation")."</div>";
+echo "<div id='mg-warningconfirm3' style='display:none'>".__("A donation you wish to delete is reoccurring. Deleting this record will <strong>NOT</strong> stop those donations. Reoccurring donations must be stopped by PayPal or Stripe","migla-donation")."</div>";
 
  echo "<div class='modal fade' id='mg-edit-record' tabindex='-1' role='dialog' aria-labelledby='mgModalEditLabel' aria-hidden='true'>
   <div class='modal-dialog'>

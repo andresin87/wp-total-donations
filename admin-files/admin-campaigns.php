@@ -49,21 +49,21 @@ class migla_campaign_menu_class {
 		echo "<div class='row'>";
 		echo "<div class='col-sm-12'>";
 
-		echo "<section class='panel'><header class='panel-heading'><div class='panel-actions'><a class='fa fa-caret-down ' data-toggle='collapse' data-parent='.panel' href='#collapseOne' aria-expanded='true'></a></div><h2 class='panel-title'><div class='dashicons dashicons-plus'></div>";
+		echo "<section class='panel'><header class='panel-heading'><div class='panel-actions'><a class='fa fa-caret-down ' data-toggle='collapse' data-parent='.panel' href='#collapseOne' aria-expanded='true'></a></div><h2 class='panel-title'><div class='dashicons dashicons-plus'></div>". __('Add a Campaign', 'migla-donation'). "";
 		__("Add New Campaigns","migla-donation");
 		echo "</h2></header>";
 		echo "<div class='panel-body collapse in' id='collapseOne'>";
 		//echo "<input type='hidden' name='migla_donation_fund_nonce' id='migla_donation_fund_nonce' value='" . esc_attr( $fund_nonce ) . "' />";	
 		
-		echo "<div class='row'><div class='col-sm-3'><label class='miglaCampaignNameLabel  control-label  text-right-sm text-center-xs'>". __('Campaign Name', 'migla-donation');
+		echo "<div class='row'><div class='col-sm-3'><label for='mName' class='miglaCampaignNameLabel  control-label  text-right-sm text-center-xs'>". __('Campaign Name', 'migla-donation');
 		echo "</label></div><div class='col-sm-6 col-xs-12'><span class='input-group input-group-control'><span class='input-group-addon '><i class='fa fa-medkit  fa-fw'></i>";
                 echo "</span><input type='text' id='mName' placeholder='Name' class='form-control' /></span></div><div class='col-sm-3 hidden-xs'></div>";
                 echo "<div class='col-sm-12 col-xs-12'><div class='help-control-center'>". __('Enter the name of the Campaign (e.g. Bulid a School)','migla-donation') ."</div></div></div>";
 		
-		echo "<div class='row'><div class='col-sm-3'><label class='miglaCampaignTargetLabel control-label  text-right-sm text-center-xs'>". __('Donation Target','migla-donation') ;
+		echo "<div class='row'><div class='col-sm-3'><label for='mAmount'  class='miglaCampaignTargetLabel control-label  text-right-sm text-center-xs'>". __('Donation Target','migla-donation') ;
 		echo "</label></div><div class='col-sm-6 col-xs-12'><span class='input-group input-group-control'><span class='input-group-addon'>";
      echo $this->getSymbol();
-echo "</i></span><input type='text' class='form-control miglaNAD' placeholder='0' id='mAmount'></span></div><div class='col-sm-3 hidden-xs'></div><div class='col-sm-12 col-xs-12'><div  class='help-control-center'>". __("No currency symbol or decimal place. Leave blank if you don't want the progress bar.","migla-donation") . "</div></div></div>";
+echo "</i></span><input type='text' class='form-control miglaNAD' placeholder='0' id='mAmount'></span></div><div class='col-sm-3 hidden-xs'></div><div class='col-sm-12 col-xs-12'><div  class='help-control-center'>". __("No currency symbol. Leave blank if you don't want the progress bar.","migla-donation") . "</div></div></div>";
 		
 		echo "<p><button id='miglaAddCampaign' class='btn btn-info pbutton miglaAddCampaign' value='save'><i class='fa fa-fw fa-save'></i>". __(" save","migla-donation")."</button></p>";
 		echo "<div></section><br></div>";

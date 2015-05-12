@@ -14,8 +14,51 @@ function getRidForbidden(){
  });
 }
 
-jQuery(document).ready(
-function() {
+var tab_bgcolor; var tab_border;
+
+jQuery(document).ready( function() {
+
+
+//This is for tab yeah
+  tab_bgcolor = jQuery('.mg_tab-content').find('.mg_active').css('background-color');
+  tab_border  = jQuery('.mg_tab-content').find('.mg_active').css('border');
+  tabcolor1  = jQuery('#_sectionPaypal').css('background-color');
+  tabcolor2  = jQuery('#_sectionStripe').css('background-color');
+
+  jQuery('.mg_nav li').click(function(){
+
+      var id = jQuery(this).find('a').attr('id');
+      var $this = jQuery(this);
+     // alert(id);
+
+          jQuery('.mg_nav li').each(function(){
+               jQuery(this).removeClass('mg_active');
+          });
+
+      if( id == '_sectionStripe' ){
+          $this.addClass('mg_active');
+          jQuery('.mg_tab-content').find('#sectionStripe').addClass('mg_active');
+          jQuery('.mg_tab-content').find('#sectionStripe').css('background-color', tab_bgcolor);
+          jQuery('.mg_tab-content').find('#sectionStripe').css('border', tab_border);
+
+          jQuery('#_sectionStripe').css('background-color', tabcolor1);
+          jQuery('#_sectionPaypal').css('background-color', tabcolor2);
+
+          jQuery('.mg_tab-content').find('#sectionPaypal').removeClass('mg_active');
+      }else{
+          $this.addClass('mg_active');
+          jQuery('.mg_tab-content').find('#sectionStripe').removeClass('mg_active');
+
+          jQuery('.mg_tab-content').find('#sectionPaypal').addClass('mg_active');
+          jQuery('.mg_tab-content').find('#sectionPaypal').css('background-color', tab_bgcolor);
+          jQuery('.mg_tab-content').find('#sectionPaypal').css('border', tab_border);
+
+          jQuery('#_sectionStripe').css('background-color', tabcolor2);
+          jQuery('#_sectionPaypal').css('background-color', tabcolor1);
+      }
+  });
+
+
 
 getRidForbidden();
 
@@ -232,110 +275,22 @@ jQuery('.mtoggle').click(function(){
    p.find('.migla-panel-body').toggle();
 });
 
-   jQuery('.miglaNAN').on('keydown', function (e){
 
-       // Allow: backspace, delete, tab, escape, enter and .
-        if (jQuery.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
-             // Allow: Ctrl+A
-            (e.keyCode == 65 && e.ctrlKey === true) || 
-             // Allow: home, end, left, right
-            (e.keyCode >= 35 && e.keyCode <= 39)) 
-        {
-                 // let it happen, don't do anything
-                 return;
-        }
-        // Ensure that it is a number and stop the keypress
-        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-            e.preventDefault();
-        }
+  //Detect credit card number
+  jQuery('#mg_stripe_card_number').on('keyup', function (e){ 
+     var key = jQuery('#mg_stripe_card_number').val();
+     var firstDigit = key.slice( 0, 1 );
+         
+      if( firstDigit == "3") {
+          jQuery('#mg_cc_number').html('travel/entertainment cards');
+      }else if( firstDigit == "4"){
+          jQuery('#mg_cc_number').html('Visa');
+      }else if( firstDigit == "5" ){
+          jQuery('#mg_cc_number').html('Master Card');
+      }else if( firstDigit == "6" ){
+          jQuery('#mg_cc_number').html('Discover Card');
+      }
   });
 
-var separator = String(jQuery('#miglaDecimalSep').val());
-var separatorCode = separator.charCodeAt(0);
-if( separatorCode == 46 ){ separatorCode = 190; }
-//alert( separator  + " " + separatorCode);
-
-   jQuery('.miglaNAD').on('keydown', function (e){
-     var key = String.fromCharCode(e.which);
-     var str = jQuery(this).val(); 
-
-if( jQuery('#miglaShowDecimal').val() == 'yes' ){
-       // Allow: backspace, delete, tab, escape, enter and .
-        if (jQuery.inArray(e.keyCode, [ separatorCode , 8, 9, 27, 13 ]) !== -1 ||
-             // Allow: Ctrl+A
-            (e.keyCode == 65 && e.ctrlKey === true) || 
-             // Allow: home, end, left, right
-            (e.keyCode >= 35 && e.keyCode <= 39)) 
-        {
-                 // let it happen, don't do anything
-             if( e.keyCode == separatorCode && str.indexOf(separator) >= 0  )
-             { 
-               e.preventDefault(); 
-             }
-                 return;
-        }
-        // Ensure that it is a number and stop the keypress
-        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-            e.preventDefault();
-        }
-}else{
-       // Allow: backspace, delete, tab, escape, enter and .
-        if (jQuery.inArray(e.keyCode, [ 8, 9, 27, 13]) !== -1 ||
-             // Allow: Ctrl+A
-            (e.keyCode == 65 && e.ctrlKey === true) || 
-             // Allow: home, end, left, right
-            (e.keyCode >= 35 && e.keyCode <= 39)) 
-        {
-                 // let it happen, don't do anything
-                 return;
-        }
-        // Ensure that it is a number and stop the keypress
-        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-            e.preventDefault();
-        }
-}
-  });
-
-   jQuery('.miglaNQ').on('keydown', function (e){
-     var key = String.fromCharCode(e.which);
-     var str = jQuery(this).val(); 
-
-       // Allow: backspace, delete, tab, escape, enter and .
-        if (jQuery.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
-             // Allow: Ctrl+A
-            (e.keyCode == 65 && e.ctrlKey === true) || 
-             // Allow: home, end, left, right
-            (e.keyCode >= 35 && e.keyCode <= 39)) 
-        {
-
-                 return;
-        }
-        // Stop it when user press ' " / \
-        if ( (e.keyCode==222) || (e.keyCode==220) || (e.keyCode==191)) 
-        {
-            e.preventDefault();
-        }
-  });
-
- //only accept numbers and aplhabet
-  jQuery('.miglaNumAZ').on('keydown', function (e){
-//alert('hi');
-       // Allow: backspace, delete, tab, escape, enter and .
-        if (jQuery.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
-             // Allow: Ctrl+A
-            (e.keyCode == 65 && e.ctrlKey === true) || 
-             // Allow: home, end, left, right
-            (e.keyCode >= 35 && e.keyCode <= 39)) 
-        {
-                 // let it happen, don't do anything
-                 return;
-        }
-        // Ensure that it is a number and stop the keypress
-        if ( (e.keyCode==222) || (e.keyCode==220) || (e.keyCode==191) 
-         ) 
-        {
-            e.preventDefault();
-        }
-  });
 
 })

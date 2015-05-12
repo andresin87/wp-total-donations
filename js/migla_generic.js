@@ -25,13 +25,7 @@ function canceledLoser( me , oldtext)
 } 
 
 
-jQuery(document).ready(
-function() { 
-
-jQuery('.fa-caret-down').click( function(){
-  var p = jQuery(this).closest('section');
-  //p.find('.panel-body').slideToggle( 'slow' );
-});
+jQuery(document).ready(function() { 
 
    jQuery('.miglaNAN').on('keydown', function (e){
        // Allow: backspace, delete, tab, escape, enter and .

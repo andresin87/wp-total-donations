@@ -50,6 +50,12 @@ margin-left:15px !important;
     cursor:not-allowed !important;
 }
 
+input.disabled, input:disabled, select.disabled, select:disabled, textarea.disabled, textarea:disabled {
+    background: none repeat scroll 0 0 #fff !important;
+    color: rgba(51, 51, 51, 0.5) !important;
+    cursor: not-allowed !important;
+}
+
 .removeColumn {
     cursor: pointer;
     text-align: center;
@@ -110,6 +116,10 @@ margin-left:15px !important;
     margin-bottom: 8px;
 }
 
+.modal-body .form-horizontal {
+    border: medium none;
+}
+
 .modal-body td {
     font-weight: bold;
     padding-right: 10px;
@@ -141,6 +151,17 @@ margin-left:15px !important;
     margin: 5px 0 20px;
 }
 
+.error > h2 {
+    font-size: 18px;
+    line-height: 1.1em;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.container-fluid div.updated {
+    border-color: #99ccad !important;
+}
+
 /****************** Campaign ****************************/
 
 .editField {
@@ -148,12 +169,22 @@ margin-left:15px !important;
     border: medium none;
 }
 
+.wrap ul li ul li div {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+}
+
+.wrap ul li ul li div.rowsavenewcomer {
+    padding: 0 !important;
+}
+
 .migla-donation_page_migla_donation_campaigns_page .ui-state-default {
     cursor: auto !important;
 }
 
+ /* Fix for other plugin conflicts */
 .total-donations_page_migla_donation_campaigns_page .ui-state-default, .total-donations_page_migla_donation_campaigns_page .ui-widget-content .ui-state-default, .total-donations_page_migla_donation_campaigns_page .panel-body .ui-widget-header .ui-state-default {
-    background: none repeat scroll 0 0 rgba(0, 0, 0, 0) !important;
+       background: none repeat scroll 0 0 rgba(0, 0, 0, 0) !important;
     border: medium none;
 }
 
@@ -167,9 +198,25 @@ margin-left:15px !important;
 
 /****************** Sortable Lists ****************************/
 
-.removeField {
-    background: none repeat scroll 0 0 white;
+.removeField, .removePlanField {
+    background: none;
     border: medium none;
+}
+
+ul.containers.ui-sortable li.title.formheader.ui-sortable-handle div.row {
+    min-height: 20px !important;
+}
+
+.mg_recurring_row li.title.formheader {
+    margin-bottom: 10px;
+}
+
+.mg_reoccuring-field .rows {
+    min-height: 45px;
+}
+
+.mg_recurring_row li input, .mg_recurring_row li select {
+    background: white;
 }
 
 ul.rows {
@@ -190,11 +237,11 @@ li.ui-state-default.formfield:first-child {
 }
 
 .addfield-button-control {
-text-align:right;
+    text-align:right;
 }
 
 .bar-icon-styling {
-   color: #e7e7e7;
+    color: #e7e7e7;
     font-size: 18px !important;
     margin-left: 15px;
     margin-top: 6px;
@@ -203,7 +250,7 @@ text-align:right;
 
 .clabel.col-sm-1 label.control-label:before {
     color: #ddd !important;
-    content: "";
+    content: "\f0c9";
     font-family: fontawesome;
     font-size: 18px;
     font-style: normal;
@@ -212,6 +259,27 @@ text-align:right;
     position: absolute;
     text-decoration: inherit;
     top: 7px;
+}
+
+a.edit_select_value {
+    cursor: pointer;
+    min-height: 34px;
+   display:inline-block;
+    padding: 6px 0;
+    text-decoration: none;
+}
+
+.edit_select_value::before {
+    color: #aaa;
+    content: "\f0ad";
+    font-family: fontawesome;
+    padding-right:5px;
+}
+
+div#mg_custom_list {
+    border-top: 1px solid #ddd;
+    margin-top: 20px;
+    padding-top: 20px;
 }
 
 .groupbutton {
@@ -245,7 +313,10 @@ text-align:right;
     margin-bottom:30px;
     padding-bottom:30px;
     border: 3px solid #c0c0c0;
+}
 
+.ui-sortable .ui-sortable-helper {
+opacity: 0.95;
 }
 
 .ui-sortable .ui-sortable .ui-sortable-helper {
@@ -336,6 +407,9 @@ li.title.formheader {
     border: 1px dashed #909090 !important; 
 }
 
+#mg_plan_list_info {
+    text-align: center;
+}
 
 /****** date picker *************/
 
@@ -507,6 +581,8 @@ h1 {
     margin: 1.67em 5px;
 }
 
+/*************** Hand Logo ***************/
+
 h2.migla {
     background: url("../images/hand_icon-grey.png") no-repeat scroll 0 4px / 3.4% auto rgba(0, 0, 0, 0);
     font-size: 1.8em;
@@ -516,25 +592,6 @@ h2.migla {
     padding-left: 15px;
     padding-top: 0;
     text-shadow: 1px 1px #ffffff;
-}
-
-/****************** Background Watermark ****************************/
-
-.background {
-    background: url("http://calmar-webmedia.com/testing-area/wp-plugin-dev/wp-content/plugins/migla_donation/css/../images/hand_icon-grey.png") no-repeat scroll bottom left / 100% auto rgba(0, 0, 0, 0);
-    height: 205px;
-    opacity: 0.2;
-    position: absolute;
-    width: 200px;
-    z-index: 2;
-}
-
-.logo-watermark {
-    background: url("../images/hand_icon-grey.png") no-repeat scroll 0 0 / 80% auto rgba(0, 0, 0, 0);
-    float: right !important;
-    height: 80px;
-    margin: 20px 60px;
-    width: 80px;
 }
 
 /****************** Outer Panel Styling ****************************/
@@ -550,42 +607,6 @@ h2.migla {
     position: relative;
     width: 100%;
 }
-
-/* pure CSS version of page curl 
-.panel {
-    background-color: rgba(0, 0, 0, 0);
-    background-image: linear-gradient(135deg, transparent 0px, #ffffff 0px), linear-gradient(225deg, transparent 0px, #ffffff 0px), linear-gradient(315deg, transparent 15px, #ffffff 0px), linear-gradient(45deg, transparent 0px, #ffffff 0px);
-} 
-
-.panel {
-    background-attachment: scroll, scroll, scroll, scroll;
-    background-clip: border-box;
-    background-color: rgba(0, 0, 0, 0);
-    background-image: linear-gradient(135deg, transparent 0px, #ffffff 0px), linear-gradient(225deg, transparent 0px, #ffffff 0px), linear-gradient(315deg, transparent 15px, #ffffff 0px), linear-gradient(45deg, transparent 0px, #ffffff 0px); 
-    background-origin: padding-box;
-    background-position: left top, right top, right bottom, left bottom;
-    background-repeat: no-repeat;
-    background-size: 52% 52%;
-    box-shadow: none;
-    margin-bottom: 20px;
-    position: relative;
-    width: 100%;
-}
-
-.panel-body:before {
-    background: none repeat scroll 0 0 transparent;
-    border-color: rgba(103, 120, 120, 0.11) transparent transparent #dbe3e9;
-    border-style: solid;
-    border-width: 20px 20px 0 0;
-    bottom: 0;
-    content: "";
-    display: block;
-    position: absolute;
-    right: 0;
-    width: 0;
-}
-
-*/
 
 .panel-subtitle {
     color: #808697;
@@ -684,6 +705,10 @@ h2.migla {
     padding: 20px 0;
 }
 
+.panel-body .row .col-sm-12 .row {
+    min-height: 50px;
+}
+
 .panel-group .panel-heading {
     box-shadow: 0 1px 1px white inset;
 }
@@ -740,7 +765,7 @@ label {
 }
 
 
-/* Help Controls */
+/******** Help Controls **************/
 
 .help-control {
     color: #999;
@@ -764,6 +789,14 @@ label {
     text-align: center;
 }
 
+.help-control-left {
+    color: #999;
+    display: block;
+    font-size: 10px;
+    margin:13px 0 0;
+    text-align: left;
+}
+
 .help-control:before {
     content: "* (";
 }
@@ -772,7 +805,7 @@ label {
     content: ")";
 }
 
-/* Check Box Controls */
+/********* Check Box Controls ***************/
 
 .checkbox.border-check-control:first-child {
     margin-top: 0;
@@ -809,7 +842,13 @@ margin: 0 5px 0 0;
 
 /* End Controls */
 
+.mg_recurring_row .btn.btn-default.spinner-up, .mg_recurring_row .btn.btn-default.spinner-down {
+    background: none repeat scroll 0 0 #f9f9f9;
+}
 
+.mg_recurring_row.containers.ui-sortable {
+    margin-bottom: 20px;
+}
 
 /****************** TABS ****************************/
 
@@ -849,6 +888,94 @@ margin: 0 5px 0 0;
 
 .nav-tabs .fa {
     color: #d7d7d7;
+}
+
+/****************** Pills ********************************/
+
+.nav.nav-pills {
+    margin-bottom: 30px;
+    padding: 0;
+}
+
+ul.nav.nav-pills > li > a {
+    border-radius: 0;
+    cursor: pointer;
+    display: inline-block;
+    font-family: open sans;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857;
+    margin-bottom: 0;
+    text-align: center;
+    text-shadow: 1px 1px #ffffff;
+    transition: background-color 0.3s ease-out 0s;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+.nav.nav-pills a {
+    color: #33353f;
+}
+.nav > li > a {
+    padding: 10px 15px;
+    position: relative;
+}
+
+ul.nav.nav-pills > li.active > a, ul.nav.nav-pills > li.active > a:hover, ul.nav.nav-pills > li.active > a:focus {
+    background-color: inherit;
+    border-bottom: 1px solid #91989c;
+    color: #33353f !important;
+}
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+    color: #fff;
+}
+ul.nav.nav-pills > li > a {
+    border-radius: 0;
+    cursor: pointer;
+    display: inline-block;
+    font-family: open sans;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857;
+    margin-bottom: 0;
+    text-align: center;
+    text-shadow: 1px 1px #ffffff;
+    transition: background-color 0.3s ease-out 0s;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+.nav > li > a:hover, .nav > li > a:focus {
+    text-decoration: none;
+}
+.nav > li > a {
+    padding: 10px 15px;
+    position: relative;
+}
+
+.tab-content.nav-pills-tabs {
+    background-color: inherit;
+    border-image: none;
+    border-style: none;
+    box-shadow: none;
+    padding: 0;
+}
+
+ul.nav.nav-pills > li > a:hover, ul.nav.nav-pills > li.active > a:hover {
+    background-color: #f8f8f8;
+    border-radius: 8px;
+}
+
+ul.nav.nav-pills li.active .fa {
+    color: #d7d7d7;
+transition: background-color 0.9s ease-out 01s;
+}
+
+ul.nav.nav-pills > li > a:hover .fa {
+ color: #d7d7d7;
+}
+
+ul.nav.nav-pills a:focus {
+box-shadow:none;
 }
 
 /****************** Dashboard ****************************/
@@ -988,7 +1115,7 @@ margin: 0 5px 0 0;
 background: none repeat scroll 0 0 #2CB07D;
 }
 
-/****************** Timeline News ****************************/
+/****************** Timeline Donations ****************************/
 
 .ibox-content {
     clear: both;
@@ -1046,6 +1173,7 @@ background: none repeat scroll 0 0 #2CB07D;
     text-align: center;
     top: 0;
     width: 30px;
+    font-size:11px;
 }
 
 .donorname {
@@ -1141,6 +1269,10 @@ table.dataTable tfoot th, table.dataTable tfoot td {
     width: 85%;
 }
 
+#miglaStripePlanTable_wrapper input[type="text"] {
+    width: 85%;
+}
+
 .panel-heading-icon {
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 55px;
@@ -1172,14 +1304,14 @@ table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.
 
 .det > td {
     padding: 25px 20px !important;
-background:none repeat scroll 0 0 #f1f1f1;
+    background:none repeat scroll 0 0 #f1f1f1;
 }
 
 .det tbody tr td {
     padding: 7px 20px !important;
 }
 
-/******* Table Date Range Picker */
+/******* Table Date Range Picker **************/
 
 .input-daterange.input-group.migla-date-range-picker {
     max-width: 280px !important;
@@ -1227,6 +1359,10 @@ span.input-group-addon.migla-to-date {
 
 .paginate_button.previous:hover, .paginate_button.next:hover {
     border: 1px solid #ddd !important;
+}
+
+#miglaReportTable_paginate span {
+    margin-left: 5px;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button {
@@ -1759,8 +1895,6 @@ html.dark .radio-primary input[type="radio"]:checked + label:after, .radio-prima
     position: relative;
 }
 
-
-
 /* pick a color form */
 
 #currentColor {
@@ -1797,8 +1931,6 @@ html.dark .radio-primary input[type="radio"]:checked + label:after, .radio-prima
 select {
     cursor: pointer;
 }
-
-
 
 input.color[type="text"] {
     width:100%;
@@ -1857,6 +1989,18 @@ input.miglaUpdateName[type="text"], input.miglaUpdateTarget[type="text"] {
 
 
 /****************** Dashicons & Font Awesome ****************************/ 
+
+#miglaReportTable td .fa-exclamation-triangle {
+    color: #d91e1e;
+    float: right;
+    padding: 2px 0;
+}
+
+#miglaReportTable td .fa-check-circle {
+    color: #808080;
+    float: right;
+     padding: 2px 0;
+}
 
 .fa-fw {
     width: 28px;

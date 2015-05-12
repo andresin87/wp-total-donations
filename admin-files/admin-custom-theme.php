@@ -79,7 +79,7 @@ echo "<div id='collapseOne' class='panel-body collapse in'>";
 echo "<div class='row'>";
 
 echo "<input type='hidden' class='rgba_value' value='".$bgcolor2[0].",".$bgcolor2[1]."'>";
-		echo "<div class='col-sm-3  col-xs-12'><label class='control-label text-right-sm text-center-xs'>".__('Panel Background:','migla-donation')." </label></div><div class='col-sm-6 col-xs-12'>
+		echo "<div class='col-sm-3  col-xs-12'><label for='migla_backgroundcolor' class='control-label text-right-sm text-center-xs'>".__('Panel Background:','migla-donation')." </label></div><div class='col-sm-6 col-xs-12'>
 		 <span class='input-group'><span class='input-group-addon '><button id='currentColor' style='background-color:".$bgcolor2[0].";'></button></span><input type='text' class='form-control mg-color-field' data-opacity='".$bgcolor2[1]."' value='".$bgcolor2[0]."' id='migla_backgroundcolor'></span></div>";
 		
 		echo "<div class='col-sm-3 col-xs-12 text-left-sm text-center-xs'><button id='migla_2ndbgcolor' name='migla_2ndbgcolor' class='btn btn-info pbutton msave' value='save'><i class='fa fa-fw fa-save'></i>".__(" save","migla-donation")."</button></div>";
@@ -93,13 +93,13 @@ echo "<div class='row'>";
 
 echo "<input type='hidden' class='rgba_value' value='".$bgcborder[0].",".$bgcborder[1]."'>";
 
-echo "<div class='col-sm-3  col-xs-12'><label class='control-label text-right-sm text-center-xs'>".__("Panel Border","migla-donation")."</label></div><div class='col-sm-3 col-xs-12'>
+echo "<div class='col-sm-3  col-xs-12'><label for='migla_panelborder'  class='control-label text-right-sm text-center-xs'>".__("Panel Border","migla-donation")."</label></div><div class='col-sm-3 col-xs-12'>
 		
 		
 		 <span class='input-group'><span class='input-group-addon '><button style='background-color:".$bgcborder[0]."' id='currentColor'></button></span><input type='text' class='form-control mg-color-field' data-opacity='".$bgcborder[1]."' autocomplete='off' style='background-image: none;' value='".$bgcborder[0]."' id='migla_panelborder'></span></div>
 
 <div class='col-sm-1 col-xs-12'>
-  <label class='control-label  text-right-sm text-center-xs'>".__("Width","migla-donation")." </label>
+  <label for='migla_widthpanelborder' class='control-label  text-right-sm text-center-xs'>".__("Width","migla-donation")." </label>
 		
 		</div>
 
@@ -108,8 +108,8 @@ echo "<div class='col-sm-3  col-xs-12'><label class='control-label text-right-sm
 														<div class='input-group' style=''>";
 												
 			
-echo "<input type='text' class='spinner-input form-control' maxlength='2' value='".$bgcborder[2]."' >
-     <div class='spinner-buttons input-group-btn'>
+echo "<input id='migla_widthpanelborder' type='text' class='spinner-input form-control' maxlength='2' value='".$bgcborder[2]."' >
+     <div  class='spinner-buttons input-group-btn'>
     <button type='button' class='btn btn-default spinner-up'>
     <i class='fa fa-angle-up'></i>
 																</button>
@@ -140,7 +140,7 @@ echo "<div class='row'>";
 
 echo "<input type='hidden' class='rgba_value' value='".$levelcolor."'>";
 
-		echo "<div class='col-sm-3  col-xs-12'><label class='control-label text-right-sm text-center-xs'>
+		echo "<div class='col-sm-3  col-xs-12'><label for='migla_bglevelcolor' class='control-label text-right-sm text-center-xs'>
 ".__("Giving Level Background:","migla-donation")."</label></div><div class='col-sm-6 col-xs-12'>
 		 <span class='input-group'><span class='input-group-addon '><button id='currentColor' style='background-color:". $levelcolor.";'></button></span><input type='text' class='form-control mg-color-field' data-opacity='' value='". $levelcolor."' id='migla_bglevelcolor' name='migla_bglevelcolor'></span></div>";
 		
@@ -168,13 +168,13 @@ echo "<div class='row'>";
 
 echo "<input type='hidden' class='rgba_value' value='".$borderlevelcolor ."'>";
 
-echo "<div class='col-sm-3  col-xs-12'><label class='control-label text-right-sm text-center-xs'>".__("Giving Level Border","migla-donation")."</label></div><div class='col-sm-3 col-xs-12'>
+echo "<div class='col-sm-3  col-xs-12'><label for='migla_borderlevelcolor' class='control-label text-right-sm text-center-xs'>".__("Giving Level Border","migla-donation")."</label></div><div class='col-sm-3 col-xs-12'>
 		
 		
 		 <span class='input-group'><span class='input-group-addon '><button style='background-color:".$borderlevelcolor ."' id='currentColor'></button></span><input type='text' class='form-control mg-color-field' data-opacity='' autocomplete='off' style='background-image: none;' value='".$borderlevelcolor."' id='migla_borderlevelcolor' name='migla_borderlevelcolor'></span></div>
 
 <div class='col-sm-1 col-xs-12'>
-  <label class='control-label  text-right-sm text-center-xs'>".__("Width","migla-donation")."</label>
+  <label for='migla_Widthborderlevelcolor' class='control-label  text-right-sm text-center-xs'>".__("Width","migla-donation")."</label>
 		
 		</div>
 
@@ -183,7 +183,7 @@ echo "<div class='col-sm-3  col-xs-12'><label class='control-label text-right-sm
 														<div class='input-group' style=''>";
 												
 			
-echo "<input type='text' class='spinner-input form-control' maxlength='2' value='".$borderlevel."' >
+echo "<input type='text' id='migla_Widthborderlevelcolor' class='spinner-input form-control' maxlength='2' value='".$borderlevel."' >
      <div class='spinner-buttons input-group-btn'>
     <button type='button' class='btn btn-default spinner-up'>
     <i class='fa fa-angle-up'></i>
@@ -214,7 +214,7 @@ $progbarInfo = get_option('migla_progbar_info');
 
 		// BEFORE First Row for text
 		echo "<div class='row'>";
-		echo "<div class='col-sm-3  col-xs-12'><label class='control-label text-right-sm text-center-xs'>". __("Progress Bar info:","migla-donation")."</label></div><div class='col-sm-6 col-xs-12'>
+		echo "<div class='col-sm-3  col-xs-12'><label for='migla_progressbar_text' class='control-label text-right-sm text-center-xs'>". __("Progress Bar info:","migla-donation")."</label></div><div class='col-sm-6 col-xs-12'>
 		<input type='textarea' id='migla_progressbar_text' class='form-control' value='".$progbarInfo."' cols='50' rows='2'></div>";
 		echo "<div class='col-sm-3 col-xs-12 text-left-sm text-center-xs'><button id='migla_progressbar_info' name='migla_progressbar_info' class='btn btn-info pbutton' value='save'><i class='fa fa-fw fa-save'></i> 
 ".__(" save","migla-donation")."</button></div>";
@@ -231,11 +231,11 @@ echo"<div class='row '>
   
   <div class='form-group touching'>
   
-  <div class='col-sm-3  col-xs-12'><label class='control-label text-right-sm text-center-xs'>
+  <div class='col-sm-3  col-xs-12'><label for='mg_WBRtop-left' class='control-label text-right-sm text-center-xs'>
 ".__("  Well Border Radius:","migla-donation")."</label></div>
 
   <div class='col-sm-1'>
-  <label class='control-label  text-right-sm text-center-xs'>
+  <label for='mg_WBRtop-left' class='control-label  text-right-sm text-center-xs'>
 ".__("top-left","migla-donation")."</label>
 		
 		</div>
@@ -244,7 +244,7 @@ echo"<div class='row '>
 <div class='col-sm-2 col-xs-12 text-right-sm text-center-xs'>
    <div data-plugin-spinner='' data-plugin-options='{ &quot;value&quot;:0, &quot;min&quot;: 0, &quot;max&quot;: 10 }'>
 														<div class='input-group' style=''>
-<input type='text' class='spinner-input form-control' maxlength='2' name='topleft' value='".$borderRadius[0]."' id='migla_radiustopleft'>
+<input id='mg_WBRtop-left' type='text' class='spinner-input form-control' maxlength='2' name='topleft' value='".$borderRadius[0]."' id='migla_radiustopleft'>
 															<div class='spinner-buttons input-group-btn'>
 																<button type='button' class='btn btn-default spinner-up'>
 																	<i class='fa fa-angle-up'></i>
@@ -268,7 +268,7 @@ echo"<div class='row '>
 
 
   <div class='col-sm-1'>
-  <label class='control-label  text-right-sm text-center-xs'>".__("top-right","migla-donation")."</label>
+  <label for='migla_WRBtopright' class='control-label  text-right-sm text-center-xs'>".__("top-right","migla-donation")."</label>
 		
 		</div>
 
@@ -276,7 +276,7 @@ echo"<div class='row '>
 <div class='col-sm-2 col-xs-12 text-right-sm text-center-xs'>
    <div data-plugin-spinner='' data-plugin-options='{ &quot;value&quot;:0, &quot;min&quot;: 0, &quot;max&quot;: 10 }'>
 														<div class='input-group' style=''>
-	<input type='text' class='spinner-input form-control' maxlength='2' name='topright'  value='".$borderRadius[1]."' id='migla_radiustopright'>
+	<input type='text' class='spinner-input form-control' maxlength='2' name='topright'  value='".$borderRadius[1]."' id='migla_WRBtopright'>
 															<div class='spinner-buttons input-group-btn'>
 																<button type='button' class='btn btn-default spinner-up'>
 																	<i class='fa fa-angle-up'></i>
@@ -315,7 +315,7 @@ echo"<div class='row '>
 
 
 <div class='col-sm-1'>
-  <label class='control-label  text-right-sm text-center-xs'>".__("bottom-left","migla-donation")."</label>
+  <label for='migla_radiusbottomleft' class='control-label  text-right-sm text-center-xs'>".__("bottom-left","migla-donation")."</label>
 		
 		</div>
 
@@ -347,7 +347,7 @@ echo"<div class='row '>
 
 
   <div class='col-sm-1'>
-  <label class='control-label  text-right-sm text-center-xs'>
+  <label for='migla_radiusbottomright' class='control-label  text-right-sm text-center-xs'>
 ".__("bottom-right","migla-donation")."</label>
 		
 		</div>
@@ -380,7 +380,7 @@ echo"<div class='row '>
 		
 		echo "<div class='row'>";
 echo "<input type='hidden' class='rgba_value' value='".$bar_color[0].",".$bar_color[1]."'>";
-		echo "<div class='col-sm-3  col-xs-12'><label class='control-label text-right-sm text-center-xs'>".__("Bar Color:","migla-donation")."</label></div><div class='col-sm-6 col-xs-12'>
+		echo "<div class='col-sm-3  col-xs-12'><label for='migla_barcolor' class='control-label text-right-sm text-center-xs'>".__("Bar Color:","migla-donation")."</label></div><div class='col-sm-6 col-xs-12'>
 <span class='input-group'><span class='input-group-addon'><button id='currentColor' style='background-color:".$bar_color[0].";'></button></span><input type='text' class='mg-color-field form-control' value='".$bar_color[0]."' data-opacity='".$bar_color[1]."' id='migla_barcolor'></span></div>";
 		echo "<div class='col-sm-3 col-xs-12 text-left-sm text-center-xs'><button id='migla_bar_color' name='migla_bar_color' class='btn btn-info pbutton msave' value='save'><i class='fa fa-fw fa-save'></i>".__(" save","migla-donation")."</button></div>";
 		echo "<span class='help-control col-sm-12 col-sm-pull-3  text-right-sm text-center-xs'>".__(" This is the color of the progress bar. ","migla-donation")." </span></div>";
@@ -389,7 +389,7 @@ echo "<input type='hidden' class='rgba_value' value='".$bar_color[0].",".$bar_co
 // Second Row
 		echo "<div class='row'>";
 echo "<input type='hidden' class='rgba_value' value='".$progressbar_bg[0].",".$progressbar_bg[1]."'>";
-		echo "<div class='col-sm-3  col-xs-12'><label class='control-label text-right-sm text-center-xs'>".__("Well Background:","migla-donation")."</label></div><div class='col-sm-6 col-xs-12'>
+		echo "<div class='col-sm-3  col-xs-12'><label for='migla_wellcolor' class='control-label text-right-sm text-center-xs'>".__("Well Background:","migla-donation")."</label></div><div class='col-sm-6 col-xs-12'>
 		<span class='input-group'><span class='input-group-addon'><button id='currentColor' style='background-color:".$progressbar_bg[0].";'></button></span><input type='text' class='mg-color-field form-control' value='".$progressbar_bg[0]."' data-opacity='".$progressbar_bg[1]."' id='migla_wellcolor'></span></div>";
 		echo "<div class='col-sm-3 col-xs-12 text-left-sm text-center-xs'><button id='migla_progressbar_background' name='migla_progressbar_background' class='btn btn-info pbutton msave' value='save'><i class='fa fa-fw fa-save'></i>".__(" save","migla-donation")."</button></div>";
 		echo "<span class='help-control col-sm-12 col-sm-pull-3  text-right-sm text-center-xs'>".__(" This is for the background inlay of the progress bar.","migla-donation")." </span></div>";
@@ -400,7 +400,7 @@ echo "<input type='hidden' class='rgba_value' value='".$progressbar_bg[0].",".$p
 echo "<input type='hidden' class='rgba_value' value='".$boxshadow_color[0].",".$boxshadow_color[1]."'>";
 echo "<div class='form-group touching'>
     
-    <div class='col-sm-3'><label class='control-label text-right-sm text-center-xs'>".__("Well Box Shadow:","migla-donation")."</label></div>
+    <div class='col-sm-3'><label for='migla_wellshadow' class='control-label text-right-sm text-center-xs'>".__("Well Box Shadow:","migla-donation")."</label></div>
   
   <div class='col-sm-6 col-xs-12'>
 <span class='input-group'><span class='input-group-addon'><button style='background-color:".$boxshadow_color[0].";' id='currentColor'></button></span><input type='text' value='".$boxshadow_color[0]."' class='mg-color-field form-control' data-opacity='".$boxshadow_color[1]."' autocomplete='off' style='background-image: none;' id='migla_wellshadow'></span></div> <br>
@@ -416,7 +416,7 @@ echo "<div class='form-group touching'>
   <div class='col-sm-3  col-xs-12'></div>
 
   <div class='col-sm-1'>
-  <label class='control-label  text-right-sm text-center-xs'>".__("h-shadow","migla-donation")."</label>
+  <label for='migla_hshadow' class='control-label  text-right-sm text-center-xs'>".__("h-shadow","migla-donation")."</label>
 		
 		</div>
 
@@ -447,7 +447,7 @@ echo "<div class='form-group touching'>
 
 
   <div class='col-sm-1'>
-  <label class='control-label  text-right-sm text-center-xs'>".__("v-shadow","migla-donation")."</label>
+  <label for='migla_vshadow' class='control-label  text-right-sm text-center-xs'>".__("v-shadow","migla-donation")."</label>
 		
 		</div>
 
@@ -493,7 +493,7 @@ echo "<div class='form-group touching'>
 
 
 <div class='col-sm-1'>
-  <label class='control-label  text-right-sm text-center-xs'>".__("Blur","migla-donation")."</label>
+  <label for='migla_blur' class='control-label  text-right-sm text-center-xs'>".__("Blur","migla-donation")."</label>
 		
 		</div>
 
@@ -524,7 +524,7 @@ echo "<div class='form-group touching'>
 
 
   <div class='col-sm-1'>
-  <label class='control-label  text-right-sm text-center-xs'>".__("Spread","migla-donation")."</label>
+  <label for='migla_spread' class='control-label  text-right-sm text-center-xs'>".__("Spread","migla-donation")."</label>
 		
 		</div>
 
@@ -590,7 +590,7 @@ echo "<div class='form-group touching'>
                 $check['yes'] = 'checked';
                 $check['no'] = '';
 		echo "<div class='row'>"; 
-		echo "<div class='col-sm-3  col-xs-12'><label class='control-label text-right-sm text-center-xs'>".__("Bar Styling and Effects:","migla-donation")."</label></div>";
+		echo "<div class='col-sm-3  col-xs-12'><label for='inlineCheckbox1' class='control-label text-right-sm text-center-xs'>".__("Bar Styling and Effects:","migla-donation")."</label></div>";
 		echo "<div class='col-sm-6 col-xs-12'>
 		
 		

@@ -48,42 +48,112 @@ return m;
 
 function convertDate( theDate ){
   var str; var m; var d; var y;
-  var field = theDate.split("/");
-  
+  var field = [ '01', '01', '2015' ];
+  if( theDate != '' ){
+    field = theDate.split('/');
+  }
   m = calMonth( field[0] );
 
- var dd = field[1].slice(-1); var something;
- if( dd == "1" ){ something = "st"; }
- else if( dd == "2" ){ something = "nd"; }
- else{ something = "th"; } 
+ var dd = field[1];
+ dd     = dd.slice(-1); 
+ var something;
+ if( dd == "1" ){ 
+    something = "st"; 
+ }else if( dd == "2" ){ 
+    something = "nd"; 
+ }else{ 
+   something = "th"; 
+ } 
 
  str = m + " " + String(Number(field[1])) +  something +", " + field[2];
 
 return str;
 }
 
-function recentItem( tdate ,time,name,amount,address, repeat, anon ){
+/**** Added April 2th ****/
+function clean_undefined( x ){
+  if( (typeof x === 'undefined') )
+  {
+    return '';
+  }else{
+    return x;
+  }
+}
 
-var timedif = 0;
-var cdate = convertDate( tdate );
+/*** Updated April 2th *****/
+function recentItem( tdate ,time,name,amount,address, city, state, province, country,repeat, anon)
+{
+  clean_undefined( name ); clean_undefined( amount ); clean_undefined( address ); clean_undefined( city ); 
+  clean_undefined( state ); clean_undefined( province ); clean_undefined( country );
 
-str = "";
-str = str + "<div class='timeline-item'><div class='row'><div class='col-xs-3 date'>";
-str = str + "<span class=''>" + jQuery("div#symbol").html() + "</span>";
-str = str + cdate;
-str = str + "<br> <small class='text-navy'>"+ time +"</small> </div>";
-str = str + "<div class='col-xs-7 content'><p class='m-b-xs'>";
-str = str + "<strong>"+ amount +"</strong>";
-str = str + "<span class='donorname'>" + name + "</span></p>";
-str = str + "<p>" + address ;
-str = str + "<br>Anonynmous : ";
-str = str + " " + anon;
-str = str + "<br>Repeating : ";
-str = str + " " + repeat;
-str = str + "</p>";
-str = str + "</div></div></div>";
+  var timedif = 0;
+  var cdate = convertDate( tdate );
 
-return str;
+  var province_state = state;
+  if( state == ''){ province_state = province; }
+
+  str = "";
+  str = str + "<div class='timeline-item'><div class='row'><div class='col-xs-3 date'>";
+  str = str + "<span class=''>" + jQuery("div#symbol").html() + "</span>";
+  str = str + cdate;
+  str = str + "<br> <small class='text-navy'>"+ time +"</small> </div>";
+  str = str + "<div class='col-xs-7 content'><p class='m-b-xs'>";
+  str = str + "<strong>"+ amount +"</strong>";
+  str = str + "<span class='donorname'>" + name + "</span></p>";
+
+  var address1 = '' ; var address2 = '' ; var address3 = ''; 
+
+  if( address == '' || typeof address == 'undefined' ){
+
+  }else{
+    address1 = address;
+  }
+
+  if(city == '' ){
+     address2 = province_state ;
+  }else if(city != '' && province_state != '' ){
+     address2 = city + ", " + province_state ;
+  }else{
+     address2 = city  ;
+  }
+
+  address3 = country;
+
+  str = str + "<p>";
+
+  var line1 ; var line2; var line3; 
+
+  if( address1 != ''  ){ 
+        line1 = address1; 
+  }
+
+  if( line1 != ' ' ){ 
+        line2 = "<br>" + address2; 
+  }else{
+        line2 = address2; 
+  }
+
+  if( line2 != '' ){ 
+        line3 = "<br>" + address3; 
+  }else{
+        line3 = address3; 
+  }
+
+  str = str + line1 + line2 + line3;
+
+  if( line1 != '' || line2 != '' || line3 != '' ){
+     str = str + "<br>";
+  }
+
+  str = str + "Anonynmous : ";
+  str = str + " <strong>" + anon + "</strong>";
+  str = str + "<br>Repeating : ";
+  str = str + " <strong>" + repeat + "</strong>";
+  str = str + "</p>";
+
+  str = str + "</div></div></div>";
+
+  return str;
 }
 
 function getcampaigns(n, c, p, s, t, a, type)
@@ -97,7 +167,7 @@ str = "";
 str = str + "<tr><td>" + n + "</td><td>"+lbl+"</td>";
 str = str + "<td><span class='label " + statclass + "'>" + stat + "</span></td>";
 if( Number(t) != 0 ){
-  str = str + "<td><div class='progress progress-sm progress-half-rounded m-none mt-xs light percentage'>";
+  str = str + "<td><div class='progress progress-sm progress-half-rounded m-none mt-xs light mg_percentage'>";
   str = str + "<div style='width: "+p+"%;' aria-valuemax='100' aria-valuemin='0' aria-valuenow='60' role='progressbar'";
   str = str + "class='progress-bar progress-bar-primary'>"+p+"%</div></div></td>";    			
 }else{
@@ -332,7 +402,7 @@ var d;
     jQuery.ajax({
      type : "post",
      url :  miglaAdminAjax.ajaxurl, 
-     data : {action: " miglaA_getGraphData" },
+     data : {action: "miglaA_getGraphData" },
 	success: function(msg) { 
        var d = JSON.parse(msg);
 	   on = d[0]; off = d[1];
@@ -394,7 +464,7 @@ if( jQuery('#placement').text() == 'before' ){ before = jQuery("div#symbol").htm
     jQuery.ajax({
      type : "post",
      url :  miglaAdminAjax.ajaxurl, 
-     data : {action: " miglaA_totalThisMonth" },
+     data : {action: "miglaA_totalThisMonth" },
 	success: function(msg) {
           d = JSON.parse( msg );
           //alert (d);
@@ -423,8 +493,13 @@ jQuery.ajax({
           var item = list[i];
           formatAmount = Number(item.amount);	  
          
-          t = t +  recentItem( item.date, item.time, item.name, 
-                  formatAmount.formatMoney(showDec,decimalSep,thousandSep), item.address, item.repeating, item.anonymous );          
+          t = t +  recentItem( 
+                  item.date, 
+                  item.time, 
+                  item.name, 
+                  formatAmount.formatMoney(showDec,decimalSep,thousandSep), 
+                  item.address, item.city, item.state, item.province, item.country, 
+                  item.repeating, item.anonymous);          
         }  
           jQuery(t).appendTo( jQuery(".ibox-content") );
       }else{

@@ -97,34 +97,20 @@ function remove(){
     del = jQuery(this).closest('li.formfield');   
   });
 
-jQuery('#mRemove').click(function(){
+  jQuery('#mRemove').click(function(){
      del.remove();
-    // if( countAll() > 0 ){
+  
       var list = getFormStructure();    
        jQuery.ajax({
         type : "post",
         url :  miglaAdminAjax.ajaxurl, 
         data : {action: "miglaA_save_campaign", values:list},
         success: function(msg) {  
-          //alert("Campaign is removed"); 
-          jQuery( ".close" ).trigger( "click" );
+            jQuery( ".close" ).trigger( "click" );
          }
        }) ; //ajax
-     //}else{
-	 /*
-       jQuery('ul.rows').appendTo('You do not have any campaigns yet');
-       jQuery.ajax({
-        type : "post",
-        url :  miglaAdminAjax.ajaxurl, 
-        data : {action: "miglaA_save_campaign", values:''},
-        success: function(msg) {  
-          //alert("Campaign is removed"); 
-          jQuery( ".close" ).trigger( "click" );
-         }
-       }) ; //ajax
-	   */
-    //} 
-});
+
+  });
 }
 
 ////////////KEYUP AND CHANGE/////////////////
@@ -133,15 +119,15 @@ function labelChanged(){
    var p = jQuery(this).closest('li.formfield');
 
    var val = jQuery(this).val().replace("'", "[q]");
-   p.find("input[name=label]").val( val );
+   p.find("input[name='label']").val( val );
   });
 }
 
 function targetChanged(){
-  jQuery('.targetChange').bind("keyup change", function(e) {
+  jQuery('.targetChange').bind("keyup", function(e) {
    var p = jQuery(this).closest('li.formfield');
 
-   p.find("input[name=target]").val( val );
+   p.find("input[name='target']").val( val );
   });
 }
 /////////////////////////////////////////////////

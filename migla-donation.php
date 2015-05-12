@@ -3,9 +3,9 @@
  Plugin Name: Total Donations
  Plugin URI: http://calmar-webmedia.com/testing-area/wp-plugin-dev
  Description: A plugin for accepting donations.
- Version: 1.4.5
+ Version: 1.5.0
  Author: Binti Brindamour and Astried Silvanie
- Author URI: http://calmar-webmedia.com/
+ Author URI: http://calmar-webmedia.com/testing-area/wp-plugin-dev
  License: Licensed
 */
 
@@ -16,10 +16,15 @@ require_once 'migla-geography.php';
 require_once 'migla-timezone.php';
 require_once 'migla-locale.php';
 require_once 'migla-icon-style.php';
+require_once 'migla-donation-ajax-functions.php';
 
 require_once 'migla-donation-widget.php';
 require_once 'migla-top-donor-widget.php';
 require_once 'migla-bar-widget.php';
+
+function mg_add_cors_http_header(){
+    header("Access-Control-Allow-Origin: *");
+}
 
 /** 1.CALL HOOK FILES that require on plugin main page ********************************************************/ 
  function migla_call_hooks(){
@@ -83,41 +88,81 @@ add_action( 'plugins_loaded', 'migla_donate_plugins_loaded' );
 
 
 function migla_admin_notice() {
-  $payment_method = get_option('migla_payment');
-  $business_email = get_option('migla_paypal_emails');
 
- $email1 = get_option( 'migla_replyTo' );
- $email2 = get_option( 'migla_replyToName' );
- $email3 = get_option( 'migla_notif_emails' );
-
+  $paypal_show = get_option( 'migla_show_paypal' );
   $msg = "";
   $ready = true;
 
-  if( $business_email == '' ){
-    $ready = false;  
-    $msg .= "<p>". __("Please fill in your paypal account details in Total Donations. It is required to begin accepting donations. Go to ","migla-donation");
-    $msg .= "<a class='' href='".get_admin_url()."admin.php?page=migla_donation_paypal_settings_page'>". __(" Paypal Settings","migla-donation"). "</a></p>";
+  if( $paypal_show == 'yes' )
+  {
+     $payment_method = get_option('migla_payment');
+     $business_email = get_option('migla_paypal_emails');
+
+     $email1 = get_option( 'migla_replyTo' );
+     $email2 = get_option( 'migla_replyToName' );
+     $email3 = get_option( 'migla_notif_emails' );
+
+     if( $business_email == '' ){
+       $ready = false;  
+       $msg .= "<p> ". __("Please fill in your PayPal and/or Stripe account details in Total Donations. It is required to begin accepting donations. Go to ","migla-donation");
+       $msg .= "<a class='' href='".get_admin_url()."admin.php?page=migla_donation_paypal_settings_page'>". __(" Paypal Settings","migla-donation"). "</a>";
+       $msg .= " ". __("or ","migla-donation");
+       $msg .= "<a class='' href='".get_admin_url()."admin.php?page=migla_stripe_setting_page'>". __(" Stripe Settings","migla-donation"). "</a></p>";
+     }
+
+     if( $payment_method == 'sandbox' ){
+       $ready = false;  
+       $msg .= "<p> ". __("Total Donations is currently in PayPal's sandbox mode. To switch to production mode, please go to ","migla-donation");
+       $msg .= "<a class='' href='".get_admin_url()."admin.php?page=migla_donation_paypal_settings_page'>". __(" Paypal Settings","migla-donation"). "</a>". __(" and change the payment method to Paypal","migla-donation"). "</p>";
+     }
+
+     if( $email1 == '' || $email2 == '' || $email3 == '' ){
+       $ready = false;  
+       $msg .= " ". __("Please fill in the notification email, your email name and your email address. Go to ","migla-donation");
+       $msg .= "<a class='' href='".get_admin_url()."admin.php?page=migla_donation_settings_page'>". __(" General Settings","migla-donation"). "</a></p>";
+    }
+
   }
 
-  if( $payment_method == 'sandbox' ){
-    $ready = false;  
-    $msg .= "<p>". __("Total Donations is currently in sandbox testing mode. To switch to production mode, please go to ","migla-donation");
-    $msg .= "<a class='' href='".get_admin_url()."admin.php?page=migla_donation_paypal_settings_page'>". __(" Paypal Settings","migla-donation"). "</a>". __(" and change the payment method to Paypal","migla-donation"). "</p>";
+  $stripe_show = get_option( 'migla_show_stripe' );
+  $stripe_mode = get_option( 'migla_stripemode' );
+
+   if( $stripe_show == 'yes' ){
+      if( $stripe_mode == 'test' ){
+         $stripe_testSK = get_option( 'migla_testSK' );
+         $stripe_testPK = get_option( 'migla_testPK' );
+
+       $msg .= "<p> ". __("Total Donations is currently in Stripe's test mode. To switch to Live mode, please go to ","migla-donation");
+       $msg .= "<a class='' href='".get_admin_url()."admin.php?page=migla_stripe_setting_page'>". __(" Stripe Settings","migla-donation"). "</a>". __(" and change the payment method to Live version","migla-donation"). "</p>";
+
+         if( (empty($stripe_testSK) || $stripe_testSK==false) || (empty($stripe_testPK) || $stripe_testPK==false) ){ 
+            $msg .= " ". __("Please fill in your Stripe keys. Go to ","migla-donation");
+            $msg .= "<a class='' href='".get_admin_url()."admin.php?page=migla_stripe_setting_page'>". __(" Stripe Settings","migla-donation"). "</a></p>";        
+         }
+      }else if( $stripe_mode == 'live' ){
+         $stripe_liveSK = get_option( 'migla_liveSK' );
+         $stripe_livePK = get_option( 'migla_livePK' );        
+         if( (empty($stripe_liveSK) || $stripe_liveSK==false) || (empty($stripe_livePK) || $stripe_livePK==false) ){ 
+            $msg .= " ". __("Please fill in the keys. Go to ","migla-donation");
+            $msg .= "<a class='' href='".get_admin_url()."admin.php?page=migla_stripe_setting_page'>". __(" Stripe Settings","migla-donation"). "</a></p>";        
+         }
+      }
+   }
+
+   if( $ready == false ){
+     echo "<div class='updated'><p><strong>". __("Welcome to Total Donations ","migla-donation")."</strong>";
+     echo $msg;
+     echo "</div>";
+  }else if( $paypal_show != 'yes' && $stripe_show != 'yes' ){
+     echo "<div class='updated'><p><strong>". __("Welcome to Total Donations ","migla-donation")."</strong>";
+     echo "Please choose at least one payment method. Either ";
+     echo "<a class='' href='".get_admin_url()."admin.php?page=migla_stripe_setting_page'>". __(" Stripe","migla-donation"). "</a>";
+     echo " or "; 
+     echo "<a class='' href='".get_admin_url()."admin.php?page=migla_donation_paypal_settings_page'>". __(" Paypal","migla-donation"). "</a>";   
+     echo "</div>";
   }
 
-  if( $email1 == '' || $email2 == '' || $email3 == '' ){
-    $ready = false;  
-    $msg .= "<p>". __("Please fill notification email, your email name and your email address. Go to ","migla-donation");
-    $msg .= "<a class='' href='".get_admin_url()."admin.php?page=migla_donation_settings_page'>". __(" Settings","migla-donation"). "</a></p>";
-  }
-
-  if( $ready == false ){
-   echo "<div class='error'><h2>". __("Warning ","migla-donation")."</h2>";
-   echo $msg;
-   echo "</div>";
- }
 }
-
 
 function migla_enqueue_style( $style ){
   if( wp_script_is( $style, 'queue' ) ){}else{
@@ -136,30 +181,18 @@ function migla_load_admin_scripts($hook) {
 	
 	//menu     : toplevel_page . [slug name]
 	//sub menu : [menu name on wp-admin] . _page_ . [slug name]
-	$migla_is_in_the_hook = ( $hook == ("toplevel_page_migla_donation_menu_page") || 
-          substr($hook, 0, 21) == 'total-donations_page_'
-	 );
+	$migla_is_in_the_hook = ( $hook == ("toplevel_page_migla_donation_menu_page") ||  substr($hook, 0, 21) == 'total-donations_page_'  );
 
 	if( $migla_is_in_the_hook ) 
 	{
 
-
-         /***************chek if it is cleaning day****************************/
-         /*
-         $cc = get_option('migla_daybeforeclean');
-         if( strcmp( date('d'), "10" ) == 0 && $cc == 'no' ){
-            //echo "<br>Cleaning....". date("Ymd");  
-            purgeTransient();
-            purgeTransient2();
-            update_option('migla_daybeforeclean', 'done');
-         }
-         if( strcmp( date('d'), "10" ) != 0 ){
-            update_option('migla_daybeforeclean', 'no');
-         }
-         */
-         /***************chek if it is cleaning day****************************/
-	  
         add_action( 'admin_notices', 'migla_admin_notice' );
+
+        $ajax_url = plugins_url( 'totaldonations/the-ajax-caller.php' , dirname(__FILE__));
+        if( get_option('migla_ajax_caller') == 'wp' )
+        {
+            $ajax_url =  admin_url( 'admin-ajax.php' );
+        }
 
         migla_enqueue_script('jquery');
         migla_enqueue_script('jquery-ui-core');
@@ -177,8 +210,8 @@ function migla_load_admin_scripts($hook) {
            wp_enqueue_script( 'migla-main-js', plugins_url( 'totaldonations/js/migla_main.js' , dirname(__FILE__)) );
       
            wp_localize_script( 'migla-main-js', 'miglaAdminAjax',
-		array( 'ajaxurl' => plugins_url( 'totaldonations/the-ajax-caller.php' , dirname(__FILE__)),
-                'nonce' => wp_create_nonce( 'migla-donate-nonce' )
+		array( 'ajaxurl' => $ajax_url,
+                       'nonce' => wp_create_nonce( 'migla-donate-nonce' )
  	   ));
         }
 
@@ -187,35 +220,34 @@ function migla_load_admin_scripts($hook) {
 
            wp_enqueue_script( 'migla-campaign-js', plugins_url( 'totaldonations/js/migla_campaign.js' , dirname(__FILE__)) );
 
- wp_localize_script( 'migla-campaign-js', 'miglaAdminAjax',
-		array( 'ajaxurl' => plugins_url( 'totaldonations/the-ajax-caller.php' , dirname(__FILE__)),
-                'nonce' => wp_create_nonce( 'migla-donate-nonce' )
+          wp_localize_script( 'migla-campaign-js', 'miglaAdminAjax',
+		array( 'ajaxurl' => $ajax_url,
+                        'nonce' => wp_create_nonce( 'migla-donate-nonce' )
  	   ));
         }
 
 	if( $hook == ('total-donations_page_migla_donation_help') ) 
         {
-
            wp_enqueue_script( 'migla-help-js', plugins_url( 'totaldonations/js/migla_help.js' , dirname(__FILE__)) );
 
- wp_localize_script( 'migla-help-js', 'miglaAdminAjax',
-		array( 'ajaxurl' => plugins_url( 'totaldonations/the-ajax-caller.php' , dirname(__FILE__)),
-                'nonce' => wp_create_nonce( 'migla-donate-nonce' )
- 	   ));
+              wp_localize_script( 'migla-help-js', 'miglaAdminAjax',
+		  array( 'ajaxurl' =>  admin_url( 'admin-ajax.php' ) , 
+                          'nonce' => wp_create_nonce( 'migla-donate-nonce' )
+ 	      ));
         }
 	  
 	if( $hook == ('total-donations_page_migla_donation_form_options_page') ) 
         {
 
            wp_enqueue_script('media-upload');
-          wp_enqueue_script('thickbox');
-          wp_enqueue_style('thickbox');
+           wp_enqueue_script('thickbox');
+           wp_enqueue_style('thickbox');
 
-          wp_enqueue_script( 'migla-form-settings-js',  plugins_url( 'totaldonations/js/migla_form_settings.js' , dirname(__FILE__)) , 
+           wp_enqueue_script( 'migla-form-settings-js',  plugins_url( 'totaldonations/js/migla_form_settings.js' , dirname(__FILE__)) , 
 		  array('jquery-ui-core','jquery-ui-sortable','jquery-ui-draggable','jquery-ui-droppable', 'jquery','media-upload','thickbox') );
 	   
            wp_localize_script( 'migla-form-settings-js', 'miglaAdminAjax',
-		array( 'ajaxurl' =>  plugins_url( 'totaldonations/the-ajax-caller.php' , dirname(__FILE__)),
+		array( 'ajaxurl' =>  $ajax_url,
                 'nonce' => wp_create_nonce( 'migla-donate-nonce' )
  	   ));
 
@@ -226,19 +258,22 @@ function migla_load_admin_scripts($hook) {
 
            wp_enqueue_script( 'migla-settings-js', plugins_url( 'totaldonations/js/migla_settings.js' , dirname(__FILE__)) );
 	   wp_localize_script( 'migla-settings-js', 'miglaAdminAjax',
-		array( 'ajaxurl' =>  plugins_url( 'totaldonations/the-ajax-caller.php' , dirname(__FILE__)),
-'nonce' => wp_create_nonce( 'migla-donate-nonce' )
+		array( 'ajaxurl' =>  $ajax_url,
+                          'nonce' => wp_create_nonce( 'migla-donate-nonce' )
  	   ));
         }
 
 
 	if( $hook == ('total-donations_page_migla_donation_paypal_settings_page') ) 
         {
+           wp_enqueue_script('media-upload');  wp_enqueue_script('thickbox'); wp_enqueue_style('thickbox');
 
-           wp_enqueue_script( 'migla-settings-js', plugins_url( 'totaldonations/js/migla_paypal_settings.js' , dirname(__FILE__)) );
+           wp_enqueue_script( 'migla-settings-js', plugins_url( 'totaldonations/js/migla_paypal_settings.js' , dirname(__FILE__)),
+                array('jquery-ui-core', 'jquery-ui-datepicker', 'jquery','media-upload','thickbox')  );
+
 	   wp_localize_script( 'migla-settings-js', 'miglaAdminAjax',
-		array( 'ajaxurl' =>  plugins_url( 'totaldonations/the-ajax-caller.php' , dirname(__FILE__)),
-'nonce' => wp_create_nonce( 'migla-donate-nonce' )
+		array( 'ajaxurl' =>  $ajax_url,
+                         'nonce' => wp_create_nonce( 'migla-donate-nonce' )
  	   ));
         }
 
@@ -252,8 +287,8 @@ function migla_load_admin_scripts($hook) {
            wp_enqueue_script( 'migla-offlineTables-js', plugins_url( 'totaldonations/js/jquery.dataTables.min.js' , dirname(__FILE__)) );
 	
    wp_localize_script( 'migla-offline-js', 'miglaAdminAjax',
-		array( 'ajaxurl' => plugins_url( 'totaldonations/the-ajax-caller.php' , dirname(__FILE__)),
-                'nonce' => wp_create_nonce( 'migla-donate-nonce' )
+		array( 'ajaxurl' => $ajax_url,
+                        'nonce' => wp_create_nonce( 'migla-donate-nonce' )
  	   ));
 
         wp_register_style( 'migla-dataTables-css', plugins_url( 'totaldonations/css/jquery.dataTables.min.css' , dirname(__FILE__)) );
@@ -270,8 +305,8 @@ function migla_load_admin_scripts($hook) {
            wp_enqueue_script( 'migla-dataTables-js', plugins_url( 'totaldonations/js/jquery.dataTables.min.js' , dirname(__FILE__)) );
 
  wp_localize_script( 'migla-reports-js', 'miglaAdminAjax',
-		array( 'ajaxurl' => plugins_url( 'totaldonations/the-ajax-caller.php' , dirname(__FILE__)),
-                'nonce' => wp_create_nonce( 'migla-donate-nonce' )
+		array( 'ajaxurl' => $ajax_url,
+                        'nonce' => wp_create_nonce( 'migla-donate-nonce' )
  	   ));
  	   
         wp_register_style( 'migla-dataTables-css', plugins_url( 'totaldonations/css/jquery.dataTables.min.css' , dirname(__FILE__)) );
@@ -291,12 +326,56 @@ function migla_load_admin_scripts($hook) {
           wp_enqueue_script( 'migla-color-themes-js', plugins_url( 'totaldonations/js/migla_color_themes.js' , dirname(__FILE__)) );
 
 	   wp_localize_script( 'migla-color-themes-js', 'miglaAdminAjax',
-		array( 'ajaxurl' => plugins_url( 'totaldonations/the-ajax-caller.php' , dirname(__FILE__)),
-           'nonce' => wp_create_nonce( 'migla-donate-nonce' )
+		array( 'ajaxurl' => $ajax_url,
+                       'nonce' => wp_create_nonce( 'migla-donate-nonce' )
  	   ));
         }
         
+        /**** April 2nd ******/
+	if( $hook == ('total-donations_page_migla_stripe_setting_page') ) 
+        {
 
+           wp_enqueue_script('media-upload');  wp_enqueue_script('thickbox'); wp_enqueue_style('thickbox');
+
+          wp_enqueue_script( 'migla-stripe-settings-js', plugins_url( 'totaldonations/js/migla_stripe_settings.js' , dirname(__FILE__)) , 
+                  array('jquery-ui-core', 'jquery-ui-datepicker', 'jquery','media-upload','thickbox') );
+
+	   wp_localize_script( 'migla-stripe-settings-js', 'miglaAdminAjax',
+		array( 'ajaxurl' => $ajax_url,
+                       'nonce' => wp_create_nonce( 'migla-donate-nonce' )
+ 	   ));
+
+             wp_enqueue_script( 'migla-dataTables-js', plugins_url( 'totaldonations/js/jquery.dataTables.min.js' , dirname(__FILE__)) );
+
+             wp_register_style( 'migla-dataTables-css', plugins_url( 'totaldonations/css/jquery.dataTables.min.css' , dirname(__FILE__)) );
+	     wp_enqueue_style( 'migla-dataTables-css' ); 
+             wp_register_style( 'migla-dataTables2-css', plugins_url( 'totaldonations/css/extra.css' , dirname(__FILE__)) );
+	     wp_enqueue_style( 'migla-dataTables2-css' ); 	
+
+         }
+
+        /**** April 3th ******/
+	if( $hook == ('total-donations_page_migla_plans_page') ) 
+        {
+
+           wp_enqueue_script('media-upload');  wp_enqueue_script('thickbox'); wp_enqueue_style('thickbox');
+
+          wp_enqueue_script( 'migla-plans-js', plugins_url( 'totaldonations/js/migla_plans.js' , dirname(__FILE__)) , 
+                  array('jquery-ui-core', 'jquery-ui-datepicker', 'jquery','media-upload','thickbox') );
+
+	   wp_localize_script( 'migla-plans-js', 'miglaAdminAjax',
+		array( 'ajaxurl' => $ajax_url,
+                        'nonce' => wp_create_nonce( 'migla-donate-nonce' )
+ 	   ));
+
+             wp_enqueue_script( 'migla-dataTables-js', plugins_url( 'totaldonations/js/jquery.dataTables.min.js' , dirname(__FILE__)) );
+
+             wp_register_style( 'migla-dataTables-css', plugins_url( 'totaldonations/css/jquery.dataTables.min.css' , dirname(__FILE__)) );
+	     wp_enqueue_style( 'migla-dataTables-css' ); 
+             wp_register_style( 'migla-dataTables2-css', plugins_url( 'totaldonations/css/extra.css' , dirname(__FILE__)) );
+	     wp_enqueue_style( 'migla-dataTables2-css' ); 	
+
+         }
 
           ////STYLE//////////////////////////////////////////////////////////////////////
           wp_register_style( 'miglabootstrap-css', plugins_url( 'totaldonations/css/bootstrap.min.css' , dirname(__FILE__)) );
@@ -325,6 +404,34 @@ function miglainit_option( $key, $value )
   }
 }
 
+function migla_change_form_structure()
+{
+  $d = (array)get_option('migla_form_fields'); $group = 0;
+  foreach ( (array) $d as $f ){
+      $newchild = array();
+      $child = $f['child']; 
+      $row = 0;
+      
+      if( count( $child ) > 0 )
+      {
+            foreach ( (array)$child as $c ){
+               $keys = array_keys( $child[$row] );
+
+               foreach ( (array)$keys as $k ){
+                   $newchild[$row][$k] = $child[$row][$k];
+                }
+
+                $newchild[$row]['uid'] = ("f".date("Ymdhis"). "_" . rand());
+                $row++;
+            }
+      }
+    $d[$group]['child'] = $newchild;
+    $group++;
+  } 
+
+  //print_r( $d );
+  return $d;
+}
 
 function migla_donation_active() {
 
@@ -333,9 +440,12 @@ $fields = array (
     '0' => array (
         'title' => 'Donation Information',
         'child' =>  array(
-                   '0' => array( 'type'=>'radio','id'=>'amount', 'label'=>'How much would you like to donate?', 'status'=>'3', 'code' => 'miglad_'),
-                   '1' => array( 'type'=>'select','id'=>'campaign', 'label'=>'Would you like to donate this to a specific campaign?', 'status'=>'3', 'code' => 'miglad_'),
-                   '2' => array( 'type'=>'checkbox','id'=>'repeating', 'label'=>'Repeat Monthly?', 'status'=>'1', 'code' => 'miglad_')
+                   '0' => array( 'type'=>'radio','id'=>'amount', 'label'=>'How much would you like to donate?', 'status'=>'3', 'code' => 'miglad_', 
+                       'uid' => ("f".date("Ymdhis"). "_" . rand()) ),
+                   '1' => array( 'type'=>'select','id'=>'campaign', 'label'=>'Would you like to donate this to a specific campaign?', 'status'=>'3', 'code' => 'miglad_', 
+                       'uid' => ("f".date("Ymdhis"). "_" . rand()) ),
+                   '2' => array( 'type'=>'radio','id'=>'repeating', 'label'=>'Is this a recurring donation?', 'status'=>'1', 'code' => 'miglad_', 
+                       'uid' => ("f".date("Ymdhis"). "_" . rand()) )
                  ),
         'parent_id' => 'NULL',
         'depth' => 2,
@@ -344,30 +454,38 @@ $fields = array (
     '1' => array (
         'title' => 'Donor Information',
         'child' => array(
-                   '0' => array( 'type'=>'text','id'=>'firstname', 'label'=>'First Name', 'status'=>'3', 'code' => 'miglad_' ),
-                   '1' => array( 'type'=>'text','id'=>'lastname', 'label'=>'Last Name', 'status'=>'3', 'code' => 'miglad_' ),
-                   '2' => array( 'type'=>'text','id'=>'address', 'label'=>'Address', 'status'=>'1' , 'code' => 'miglad_' ),
-                   '3' => array( 'type'=>'select','id'=>'country', 'label'=>'Country', 'status'=>'1' , 'code' => 'miglad_' ),
-                   '4' => array( 'type'=>'text','id'=>'city', 'label'=>'City', 'status'=>'1' , 'code' => 'miglad_' ),
-                   '5' => array( 'type'=>'text','id'=>'postalcode', 'label'=>'Postal Code', 'status'=>'1' , 'code' => 'miglad_' ),
-                   '6' => array( 'type'=>'checkbox','id'=>'anonymous', 'label'=>'Anonymous?', 'status'=>'1' , 'code' => 'miglad_' ),
-                   '7' => array( 'type'=>'text','id'=>'email', 'label'=>'Email', 'status'=>'3' , 'code' => 'miglad_' )
+                   '0' => array( 'type'=>'text','id'=>'firstname', 'label'=>'First Name', 'status'=>'3', 'code' => 'miglad_', 'uid' => ("f".date("Ymdhis"). "_" . rand()) ),
+                   '1' => array( 'type'=>'text','id'=>'lastname', 'label'=>'Last Name', 'status'=>'3', 'code' => 'miglad_', 'uid' => ("f".date("Ymdhis"). "_" . rand()) ),
+                   '2' => array( 'type'=>'text','id'=>'address', 'label'=>'Address', 'status'=>'1' , 'code' => 'miglad_', 'uid' => ("f".date("Ymdhis"). "_" . rand()) ),
+                   '3' => array( 'type'=>'select','id'=>'country', 'label'=>'Country', 'status'=>'1' , 'code' => 'miglad_', 'uid' => ("f".date("Ymdhis"). "_" . rand()) ),
+                   '4' => array( 'type'=>'text','id'=>'city', 'label'=>'City', 'status'=>'1' , 'code' => 'miglad_', 'uid' => ("f".date("Ymdhis"). "_" . rand()) ),
+                   '5' => array( 'type'=>'text','id'=>'postalcode', 'label'=>'Postal Code', 'status'=>'1' , 'code' => 'miglad_', 'uid' => ("f".date("Ymdhis"). "_" . rand()) ),
+                   '6' => array( 'type'=>'checkbox','id'=>'anonymous', 'label'=>'Anonymous?', 'status'=>'1' , 'code' => 'miglad_', 'uid' => ("f".date("Ymdhis"). "_" . rand()) ),
+                   '7' => array( 'type'=>'text','id'=>'email', 'label'=>'Email', 'status'=>'3' , 'code' => 'miglad_' , 'uid' => ("f".date("Ymdhis"). "_" . rand()) )
                  ),
         'parent_id' => 'NULL',
         'depth' => 8,
         'toggle' => '-1'
     ),
     '2' => array (
-        'title' => 'És en nom d[q]algú?',
+        'title' => 'Is this in honor of someone?',
         'child' => array(
-                   '0' => array( 'type'=>'checkbox','id'=>'memorialgift', 'label'=>"És una aportació com a entitat??", 'status'=>'1', 'code' => 'miglad_' ),
-                   '1' => array( 'type'=>'text','id'=>'honoreename', 'label'=>"Nom de la entitat", 'status'=>'1', 'code' => 'miglad_' ),
-                   '2' => array( 'type'=>'text','id'=>'honoreeemail', 'label'=>"Correu", 'status'=>'1', 'code' => 'miglad_' ),
-                   '3' => array( 'type'=>'textarea','id'=>'honoreeletter', 'label'=>"Write a custom note to the Honoree here", 'status'=>'1', 'code' => 'miglad_' ),
-                   '4' => array( 'type'=>'text','id'=>'honoreeaddress', 'label'=>"Honoree[q]s Address", 'status'=>'1', 'code' => 'miglad_' ),
-                   '5' => array( 'type'=>'text','id'=>'honoreecountry', 'label'=>"Honoree[q]s Country", 'status'=>'1', 'code' => 'miglad_' ),
-                   '6' => array( 'type'=>'text','id'=>'honoreecity', 'label'=>'Honoree[q]s City', 'status'=>'1' , 'code' => 'miglad_' ),
-                   '7' => array( 'type'=>'text','id'=>'honoreepostalcode', 'label'=>'Honoree[q]s Postal Code', 'status'=>'1' , 'code' => 'miglad_' ),				   
+                   '0' => array( 'type'=>'checkbox','id'=>'memorialgift', 'label'=>"Is this a Memorial Gift?", 'status'=>'1', 'code' => 'miglad_', 
+                        'uid' => ("f".date("Ymdhis"). "_" . rand()) ),
+                   '1' => array( 'type'=>'text','id'=>'honoreename', 'label'=>"Honoree[q]s Name", 'status'=>'1', 'code' => 'miglad_', 
+                        'uid' => ("f".date("Ymdhis"). "_" . rand()) ),
+                   '2' => array( 'type'=>'text','id'=>'honoreeemail', 'label'=>"Honoree[q]s Email", 'status'=>'1', 'code' => 'miglad_', 
+                        'uid' => ("f".date("Ymdhis"). "_" . rand()) ),
+                   '3' => array( 'type'=>'textarea','id'=>'honoreeletter', 'label'=>"Write a custom note to the Honoree here", 'status'=>'1', 'code' => 'miglad_', 
+                        'uid' => ("f".date("Ymdhis"). "_" . rand()) ),
+                   '4' => array( 'type'=>'text','id'=>'honoreeaddress', 'label'=>"Honoree[q]s Address", 'status'=>'1', 'code' => 'miglad_', 
+                        'uid' => ("f".date("Ymdhis"). "_" . rand()) ),
+                   '5' => array( 'type'=>'text','id'=>'honoreecountry', 'label'=>"Honoree[q]s Country", 'status'=>'1', 'code' => 'miglad_', 
+                        'uid' => ("f".date("Ymdhis"). "_" . rand()) ),
+                   '6' => array( 'type'=>'text','id'=>'honoreecity', 'label'=>'Honoree[q]s City', 'status'=>'1' , 'code' => 'miglad_', 
+                         'uid' => ("f".date("Ymdhis"). "_" . rand()) ),
+                   '7' => array( 'type'=>'text','id'=>'honoreepostalcode', 'label'=>'Honoree[q]s Postal Code', 'status'=>'1' , 'code' => 'miglad_', 
+                         'uid' => ("f".date("Ymdhis"). "_" . rand()) )		   
                  ),
         'parent_id' => 'NULL',
         'depth' => 5,
@@ -375,33 +493,45 @@ $fields = array (
 
     ),
     '3' => array (
-        'title' => 'És una aportació com a entitat?',
+        'title' => 'Is this a matching gift?',
         'child' => array(
-                   '0' => array( 'type'=>'text','id'=>'employer', 'label'=>'Nom del col·laborador', 'status'=>'1', 'code' => 'miglad_' ),
-                   '1' => array( 'type'=>'text','id'=>'occupation', 'label'=>'Càrrec', 'status'=>'1', 'code' => 'miglad_' )
+                   '0' => array( 'type'=>'text','id'=>'employer', 'label'=>'Employer[q]s Name', 'status'=>'1', 'code' => 'miglad_', 
+                       'uid' => ("f".date("Ymdhis"). "_" . rand()) ),
+                   '1' => array( 'type'=>'text','id'=>'occupation', 'label'=>'Occupation', 'status'=>'1', 'code' => 'miglad_', 
+                       'uid' => ("f".date("Ymdhis"). "_" . rand()) )
                  ),
         'parent_id' => 'NULL',
         'depth' => 3,
         'toggle' => '1'
     )        
-);
+ );
 
-miglainit_option( 'migla_daybeforeclean' , 'no' );
+ miglainit_option( 'migla_daybeforeclean' , 'no' );
+  
 
-/////FORM
-miglainit_option( 'migla_form_fields', $fields ) ;
-miglainit_option('migla_undesignLabel', 'undesignated');
-miglainit_option('migla_hideUndesignated', 'no');
+ /////FORM
+ $current_form = get_option( 'migla_form_fields' ) ;
+ if( $current_form == false  ){
+     add_option( 'migla_form_fields', $fields ) ;
+ }else{
+     if( get_option('migla_install') ==  false ){
+        $new_form =  migla_change_form_structure();
+        update_option( 'migla_form_fields', $new_form ) ;
+     }
+ }
 
-//CAMPAIGN
-miglainit_option( 'migla_campaign' , '' );
+ miglainit_option('migla_undesignLabel', 'undesignated');
+ miglainit_option('migla_hideUndesignated', 'no');
+
+ //CAMPAIGN
+ miglainit_option( 'migla_campaign' , '' );
 
 //THEME SETTINGS
  miglainit_option( 'migla_2ndbgcolor' , '#fafafa,1' ); 
  miglainit_option( 'migla_2ndbgcolorb' , '#eeeeee,1,1' ); 
  miglainit_option( 'migla_borderRadius' , '8,8,8,8' );
 
- $barinfo = "Hem aconseguit [total] dels [target] necessaris. Això comporta un [percentage] del total per portal a terme la campanya [campaign].";
+ $barinfo = "We have collected [total] of our [target] target. It is [percentage] of our goal for the [campaign] campaign";
  miglainit_option('migla_progbar_info', $barinfo); 
  miglainit_option( 'migla_bar_color' , '#428bca,1' );
  miglainit_option( 'migla_progressbar_background', '#bec7d3,1');
@@ -445,44 +575,51 @@ Thank you for your donation of [amount] on the [date]. Your help is deeply appre
   $f['100'] = '100';
   miglainit_option( 'migla_amounts' , $f);
 
-//////CURRENCY & COUNTRY///////////////
-miglainit_option( 'migla_world_countries', (array)migla_get_world_countries() );
-miglainit_option( 'migla_default_country', 'Canada');
-miglainit_option( 'migla_US_states', (array)migla_get_US_states() );
-miglainit_option( 'migla_Canada_provinces', (array)migla_get_Canada_provinces() );
+ //////CURRENCY & COUNTRY///////////////
+ miglainit_option( 'migla_world_countries', (array)migla_get_world_countries() );
+ miglainit_option( 'migla_default_country', 'Canada');
+ miglainit_option( 'migla_US_states', (array)migla_get_US_states() );
+ miglainit_option( 'migla_Canada_provinces', (array)migla_get_Canada_provinces() );
 
-miglainit_option( 'migla_currencies' , (array)migla_get_currency_array() ); //array of array
-miglainit_option( 'migla_default_currency' , 'CAD');
-miglainit_option( 'migla_thousandSep' , ',');
-miglainit_option( 'migla_decimalSep' , '.');
-miglainit_option( 'migla_curplacement' , 'before');
-miglainit_option( 'migla_showDecimalSep' , 'yes');
+ miglainit_option( 'migla_currencies' , (array)migla_get_currency_array() ); //array of array
+ miglainit_option( 'migla_default_currency' , 'CAD');
+ miglainit_option( 'migla_thousandSep' , ',');
+ miglainit_option( 'migla_decimalSep' , '.');
+ miglainit_option( 'migla_curplacement' , 'before');
+ miglainit_option( 'migla_showDecimalSep' , 'yes');
 
-///////////TimeZone////////////////////////
-miglainit_option( 'migla_timezones', (array)migla_get_timezone() );
-miglainit_option( 'migla_default_timezone', 'Server Time' );
+ ///////////TimeZone////////////////////////
+ miglainit_option( 'migla_timezones', (array)migla_get_timezone() );
+ miglainit_option( 'migla_default_timezone', 'Server Time' );
 
-/////////Paypal//////////////////////////////
-miglainit_option( 'migla_paypal_emails' , '');
-miglainit_option( 'migla_payment' , 'sandbox');
-miglainit_option('migla_paypalitem', 'donation' );
-miglainit_option('migla_paypalcmd', 'donation' );
-
-
-////////////BUTTON//////////////////////////////////
-miglainit_option('migla_paypalbutton', 'English');
-miglainit_option('migla_paypalcssbtnstyle', 'Default');
-miglainit_option('migla_paypalcssbtntext', 'Donate Now');
-miglainit_option('migla_paypalcssbtnclass', '');
-miglainit_option('migla_paypalbuttonurl', '');
-
-miglainit_option( 'migla_form_url', '' );
-
-miglainit_option('migla_show_recover', 'no') ;
-miglainit_option('migla_use_nonce', 'no');
-miglainit_option('migla_delete_settings', 'no');
+ /////////Paypal//////////////////////////////
+ miglainit_option( 'migla_paypal_emails' , '');
+ miglainit_option( 'migla_payment' , 'sandbox');
+ miglainit_option('migla_paypalitem', 'donation' );
+ miglainit_option('migla_paypalcmd', 'donation' );
 
 
+ ////////////BUTTON//////////////////////////////////
+ miglainit_option('miglaPayPalButtonChoice', 'cssButton' );
+ miglainit_option('migla_paypalbutton', 'English');
+ miglainit_option('migla_paypalcssbtnstyle', 'Default');
+ miglainit_option('migla_paypalcssbtntext', 'Donate Now');
+ miglainit_option('migla_paypalcssbtnclass', '');
+ miglainit_option('migla_paypalbuttonurl', '');
+
+ miglainit_option( 'migla_form_url', '' );
+
+ miglainit_option('migla_show_recover', 'no') ;
+ miglainit_option('migla_use_nonce', 'no');
+ miglainit_option('migla_delete_settings', 'no');
+
+ ////////VERSION/////////////////////////////
+ miglainit_option('migla_install', time() ) ;
+
+////CORS FALSE ALARM///////////////////
+ miglainit_option('migla_allow_cors' , 'no' );
+ miglainit_option('migla_sort_level', 'rsort');
+ miglainit_option('migla_show_bar', 'yes');
 }
 
 register_activation_hook( __FILE__, 'migla_donation_active' );
@@ -525,17 +662,20 @@ function migla_get_current_url()
 /***********************************************************************************/
 
 class Migla_Shortcode {
-	  static $add_script; static $nonce;
+     static $add_script; static $nonce; static $pk; static $ajax_url;
 
-	 function Migla_Shortcode()
-		{
+     function Migla_Shortcode()
+     {
 			
-		}
+     }
 
 	static function init() {
 	  
 	  add_shortcode('totaldonations', array(__CLASS__, 'handle_shortcode'));
 
+          if( get_option('migla_allow_cors') == 'yes' ){
+             add_action('init','mg_add_cors_http_header');
+          }
 	  add_action('init', array(__CLASS__, 'register_script'));
 	  add_action('wp_footer', array(__CLASS__, 'print_script'));
 
@@ -543,23 +683,21 @@ class Migla_Shortcode {
 
 
 	static function handle_shortcode($atts) {
-	   self::$add_script = true;    
 	   
+           self::$add_script = true;     
 	   $content = "";
-
-	  update_option( 'migla_form_url', migla_current_page_url() );
-	  
-	  require_once 'migla-form.php';
-
-	  $isThank = false;
+ 	   
+	   $isThank = false;
 	  	  
 	  /*********** New One Feb 18 *********************************************************************/
 	  
 	  if ( isset( $_GET['thanks'] ) && $_GET['thanks'] == 'thanks' && isset( $_GET['id'] ) ) {
 		$isThank = true;
-	  } else if( isset( $_POST['thanks'] ) && $_POST['thanks'] != '' ) { 
+	  } else if( isset( $_POST['thanks'] ) && $_POST['thanks'] == 'thanks' && isset( $_POST['id'] ) ) { 
 		$isThank = true;
-	  }
+	  }else if( isset( $_GET['auth'] ) || isset( $_POST['auth'] ) ){
+                $isThank = true;
+          }
 	  
 	  if( isset( $_POST['thanks'] ) && $_POST['thanks'] == 'widget_bar' ){ $isThank = false; }
 
@@ -630,18 +768,47 @@ class Migla_Shortcode {
 
 	   }else{  /******** This is not thank you page then call migla_draw_form function *************/
 
+                //get the attribute
+               extract(shortcode_atts(array(
+                  'campaign' => ''
+                ), $atts ) );
+
+                $campaign_name  = '';
+
+                if( $atts != null ){
+                     $campaign_name = $atts['campaign'];
+                     $c = str_replace( "'", "", $atts['campaign'] ); //Clean
+                     $c = str_replace( " ", "", $c ); //Clean
+                     if( $c != '' ){
+                        $form_url = "migla_url_" . $c;
+ 	                if( get_option( $form_url  ) == false ){
+                            add_option( $form_url , migla_current_page_url() ); 
+                        }else{
+                            update_option( $form_url , migla_current_page_url() );
+                        }
+                     }else{
+                        update_option( 'migla_form_url' , migla_current_page_url() );
+                     }
+                }else{
+                        update_option( 'migla_form_url' , migla_current_page_url() );
+               }
+
+ 	        require_once 'migla-form.php';
+
 		// Open the form
-		$content .= "<div style='clear:both' class='bootstrap-wrapper'><div class='container-fluid' id='wrap-migla'>";
+		$content .= "<div style='clear:both' class='bootstrap-wrapper'><div id='wrap-migla'>";
 		$content .= "<div id='migla_donation_form' style='' >";
 
+                //$content .= migla_getPK() ."<br>";
+                //$content .= migla_getSK() ;
+
 		// Save the session ID as a hidden input
-		$session_id = 'migla' . date("Ymdhms"). "_" . rand() ;
-			//$session_id = "migla858224695_20150103030114"; //testing repeating
+		$session_id = 'migla' . date("Ymdhis"). "_" . rand() ;
 
 		$content .= "<input type='hidden' name='migla_session_id' value='".$session_id."' />";
-		$content .= migla_drawForm(  $session_id );
-		$content .= "</div>";
+		$content .= migla_drawForm( $campaign_name );
 		
+                $content .= "</div>";
 		$content .= "</div>";	
 		$content .= migla_hidden_form( $session_id );
 		$content .= "</div>";
@@ -662,6 +829,11 @@ class Migla_Shortcode {
 			if ( ! self::$add_script )
 				return;
 				
+           self::$ajax_url = plugins_url( 'totaldonations/the-ajax-caller.php' , dirname(__FILE__));
+           if( get_option('migla_ajax_caller') == 'wp' )
+           {
+             self::$ajax_url =  admin_url( 'admin-ajax.php' );
+           }
 				
 		/******************************************** call all actions ************************************************/
 		$array_of_action = migla_hook_action_1_array();
@@ -680,6 +852,10 @@ class Migla_Shortcode {
 
 		migla_enqueue_script( 'jquery' );
 		wp_enqueue_script( 'respond.min.js', plugins_url( 'totaldonations/js/respond.min.js' , dirname(__FILE__)) );
+                
+               //stripe
+                wp_enqueue_script( 'migla-stripe.js', 'https://js.stripe.com/v2/' );
+               self::$pk = migla_getPK() ;
 
            if( get_option('migla_use_nonce') == 'yes' ){
 
@@ -688,19 +864,21 @@ class Migla_Shortcode {
 		wp_enqueue_script( 'migla-checkout-js', plugins_url( 'totaldonations/js/migla_checkOut_nonce.js', dirname(__FILE__)), array( 'jquery' ), false, true );
 
 		   wp_localize_script( 'migla-checkout-js', 'miglaAdminAjax',
-			array( 'ajaxurl' => plugins_url( 'totaldonations/the-ajax-caller.php' , dirname(__FILE__) ),
-                          'notifyurl' => migla_get_notify_url(),
-                          'successurl' => migla_get_succesful_url(),
-                          'nonce' => self::$nonce    
+		       array( 'ajaxurl' => self::$ajax_url,
+                              'notifyurl' => migla_get_notify_url(),
+                              'successurl' => migla_get_current_url(),
+                              'nonce' => self::$nonce, 
+                              'stripe_PK' =>  self::$pk    
 		    ));	
 
 		wp_enqueue_script( 'migla-donation-js', plugins_url( 'totaldonations/js/migla_form.js', dirname(__FILE__) ), array( 'jquery' ), false, true );
 
 		   wp_localize_script( 'migla-donation-js', 'miglaAdminAjax',
-			array( 'ajaxurl' => plugins_url( 'totaldonations/the-ajax-caller.php' , dirname(__FILE__) ),
-                          'notifyurl' => migla_get_notify_url(),
-                          'successurl' => migla_get_succesful_url(),
-                          'nonce' => self::$nonce
+			array( 'ajaxurl' => self::$ajax_url,
+                               'notifyurl' => migla_get_notify_url(),
+                               'successurl' => migla_get_current_url(),
+                               'nonce' => self::$nonce, 
+                               'stripe_PK' =>  self::$pk 
 		   ));		
 
            }else{
@@ -708,22 +886,27 @@ class Migla_Shortcode {
 		wp_enqueue_script( 'migla-checkout-js', plugins_url( 'totaldonations/js/migla_checkOut.js', dirname(__FILE__)), array( 'jquery' ), false, true );
 
 		   wp_localize_script( 'migla-checkout-js', 'miglaAdminAjax',
-			array( 'ajaxurl' => plugins_url( 'totaldonations/the-ajax-caller.php' , dirname(__FILE__) ),
-                          'notifyurl' => migla_get_notify_url(),
-                          'successurl' => migla_get_succesful_url()   
+			array( 'ajaxurl' => admin_url( 'admin-ajax.php' ),
+                               'notifyurl' => migla_get_notify_url(),
+                               'successurl' => migla_get_current_url(),
+                               'stripe_PK' =>  self::$pk 
 		   ));	
 
 		wp_enqueue_script( 'migla-donation-js', plugins_url( 'totaldonations/js/migla_form.js', dirname(__FILE__) ), array( 'jquery' ), false, true );
 
 		   wp_localize_script( 'migla-donation-js', 'miglaAdminAjax',
-			array( 'ajaxurl' => plugins_url( 'totaldonations/the-ajax-caller.php' , dirname(__FILE__) ),
-                          'notifyurl' => migla_get_notify_url(),
-                          'successurl' => migla_get_succesful_url()   
+			array( 'ajaxurl' => self::$ajax_url,
+                               'notifyurl' => migla_get_notify_url(),
+                               'successurl' => migla_get_current_url(),
+                               'stripe_PK' =>  self::$pk   
 		   ));		
 
            }	  
-		  wp_enqueue_style( 'migla-front-end' );
 
+                 // wp_enqueue_style( 'migla-stripe-button' , 'https://checkout.stripe.com/v3/checkout/button.css' );
+		  wp_enqueue_style( 'migla-front-end' );
+                  wp_enqueue_script( 'migla-boots-nav.js', plugins_url( 'totaldonations/js/boot-tabs.js' , dirname(__FILE__)) );
+                  wp_enqueue_script( 'migla-boots-tooltip.js', plugins_url( 'totaldonations/js/bootstrap_tooltip.js' , dirname(__FILE__)) );
 	}
 } //End of Migla_Shortcode Class
 
@@ -767,11 +950,11 @@ $args = shortcode_atts(
 
  if( $atts == null || count($atts) <= 0)
  {
-    $draw = migla_shortcode_progressbar( "", "no" );
+    $draw = migla_shortcode_progressbar( "", "no", "", "" );
  }else
  {	
    if( $args['campaign'] == "" ){	
-     $draw = migla_shortcode_progressbar( "", "no", "" );
+     $draw = migla_shortcode_progressbar( "", "no", "", "" );
    }else{
       $draw = migla_shortcode_progressbar( $args['campaign'], $args['button'] , $args['button_text'], $args['text'] );
    }
@@ -781,20 +964,27 @@ $args = shortcode_atts(
 }//function
 
  static function register_script() {
-  if( wp_script_is( 'mg_progress-bar', 'registered' ) ){
-  }else{
-    wp_register_style( 'mg_progress-bar', plugins_url( 'totaldonations/css/mg_progress-bar.css' , dirname(__FILE__)) );
-  }
+
  }
 
  static function print_script() {
    if ( ! self::$progressbar_script )
 	return;
 
-  if( wp_script_is( 'mg_progress-bar', 'queue' ) ){
-  }else{
-    wp_enqueue_style( 'mg_progress-bar' );
-  }
+       if( wp_script_is( 'migla-front-end-css', 'registered' ) && wp_script_is( 'migla-front-end-css', 'queue' )  )
+       {
+       }else{
+          //make sure it only load once
+          if( wp_script_is( 'mg_progress-bar', 'registered' ) ){
+          }else{
+              wp_register_style( 'mg_progress-bar', plugins_url( 'totaldonations/css/mg_progress-bar.css' , dirname(__FILE__)) );
+          }
+
+          if( wp_script_is( 'mg_progress-bar', 'queue' ) ){
+          }else{
+              wp_enqueue_style( 'mg_progress-bar' );
+          }          
+       }
 
 
   }
@@ -842,10 +1032,10 @@ $args = shortcode_atts(
 
  if( $atts == null || count($atts) <= 0)
  {
-    //$draw = migla_shortcode_progressbar( "", "no" );
+    $draw = migla_draw_textbarshortcode( $args['campaign'], $args['button'] , $args['button_text'], $args['text'] );
  }else{	
    if( $args['campaign'] == "" ){	
-     //$draw = migla_shortcode_progressbar( "", "no", "" );
+      $draw = migla_draw_textbarshortcode( $args['campaign'], $args['button'] , $args['button_text'], $args['text'] );
    }else{
       $draw = migla_draw_textbarshortcode( $args['campaign'], $args['button'] , $args['button_text'], $args['text'] );
    }
@@ -856,20 +1046,28 @@ $args = shortcode_atts(
 }//function
 
  static function register_script() {
-  if( wp_script_is( 'mg_progress-bar', 'registered' ) ){
-  }else{
-    wp_register_style( 'mg_progress-bar', plugins_url( 'totaldonations/css/mg_progress-bar.css' , dirname(__FILE__)) );
-  }
+
  }
 
  static function print_script() {
    if ( ! self::$progressbar_script )
 	return;
 
-  if( wp_script_is( 'mg_progress-bar', 'queue' ) ){
-  }else{
-    wp_enqueue_style( 'mg_progress-bar' );
-  }
+
+       if( wp_script_is( 'migla-front-end-css', 'registered' ) && wp_script_is( 'migla-front-end-css', 'queue' )  )
+       {
+       }else{
+          //make sure it only load once
+          if( wp_script_is( 'mg_progress-bar', 'registered' ) ){
+          }else{
+              wp_register_style( 'mg_progress-bar', plugins_url( 'totaldonations/css/mg_progress-bar.css' , dirname(__FILE__)) );
+          }
+
+          if( wp_script_is( 'mg_progress-bar', 'queue' ) ){
+          }else{
+              wp_enqueue_style( 'mg_progress-bar' );
+          }          
+       }
 
   }
 }
@@ -893,13 +1091,14 @@ class Migla_TopDonors_Shortcode {
 
 $args = shortcode_atts( 
     array(
-        'title' => '',
-        'num_rec' =>  '',
+        'title'     => '',
+        'num_rec'   =>  5,
         'donation_type' =>  '',
-        'use_link' => '',
+        'use_link'  => '',
         'btn_class' => '',
 	'btn_style' =>  '',
-        'btn_text' => ''
+        'btn_text'  => '',
+        'url_link'   => ''
     ), 
     $atts
 );
@@ -908,41 +1107,39 @@ $args = shortcode_atts(
 
  if( $atts == null || count($atts) <= 0)
  {
-    $draw = draw_topdonors( "Top Donors", 5, "online" , "", "", "", "" );
+    $draw = mg_draw_topdonors( "Top Donors", 5, "online" , "", "", "", "" , "" );
  }else
  {	
-    $draw = draw_topdonors( $args['title'], $args['num_rec'], $args['donation_type'] , $args['use_link'], $args['btn_class'], $args['btn_style'], $args['btn_text'] );
+    $draw = mg_draw_topdonors( $args['title'], $args['num_rec'], $args['donation_type'] , $args['use_link'], 
+                     $args['btn_class'], $args['btn_style'], $args['btn_text'] , $args['url_link'] );
  }
  return $draw;
  
 }//function
 
  static function register_script() {
-  if( wp_script_is( 'mg_progress-bar', 'registered' ) ){
-  }else{
-    wp_register_style( 'mg_progress-bar', plugins_url( 'totaldonations/css/mg_progress-bar.css' , dirname(__FILE__)) );
-  }
-
-  if( wp_script_is( 'mg_progress-bar-js', 'registered' ) ){
-  }else{
-    wp_register_script( 'mg_progress-bar-js', plugins_url( 'totaldonations/js/migla_link_button.js' , dirname(__FILE__)) );
-  }
 
  }
 
  static function print_script() {
-   if ( ! self::$progressbar_script )
+    if ( ! self::$progressbar_script )
 	return;
 
-  if( wp_script_is( 'mg_progress-bar', 'queue' ) ){
-  }else{
-    wp_enqueue_style( 'mg_progress-bar' );
-  }
 
-  if( wp_script_is( 'mg_progress-bar-js', 'queue' ) ){
-  }else{
-    wp_enqueue_script( 'mg_progress-bar-js' );
-  }
+       if( wp_script_is( 'migla-front-end-css', 'registered' ) && wp_script_is( 'migla-front-end-css', 'queue' )  )
+       {
+       }else{
+          //make sure it only load once
+          if( wp_script_is( 'mg_progress-bar', 'registered' ) ){
+          }else{
+              wp_register_style( 'mg_progress-bar', plugins_url( 'totaldonations/css/mg_progress-bar.css' , dirname(__FILE__)) );
+          }
+
+          if( wp_script_is( 'mg_progress-bar', 'queue' ) ){
+          }else{
+              wp_enqueue_style( 'mg_progress-bar' );
+          }          
+       }
 
   }
 }
@@ -969,13 +1166,14 @@ class Migla_Recent_Donor_Shortcode {
 $args = shortcode_atts( 
     array(
         'title' => '',
-        'num_rec' =>  '',
+        'num_rec' =>  5,
         'donation_type' =>  '',
         'use_link' => '',
         'btn_class' => '',
 	'btn_style' =>  '',
         'btn_text' => '',
-        'language' => ''
+        'language' => '', 
+        'url_link'   => ''
     ), 
     $atts
 );
@@ -984,26 +1182,17 @@ $args = shortcode_atts(
 
  if( $atts == null || count($atts) <= 0)
  {
-    $draw = migla_draw_donor_recent( "Recent donors", 5, "online" , "", "", "", "", "" );
+    $draw = migla_draw_donor_recent( "Recent donors", 5, "online" , "", "", "", "", "", "" );
  }else
  {	
-    $draw = migla_draw_donor_recent( $args['title'], $args['num_rec'], $args['donation_type'] , $args['use_link'], $args['btn_class'], $args['btn_style'], $args['btn_text'], $args['language'] );
+    $draw = migla_draw_donor_recent( $args['title'], $args['num_rec'], $args['donation_type'] , $args['use_link'], 
+                   $args['btn_class'], $args['btn_style'], $args['btn_text'], $args['language'], $args['url_link'] );
  }
  return $draw;
  
 }//function
 
  static function register_script() {
-  if( wp_script_is( 'mg_progress-bar', 'registered' ) ){
-  }else{
-    wp_register_style( 'mg_progress-bar', plugins_url( 'totaldonations/css/mg_progress-bar.css' , dirname(__FILE__)) );
-  }
-
-  if( wp_script_is( 'mg_progress-bar-js', 'registered' ) ){
-  }else{
-    wp_register_script( 'mg_progress-bar-js', plugins_url( 'totaldonations/js/migla_link_button.js' , dirname(__FILE__)) );
-  }
-
 
  }
 
@@ -1011,15 +1200,20 @@ $args = shortcode_atts(
    if ( ! self::$progressbar_script )
 	return;
 
-  if( wp_script_is( 'mg_progress-bar', 'queue' ) ){
-  }else{
-    wp_enqueue_style( 'mg_progress-bar' );
-  }
+       if( wp_script_is( 'migla-front-end-css', 'registered' ) && wp_script_is( 'migla-front-end-css', 'queue' )  )
+       {
+       }else{
+          //make sure it only load once
+          if( wp_script_is( 'mg_progress-bar', 'registered' ) ){
+          }else{
+              wp_register_style( 'mg_progress-bar', plugins_url( 'totaldonations/css/mg_progress-bar.css' , dirname(__FILE__)) );
+          }
 
-  if( wp_script_is( 'mg_progress-bar-js', 'queue' ) ){
-  }else{
-    wp_enqueue_script( 'mg_progress-bar-js' );
-  }
+          if( wp_script_is( 'mg_progress-bar', 'queue' ) ){
+          }else{
+              wp_enqueue_style( 'mg_progress-bar' );
+          }          
+       }
 
   }
 }
@@ -1027,5 +1221,6 @@ $args = shortcode_atts(
  Migla_Recent_Donor_Shortcode::init();
 
 //////////////////////END OF FORM SHORTCODE/////////////////////////////////////////
+
 
   ?>

@@ -1,6 +1,6 @@
 <?php
-include ('../../../../wp-config.php');
-include ('../../../../wp-load.php');
+
+include_once '../../../../wp-blog-header.php';
 
 header( "Content-type: text/csv" );
 header( "Content-Disposition: attachment; filename=online_donation.csv" );
@@ -13,24 +13,24 @@ header( "Content-Disposition: attachment; filename=online_donation.csv" );
  foreach( $data as $id )
  {   $output[$idx] = $id->meta_key; $idx++; }
 
-$formfield = (array)get_option('migla_form_fields');
-foreach( (array)$formfield as $field ){
-if( count($field['child']) > 0  ){
-  foreach ( (array) $field['child'] as $child )
-  {  
-    $c = str_replace("[q]","'",$child['id']);
+ $formfield = (array)get_option('migla_form_fields');
+ foreach( (array)$formfield as $field )
+ {
+    if( count($field['child']) > 0  ){
+    foreach ( (array) $field['child'] as $child )
+    {  
+       $c = str_replace("[q]","'",$child['id']);
 	echo "\"".$c."\",";   
 
-    //Get rid same column
-     $codeid = $child['code'] .$child['id'];
-     $key = array_search( $codeid , $output, true);  
-     if( $key != false ){ unset( $output[$key] ); }; 
+      //Get rid same column
+       $codeid = $child['code'] .$child['id'];
+       $key = array_search( $codeid , $output, true);  
+       if( $key != false ){ unset( $output[$key] ); }; 
 
-    if( "country" == $child['id'] ){
-        echo "\"Province\",";
-        echo "\"State\",";
-    } 
- 
+       if( "country" == $child['id'] ){
+          echo "\"Province\",";
+          echo "\"State\",";
+       } 
   }
 }
 }

@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include "../../../wp-config.php";
+include_once '../../../wp-blog-header.php';
 
 include_once "./migla-functions.php";
 
@@ -21,6 +21,7 @@ class migla_IPN_Handler {
     var $chat_back_url  = "tls://www.paypal.com";
 	var $host_header    = "Host: www.paypal.com\r\n";
 	var $session_id     = '';
+        var $profileid      = '';
 
 	public function __construct() {
 
@@ -30,7 +31,13 @@ class migla_IPN_Handler {
 			$this->host_header   = "Host: www.sandbox.paypal.com\r\n";
 		}
 
-		$this->session_id = isset( $_POST[ 'custom' ] ) ? $_POST[ 'custom' ] : '';
+		if( isset( $_POST[ 'custom' ] ) )
+                {
+                    if(  ! empty( $_POST[ 'custom' ] ) ){ 
+                        $this->session_id = $_POST[ 'custom' ]; 
+                    }
+                }
+               
 
 		if ( ! empty( $this->session_id ) ) {
 			$response = $this->migla_to_paypal();
@@ -42,8 +49,24 @@ class migla_IPN_Handler {
 			} else {
 				$this->handle_unrecognized_ipn( $response );
 			}
-		} else {
-		}
+                }else {
+
+                    //This is for paypal pro bro
+                    if( isset( $_POST[ "rp_invoice_id" ] ) && $_POST["txn_type"] == "recurring_payment"  )
+                    {
+                         $this->session_id = $_POST[ 'rp_invoice_id' ] ;
+                        
+                         $response = $this->migla_to_paypal();
+
+			 if ( "VERIFIED" == $response ) {
+				$this->handle_verified_ipn_pro();
+			 } else if ( "INVALID" == $response ) {
+				$this->handle_invalid_ipn();
+			 } else {
+				$this->handle_unrecognized_ipn( $response );
+			 }
+                    }
+	      }
 	}
 
 	function migla_to_paypal() {
@@ -86,11 +109,13 @@ class migla_IPN_Handler {
 		return $response;
 	}
 
+
+        /*************This is a regular paypal****************************/
 	function handle_verified_ipn() {
-	   $payment_status = $_POST['payment_status'];
        
-	   if ( "Completed" == $payment_status || "completed" == $payment_status ) {
-	    $id = $_POST[ "custom" ];
+	   if ( "Completed" == $_POST['payment_status'] || "completed" == $_POST['payment_status'] )
+           {
+	     $id = $_POST[ "custom" ];
 
             $post_id = migla_create_post();
 
@@ -155,9 +180,9 @@ class migla_IPN_Handler {
                             //Additional data
                              add_post_meta( $new_id, "miglad_time" , $t );
                              add_post_meta( $new_id, "miglad_date" , $d );
-
-                       sendThankYouEmail( $_POST, 1 , $e, $en );
-	                   sendNotifEmail( $_POST, 1, $e, $en, $ne);
+    
+                           sendThankYouEmail( $_POST, 1 , $e, $en );
+ 	                   sendNotifEmail( $_POST, 1, $e, $en, $ne);
 
                          }else{ //This is probably repeating donation
 
@@ -177,7 +202,6 @@ class migla_IPN_Handler {
                                    sendThankYouEmailRepeating( $new_id, $e, $en );
 	                           sendNotifEmailRepeating( $new_id, $e, $en, $ne);
                                }
-
 
                            // }
 							
@@ -216,22 +240,115 @@ class migla_IPN_Handler {
 		  }//IF get_transient( $transientKey )
 
                   //Save data from paypal
-                   add_post_meta( $post_id, 'miglad_paymentmethod', $_POST['payment_type'] );
+                   add_post_meta( $post_id, 'miglad_paymentmethod', 'Paypal' );
                    add_post_meta( $post_id, 'miglad_paymentdata', $_POST );
                    add_post_meta( $post_id, 'miglad_transactionId', $_POST['txn_id'] );
-                   add_post_meta( $post_id, 'miglad_transactionType', $_POST['txn_type'] );
                    add_post_meta( $post_id, 'miglad_timezone', $default );
-				   
+
+                   //Check what type is it
+                   if(  $_POST[ 'txn_type' ] == 'subscr_payment' ){
+                      add_post_meta( $post_id, 'miglad_transactionType', 'Recurring (Paypal)' );
+                      add_post_meta( $post_id, 'miglad_subscription_id', $_POST['subscr_id'] ); 
+	           }else{
+                      add_post_meta( $post_id, 'miglad_transactionType', 'One time (Paypal)' );
+                   }		
+	   
 	  }else{ //IF Status is not completed
 				   
 	  } // If $payment_status
 	}//function
+
 
 	function handle_invalid_ipn() {
 	}
 
 	function handle_unrecognized_ipn( $paypal_response ) {
 	}
+
+/****************************************************************************************/
+	function handle_verified_ipn_pro(){
+
+	   $payment_status = $_POST['payment_status'];
+       
+          if ( "Completed" == $payment_status  ) {
+
+              $e = get_option('migla_replyTo');
+              $en = get_option('migla_replyToName');
+              $ne = get_option('migla_notif_emails');
+			
+              ///GET CURRENT TIME SETTINGS----------------------------------
+	      $php_time_zone = date_default_timezone_get();
+              $t = ""; $d = ""; $default = "";
+              $default = get_option('migla_default_timezone');
+              if( $default == 'Server Time' ){
+                 $gmt_offset = -get_option( 'gmt_offset' );
+  	         if ($gmt_offset > 0){ 
+                    $time_zone = 'Etc/GMT+' . $gmt_offset; 
+                 }else{		
+                    $time_zone = 'Etc/GMT' . $gmt_offset;    
+                 }
+	        date_default_timezone_set( $time_zone );
+	        $t = date('H:i:s');
+	        $d = date('m')."/".date('d')."/".date('Y');
+              }else{
+ 	        date_default_timezone_set( $default );
+	        $t = date('H:i:s');
+	        $d = date('m')."/".date('d')."/".date('Y');
+              }
+ 	      date_default_timezone_set( $php_time_zone );
+             ///---------------------------------GET CURRENT TIME SETTINGS
+             
+              $post_id = migla_create_post();
+              $ref_id = $_POST[ 'rp_invoice_id' ];
+              $transientKey = "t_migla" . $ref_id ;
+              $postData = get_option( $transientKey );
+
+
+                    $new_id = $post_id;
+
+                    $session_id = "migla". $ref_id;
+
+                    //1 Cek if this donation session id exist
+                    $old_ids =  migla_cek_repeating_id( $session_id );
+
+
+                              migla_create_from_old_donation( $old_ids, $new_id);
+
+                              //Additional data
+                              add_post_meta( $new_id, "miglad_time" , $t );
+                              add_post_meta( $new_id, "miglad_date" , $d );
+                              
+                                if( get_option( 'miglaactions_2_1' ) == 'yes' )
+                              {
+                                   sendThankYouEmailRepeatingCustom( $new_id, $e, $en ) ;
+                                   sendNotifEmailRepeatingCustom( $new_id, $e, $en, $ne) ;
+                               }else{
+                                   sendThankYouEmailRepeating( $new_id, $e, $en );
+	                           sendNotifEmailRepeating( $new_id, $e, $en, $ne);
+                               }
+
+
+                    $tdata =  $transientKey. "hletter";
+
+                    $content =  get_option( $tdata );
+
+                    migla_hletter( $e, $en , $postData['miglad_honoreeemail'], $content, $postData['miglad_repeating']
+                                , $postData['miglad_anonymous'], $postData['miglad_firstname'], $postData['miglad_lastname'], 
+                                 $postData['miglad_amount'], $postData['miglad_honoreename'] , $d );
+
+
+                  //Save data from paypal
+                   add_post_meta( $post_id, 'miglad_paymentmethod', 'Credit Card' );
+                   add_post_meta( $post_id, 'miglad_paymentdata', $_POST );
+                   add_post_meta( $post_id, 'miglad_transactionId', $_POST['TRANSACTIONID'] );
+                   add_post_meta( $post_id, 'miglad_transactionType', 'Recurring (Paypal Pro)' );
+                   add_post_meta( $post_id, 'miglad_timezone', $default );
+                   add_post_meta( $post_id, 'miglad_desc', $_POST['desc'] );
+                   add_post_meta( $post_id, 'miglad_preference', $_POST['rp_invoice_id'] );
+                   add_post_meta( $post_id, 'miglad_subscription_id', $_POST['recurring_payment_id'] ); 
+				   
+	  } // If $payment_status
+        }
 
 
 }

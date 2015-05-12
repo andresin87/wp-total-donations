@@ -1,6 +1,5 @@
 <?php
-include ('../../../../wp-config.php');
-include ('../../../../wp-load.php');
+include_once '../../../../wp-blog-header.php';
 
 header( "Content-type: text/csv" );
 header( "Content-Disposition: attachment; filename=offline_donation.csv" );

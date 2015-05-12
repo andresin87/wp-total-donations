@@ -8,8 +8,8 @@ class migla_settings_class {
 	function menu_item() {
 		add_submenu_page(
 			'migla_donation_menu_page',
-			__( 'Settings', 'migla-donation' ),
-			__( 'Settings', 'migla-donation' ),
+			__( 'General Settings', 'migla-donation' ),
+			__( 'General Settings', 'migla-donation' ),
 			'manage_options',
 			'migla_donation_settings_page',
 			array( $this, 'menu_page' )
@@ -34,7 +34,7 @@ class migla_settings_class {
 		
         $nEmails = get_option( 'migla_notif_emails' ) ;
 		
-		echo "<div class='col-sm-3'><label class='control-label text-right-sm text-center-xs'>" . esc_html__( 'emails to notify upon new donations', 'migla-donation' );
+		echo "<div class='col-sm-3'><label for='miglaNotifEmails' class='control-label text-right-sm text-center-xs'>" . esc_html__( 'emails to notify upon new donations', 'migla-donation' );
 		echo "</label></div>";
 		echo "<div class='col-sm-6 col-xs-12'><input class='form-control' id='miglaNotifEmails' type='text' value='".$nEmails."' />";
 		echo "</div><div class='col-sm-3 col-xs-12 text-left-sm text-center-xs'><button id='miglaUpdateNotifEmails' class='btn btn-info pbutton miglaThankEmail' value='save'><i class='fa fa-fw fa-save'></i> save</button></div><span class='help-control col-sm-12 col-sm-pull-3  text-right-sm text-center-xs'>". __("Use commas to separate emails","migla-donation"). "</span>";
@@ -87,22 +87,22 @@ echo "</div></section></div>";
 		echo "<section class='panel'><header class='panel-heading'><div class='panel-actions'><a class='fa fa-caret-down ' data-toggle='collapse' data-parent='.panel' href='#collapseTwo' aria-expanded='true'></a></div><h2 class='panel-title'><i class='fa fa-envelope-o'></i>". __("Thank you Email","migla-donation"). "</h2></header>";
 		echo "<div id='collapseTwo' class='panel-body collapse in' >";
 
-echo "<div class='row'><div class='col-sm-3'><label class='control-label text-right-sm text-center-xs'>".esc_html__( 'Email Address: ', 'migla-donation' );
+echo "<div class='row'><div class='col-sm-3'><label for='miglaReplyToTxt' class='control-label text-right-sm text-center-xs'>".esc_html__( 'Email Address: ', 'migla-donation' );
 echo "</label></div><div class='col-sm-6 col-xs-12'>
 		
 		
 		 <input type='text' id='miglaReplyToTxt' placeholder='".get_option('migla_replyTo')."' value='".get_option('migla_replyTo')."' class='form-control'></div><div class='col-sm-3 col-xs-12 text-left-sm text-center-xs'><button value='save' class='btn btn-info pbutton' id='miglaReplyTo'><i class='fa fa-fw fa-save'></i>". __(" save","migla-donation"). "</button></div><span class='help-control col-sm-12 col-sm-pull-3  text-right-sm text-center-xs'>". __("The name your email will appeear from when your donor receives an email","migla-donation"). "</span></div>";
 
-echo "<div class='row'><div class='col-sm-3'><label class='control-label text-right-sm text-center-xs'>".esc_html__( 'Email Name : ', 'migla-donation' );
+echo "<div class='row'><div class='col-sm-3'><label for='miglaReplyToNameTxt' class='control-label text-right-sm text-center-xs'>".esc_html__( 'Email Name : ', 'migla-donation' );
 echo "</label></div><div class='col-sm-6 col-xs-12'>
 
 <input type='text' id='miglaReplyToNameTxt' class='form-control' placeholder='".get_option('migla_replyToName')."' value='".get_option('migla_replyToName')."'class='form-control' /></div><div class='col-sm-3 col-xs-12 text-left-sm text-center-xs'><button id='miglaReplyToName' class='btn btn-info pbutton' value='save'><i class='fa fa-fw fa-save'></i>". __(" save","migla-donation"). "</button></div><span class='help-control col-sm-12 col-sm-pull-3  text-right-sm text-center-xs'>". __("This is the name your thank you emails will appear from","migla-donation"). "</span></div>";
 
 // Form Grouping for Astried
 
-echo "<div class='form-horizontal'> <div class='form-group touching'><div class='col-sm-3 col-xs-12'><label class=' control-label text-right-sm text-center-xs'>". __(" Email Subject:","migla-donation")."</label>
-  </div><div class='col-sm-6 col-xs-12'><input type='text' name='migla_thankSbj' class='form-control touch-top' title='Please enter subject of email' placeholder='' required='' value='".get_option('migla_thankSbj')."'></div>
-<div class='col-sm-3 hidden-xs'></div></div><div class='form-group touching '><div class='col-sm-3'><label class=' control-label text-right-sm text-center-xs'>". __(" Thank you Email Text Body: ","migla-donation"). "</label>
+echo "<div class='form-horizontal'> <div class='form-group touching'><div class='col-sm-3 col-xs-12'><label for='migla_thankSbj' class=' control-label text-right-sm text-center-xs'>". __(" Email Subject:","migla-donation")."</label>
+  </div><div class='col-sm-6 col-xs-12'><input type='text' name='migla_thankSbj' id='migla_thankSbj' class='form-control touch-top' title='Please enter subject of email' placeholder='' required='' value='".get_option('migla_thankSbj')."'></div>
+<div class='col-sm-3 hidden-xs'></div></div><div class='form-group touching '><div class='col-sm-3'><label for='miglaThankBody' class=' control-label text-right-sm text-center-xs'>". __(" Thank you Email Text Body: ","migla-donation"). "</label>
  </div><div class='col-sm-6 col-xs-12'>"; 
 
 echo "<textarea  id='miglaThankBody' class='form-control touch-middle'  cols='50' rows='3' name='miglaThankEmailTxt'>";
@@ -111,14 +111,14 @@ $thankstr = get_option( 'migla_thankBody' );
 
 echo $thankstr;
 
-echo "</textarea></div><div class='col-sm-3'> </div> </div><div class='form-group touching '><div class='col-sm-3 col-xs-12'><label class='control-label text-right-sm text-center-xs'>". __("Repeating Donations:","migla-donation")."</label> </div><div class='col-sm-6 col-xs-12'><input required='' placeholder='' class='form-control touch-middle' title='' rows='5' name='migla_thankRepeat' style='overflow: hidden;' value='".get_option('migla_thankRepeat')."'></div>	
+echo "</textarea></div><div class='col-sm-3'> </div> </div><div class='form-group touching '><div class='col-sm-3 col-xs-12'><label for='migla_thankRepeat' class='control-label text-right-sm text-center-xs'>". __("Repeating Donations:","migla-donation")."</label> </div><div class='col-sm-6 col-xs-12'><input required='' placeholder='' class='form-control touch-middle' title='' rows='5' name='migla_thankRepeat' id='migla_thankRepeat' style='overflow: hidden;' value='".get_option('migla_thankRepeat')."'></div>	
 <div class='col-sm-3 hidden-xs'> </div></div>
 
 
 <div class='form-group touching '>
-									<div class='col-sm-3 col-xs-12'>		<label class='control-label text-right-sm text-center-xs'>". __("Anonymous Donations:","migla-donation"). "</label> </div>
+									<div class='col-sm-3 col-xs-12'>		<label for='migla_thankAnon' class='control-label text-right-sm text-center-xs'>". __("Anonymous Donations:","migla-donation"). "</label> </div>
 											<div class='col-sm-6 col-xs-12'>
-												<input required='' placeholder='' class='form-control touch-middle' title='' rows='5' name='migla_thankAnon' style='overflow: hidden;' value='".get_option('migla_thankAnon')."'>
+												<input required='' placeholder='' class='form-control touch-middle' title='' rows='5' name='migla_thankAnon' id='migla_thankAnon' style='overflow: hidden;' value='".get_option('migla_thankAnon')."'>
 												
 												
 								</div>				
@@ -135,9 +135,9 @@ echo "</textarea></div><div class='col-sm-3'> </div> </div><div class='form-grou
   
   
   <div class='form-group'>
-									<div class='col-sm-3 col-xs-12'>		<label class='control-label text-right-sm text-center-xs'>". __("Signature:","migla-donation"). "</label> </div>
+									<div class='col-sm-3 col-xs-12'>		<label for='migla_thankSig' class='control-label text-right-sm text-center-xs'>". __("Signature:","migla-donation"). "</label> </div>
 											<div class='col-sm-6 col-xs-12'>
-												<input required='' placeholder='' class='form-control touch-bottom' title='' rows='5' name='migla_thankSig' style='overflow: hidden;' value='".get_option('migla_thankSig')."'>
+												<input required='' placeholder='' class='form-control touch-bottom' title='' rows='5' name='migla_thankSig' id='migla_thankSig' style='overflow: hidden;' value='".get_option('migla_thankSig')."'>
 
 <div style='border:none' class='row'><br><label class='col-sm-6 help-control'>". __(" Use the following shortcodes in the email body:","migla-donation"). "</label>
 
@@ -154,7 +154,7 @@ echo "</textarea></div><div class='col-sm-3'> </div> </div><div class='form-grou
 </div>";
 
 
-  echo "<div class='row'><div class='col-sm-3'><label class='control-label text-right-sm text-center-xs'>" . esc_html__( 'Email address for Test:', 'migla-donation' );
+  echo "<div class='row'><div class='col-sm-3'><label for='miglaTestEmailAdd' class='control-label text-right-sm text-center-xs'>" . esc_html__( 'Email address for Test:', 'migla-donation' );
 		echo "</label></div>";
 		echo "<div class='col-sm-6 col-xs-12'><input class='form-control' id='miglaTestEmailAdd' type='text' value='' />";
 		echo "</div><div class='col-sm-3 col-xs-12 text-left-sm text-center-xs'><button id='miglaTestEmail' class='btn btn-info obutton' value='Send Testing Email'><i class='fa fa-fw fa-envelope-o'></i>". __(" Preview Email","migla-donation"). "</button></div><span class='help-control col-sm-12 col-sm-pull-3  text-right-sm text-center-xs'>". __(" Use this to preivew what your donors will see when they donate.","migla-donation"). "</span> </div></div></div>";
@@ -168,9 +168,9 @@ echo "<div class='col-sm-12'>";
 		echo "<div id='collapseThree' class='panel-body collapse in'>";
 
 
-echo "<div class='form-horizontal'> <div class='form-group touching'><div class='col-sm-3 col-xs-12'><label class=' control-label text-right-sm text-center-xs'>". __("Email Subject:","migla-donation"). "</label>
-  </div><div class='col-sm-6 col-xs-12'><input type='text' name='migla_honoreESbj' class='form-control touch-top' title='Plase enter a name.' placeholder='' required='' value='".get_option('migla_honoreESbj')."'></div>
-<div class='col-sm-3 hidden-xs'></div></div><div class='form-group touching '><div class='col-sm-3'><label class=' control-label text-right-sm text-center-xs'>". __("Thank you Email Text Body: ","migla-donation"). "</label>
+echo "<div class='form-horizontal'> <div class='form-group touching'><div class='col-sm-3 col-xs-12'><label for='migla_honoreESbj' class=' control-label text-right-sm text-center-xs'>". __("Email Subject:","migla-donation"). "</label>
+  </div><div class='col-sm-6 col-xs-12'><input type='text' name='migla_honoreESbj' id='migla_honoreESbj' class='form-control touch-top' title='Plase enter a name.' placeholder='' required='' value='".get_option('migla_honoreESbj')."'></div>
+<div class='col-sm-3 hidden-xs'></div></div><div class='form-group touching '><div class='col-sm-3'><label for='migla_honoreEBody' class=' control-label text-right-sm text-center-xs'>". __("Thank you Email Text Body: ","migla-donation"). "</label>
  </div><div class='col-sm-6 col-xs-12'>"; 
 
 echo "<textarea  id='migla_honoreEBody' class='form-control touch-middle'  cols='50' rows='3' name=''>";
@@ -179,17 +179,17 @@ $thankstr = get_option('migla_honoreEBody');
 
 echo $thankstr;
 
-echo "</textarea></div><div class='col-sm-3'> </div> </div><div class='form-group touching '><div class='col-sm-3 col-xs-12'><label class='control-label text-right-sm text-center-xs'>". __("Repeating Donations:","migla-donation"). "</label> </div><div class='col-sm-6 col-xs-12'><input required='' placeholder='' class='form-control touch-middle' title='' rows='5' name='migla_honoreERepeat' style='overflow: hidden;' value='".get_option('migla_honoreERepeat')."'></div>	
+echo "</textarea></div><div class='col-sm-3'> </div> </div><div class='form-group touching '><div class='col-sm-3 col-xs-12'><label for='migla_honoreERepeat' class='control-label text-right-sm text-center-xs'>". __("Repeating Donations:","migla-donation"). "</label> </div><div class='col-sm-6 col-xs-12'><input required='' placeholder='' class='form-control touch-middle' title='' rows='5' name='migla_honoreERepeat' id='migla_honoreERepeat' style='overflow: hidden;' value='".get_option('migla_honoreERepeat')."'></div>	
 <div class='col-sm-3 hidden-xs'> </div></div>";
 
-echo "<div class='form-group touching '><div class='col-sm-3 col-xs-12'><label class='control-label text-right-sm text-center-xs'>". __("Custom Message Intro:","migla-donation"). "</label> </div>
-<div class='col-sm-6 col-xs-12'><input value='".get_option('migla_honoreECustomIntro')."' name='migla_honoreECustomIntro' rows='5' title='' class='form-control touch-middle' placeholder='' required=''>
+echo "<div class='form-group touching '><div class='col-sm-3 col-xs-12'><label for='migla_honoreECustomIntro' class='control-label text-right-sm text-center-xs'>". __("Custom Message Intro:","migla-donation"). "</label> </div>
+<div class='col-sm-6 col-xs-12'><input value='".get_option('migla_honoreECustomIntro')."' id='migla_honoreECustomIntro' name='migla_honoreECustomIntro' rows='5' title='' class='form-control touch-middle' placeholder='' required=''>
 </div> <div class='col-sm-3 hidden-xs'> </div></div>";
 
 echo "<div class='form-group touching '>
-									<div class='col-sm-3 col-xs-12'>		<label class='control-label text-right-sm text-center-xs'>". __("Anonymous Donations:","migla-donation"). "</label> </div>
+									<div class='col-sm-3 col-xs-12'>		<label for='migla_honoreEAnon' class='control-label text-right-sm text-center-xs'>". __("Anonymous Donations:","migla-donation"). "</label> </div>
 											<div class='col-sm-6 col-xs-12'>
-												<input required='' placeholder='' class='form-control touch-middle' title='' rows='5' name='migla_honoreEAnon' style='overflow: hidden;' value='".get_option('migla_honoreEAnon')."'>
+												<input required='' placeholder='' class='form-control touch-middle' title='' rows='5' name='migla_honoreEAnon' id='migla_honoreEAnon' style='overflow: hidden;' value='".get_option('migla_honoreEAnon')."'>
 												
 												
 								</div>				
@@ -206,9 +206,9 @@ echo "<div class='form-group touching '>
   
   
   <div class='form-group'>
-									<div class='col-sm-3 col-xs-12'>		<label class='control-label text-right-sm text-center-xs'>". __("Signature:","migla-donation"). "</label> </div>
+									<div class='col-sm-3 col-xs-12'>		<label for='migla_honoreESig' class='control-label text-right-sm text-center-xs'>". __("Signature:","migla-donation"). "</label> </div>
 											<div class='col-sm-6 col-xs-12'>
-												<input required='' placeholder='' class='form-control touch-bottom' title='' rows='5' name='migla_honoreESig' style='overflow: hidden;' value='".get_option('migla_honoreESig')."'>
+												<input required='' placeholder='' class='form-control touch-bottom' title='' rows='5' name='migla_honoreESig' id='migla_honoreESig' style='overflow: hidden;' value='".get_option('migla_honoreESig')."'>
 
 <div style='border:none' class='row'><br><label class='col-sm-6 help-control'>". __(" Use the following shortcodes in the email body:","migla-donation"). "</label>
 
@@ -227,7 +227,7 @@ echo "<div class='form-group touching '>
 
 
 
-<div class='row'><div class='col-sm-3'><label class='control-label text-right-sm text-center-xs'>" . esc_html__( 'Email address for Honoree Email Test:', 'migla-donation' );
+<div class='row'><div class='col-sm-3'><label for='miglaTestHEmailAdd' class='control-label text-right-sm text-center-xs'>" . esc_html__( 'Email address for Honoree Email Test:', 'migla-donation' );
 		echo "</label></div>";
 		echo "<div class='col-sm-6 col-xs-12'><input class='form-control' id='miglaTestHEmailAdd' type='text' value='' />";
 		echo "</div><div class='col-sm-3 col-xs-12 text-left-sm text-center-xs'><button id='miglaTestHEmail' class='btn btn-info obutton' value='Send Testing Email'><i class='fa fa-fw fa-envelope-o'></i>". __(" Preview Email","migla-donation"). "</button></div><span class='help-control col-sm-12 col-sm-pull-3  text-right-sm text-center-xs'>". __(" Use this to preivew what the honoree will see when they receive a message.","migla-donation"). "</span> </div></div>   
@@ -267,7 +267,7 @@ echo "<div class='form-group touching '>
 		
 	   echo "<section class='panel'><header class='panel-heading'><div class='panel-actions'><a class='fa fa-caret-down' data-toggle='collapse' data-parent='.panel' href='#collapseSeven' aria-expanded='true'></a></div><h2 class='panel-title'><i class='fa fa-fw fa-clock-o'></i>". __(" Default Time Zone Section","migla-donation"). "</h2></header>";
 	      echo "<div id='collapseSeven' class='panel-body collapse in'><div class='row'>";
-	   echo "<div class='col-sm-3 col-xs-12'><label class='control-label text-right-sm text-center-xs'>". __("Set Time Zone","migla-donation");
+	   echo "<div class='col-sm-3 col-xs-12'><label for='miglaDefaultTimezone' class='control-label text-right-sm text-center-xs'>". __("Set Time Zone","migla-donation");
         echo "</label></div>";
        echo "<div class='col-sm-6 col-xs-12'><select id='miglaDefaultTimezone' name='miglaDefaultTimezone'>"; 
            echo "<option value='Server Time' >". __("Server Time","migla-donation")."</option>"; 

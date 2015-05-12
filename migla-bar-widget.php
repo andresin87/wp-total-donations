@@ -51,22 +51,30 @@ class totaldonations_bar_widget extends WP_Widget {
 	function widget( $args, $instance ) {
 		extract( $args );
 
-  if( wp_script_is( 'mg_progress-bar', 'registered' ) ){
-  }else{
-    wp_register_style( 'mg_progress-bar', plugins_url( 'totaldonations/css/mg_progress-bar.css' , dirname(__FILE__)) );
-  }
 
-  if( wp_script_is( 'mg_progress-bar', 'queue' ) ){}else{
-    wp_enqueue_style( 'mg_progress-bar' );
-  }
+       if( wp_script_is( 'migla-front-end-css', 'registered' ) && wp_script_is( 'migla-front-end-css', 'queue' )  )
+       {
+       }else{
+          //make sure it only load once
+          if( wp_script_is( 'mg_progress-bar', 'registered' ) ){
+          }else{
+              wp_register_style( 'mg_progress-bar', plugins_url( 'totaldonations/css/mg_progress-bar.css' , dirname(__FILE__)) );
+          }
+
+          if( wp_script_is( 'mg_progress-bar', 'queue' ) ){
+          }else{
+              wp_enqueue_style( 'mg_progress-bar' );
+          }          
+       }
+
 
 		/* Our variables from the widget settings. */
         $title = apply_filters('widget_title', $instance['title'] );
-	$campaign = $instance['campaign'];
+	    $campaign = $instance['campaign'];
         $style = $instance['belowHTML'];
         $link = $instance['link'];
         $btnclass = $instance['btnclass'];
-	$btnstyle = $instance['btnstyle'];
+	    $btnstyle = $instance['btnstyle'];
         $btntext = $instance['btntext'];
         
               	/* Before widget (defined by themes). */
@@ -83,11 +91,19 @@ class totaldonations_bar_widget extends WP_Widget {
       if( $btnstyle == 'GreyButton' ){
         $class2 = ' mg-btn-grey';	  
 	  }	  
-
-      $url = get_option( 'migla_form_url' );
 	
       if( $link=='on' ){
-        echo "<form action='".$url."' method='post'>";
+
+         $c = str_replace( "'", "", $campaign ); //Clean
+         $c = str_replace( " ", "", $c ); //Clean
+         $form_url = 'migla_url_' . $c;
+         $url = get_option( $form_url );
+		 
+		 if( $url == '' || $url == false){
+		    $url = get_option('migla_form_url');
+		 }
+
+        echo "<form action='".esc_url($url)."' method='post'>";
         echo "<input type='hidden' name='campaign' value='".$campaign."' />";
 		
 		echo "<input type='hidden' name='thanks' value='widget_bar' />";

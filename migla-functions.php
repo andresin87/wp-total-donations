@@ -5,6 +5,100 @@
 * 	Functions that need
 *	Author : Astried & Binti
 *************************************************************************/
+
+/**** added April 2th ********/
+function migla_delete_post_meta1( $meta_key ) {
+  global $wpdb;
+ 
+  $wpdb->query( 
+	$wpdb->prepare( 
+         "DELETE FROM {$wpdb->prefix}postmeta WHERE meta_key like %s" 
+          , $meta_key
+        )
+     ); 
+}
+
+
+function migla_delete_post_meta2( $meta_id ) {
+  global $wpdb;
+ 
+  $wpdb->query( 
+	$wpdb->prepare( 
+         "DELETE FROM {$wpdb->prefix}postmeta WHERE meta_id = %d" 
+          , $meta_id
+        )
+     ); 
+}
+
+/***********      Stripe's Function    *********************************/
+function migla_getSK(){
+   $SK = get_option('migla_liveSK');
+
+   if( get_option('migla_stripemode') == 'test' ){
+      $SK = get_option('migla_testSK');
+   }
+
+   return $SK;
+}
+
+function migla_getPK(){
+   $PK = get_option('migla_livePK');
+
+   if( get_option('migla_stripemode') == 'test' ){
+      $PK = get_option('migla_testPK');
+   }
+
+   return $PK;
+}
+
+function migla_get_stripeplan_id() {
+    global $wpdb;
+    $pid = $wpdb->get_var( $wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_type = %s ORDER BY ID ASC" , 'migla_stripe_plan') );
+    if( $pid != '' )
+    {
+        return $pid;
+    }else{
+ 
+      $new_donation = array(
+	'post_title' => 'migla_donation',
+	'post_content' => '',
+	'post_status' => 'publish',
+	'post_author' => 1,
+	'post_type' => 'migla_stripe_plan'
+       );
+
+       $new_id = wp_insert_post( $new_donation );
+
+       return $new_id;
+   }
+}
+
+function migla_get_select_values_postid() 
+{
+    global $wpdb;
+    $pid = $wpdb->get_var( $wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_type = %s ORDER BY ID ASC" , 'migla_custom_values') );
+    if( $pid != '' )
+    {
+        return $pid;
+    }else{
+ 
+      $new_donation = array(
+	'post_title' => 'migla_donation',
+	'post_content' => '',
+	'post_status' => 'publish',
+	'post_author' => 1,
+	'post_type' => 'migla_custom_values'
+       );
+
+       $new_id = wp_insert_post( $new_donation );
+
+       return $new_id;
+   }
+}
+
+/************************************************************************/
+
+
 function migla_delete_all_settings(){
   global $wpdb;
  
@@ -14,6 +108,22 @@ function migla_delete_all_settings(){
           , 'migla%'
         )
      ); 
+
+  $wpdb->query( 
+	$wpdb->prepare( 
+         "DELETE FROM {$wpdb->prefix}options WHERE option_name like %s" 
+          , 't_migla%'
+        )
+     ); 
+
+    $pid = $wpdb->get_var( $wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_type = %s ORDER BY ID ASC" , 'migla_custom_values') );
+    if( $pid != '' )
+    {
+       $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}postmeta WHERE post_id = %d" , $pid  ));
+       $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}posts WHERE ID = %d" , $pid  ));
+    }else{
+
+    }
 
 }
 
@@ -184,7 +294,7 @@ function sendNotifEmail( $postdata, $code, $e, $en, $ne)
    {
      if( !empty($value) )
      {  
-        if ( $keys[$i]=='miglad_session_id' )
+        if ( $keys[$i]=='miglad_session_id' || $keys[$i]=='miglad_session_id_' )
         {
         }
         else if (  $keys[$i] == 'miglad_date')
@@ -529,7 +639,9 @@ function testing_repeat(){
 
 function migla_cek_repeating_id( $meta_value ) {
     global $wpdb;
-    $pid = $wpdb->get_var( $wpdb->prepare("SELECT post_id FROM $wpdb->postmeta WHERE meta_value = '$meta_value' AND meta_key = 'miglad_session_id' ORDER BY post_id ASC") );
+    $pid = $wpdb->get_var( $wpdb->prepare(
+           "SELECT post_id FROM $wpdb->postmeta WHERE meta_value = %s AND meta_key = 'miglad_session_id' ORDER BY post_id ASC"
+            ,$meta_value  ));
     if( $pid != '' )
         return $pid;
     else 
@@ -549,7 +661,8 @@ function migla_cek_id_exist( $id ){
    return $isExist;
 }
 
-function migla_create_from_old_donation( $old_id, $new_id){
+function migla_create_from_old_donation( $old_id, $new_id)
+{
    global $wpdb;
 
    //get data from old id
@@ -687,17 +800,27 @@ function purgeTransient2(){
 *************************************************************************/
 function migla_get_campaign_target( $cname ){
   $t = 0;
-  
+    
   $data = (array)get_option('migla_campaign');
-if( empty($data[0]) ){
-
-}else{ 
- foreach( (array)$data as $d ){
-    if( strcmp($cname, $d['name']) == 0 ){ 
-      $t = $d['target']; break; 
+  if( $cname == '' )
+  {
+    if( empty($data[0]) ){
+    }else{ 
+       foreach( (array)$data as $d ){
+          $t = $t + (float)$d['target'];
+       }
+    }
+  }else{
+    if( empty($data[0]) ){
+    }else{ 
+       foreach( (array)$data as $d ){
+          if( strcmp($cname, $d['name']) == 0 ){ 
+             $t = $d['target']; break; 
+          }
+       }
     }
   }
-}  
+
   return $t;
 }
 
@@ -705,11 +828,20 @@ function migla_get_total( $cname, $posttype )
 {
 
   global $wpdb; $res =array();
-  $sql = "select sum(meta_value) as total from {$wpdb->prefix}posts inner join {$wpdb->prefix}postmeta
-          on {$wpdb->prefix}posts.ID = {$wpdb->prefix}postmeta.post_id
-          where (post_type = 'migla_donation' OR post_type = 'migla_odonation') AND post_id in (
-          select post_id from {$wpdb->prefix}postmeta where meta_value = '".$cname."' and meta_key = 'miglad_campaign'
-          ) and meta_key = 'miglad_amount'";
+
+ if( $cname == '' )
+ {
+     $sql = "select sum(meta_value) as total from {$wpdb->prefix}posts inner join {$wpdb->prefix}postmeta
+             on {$wpdb->prefix}posts.ID = {$wpdb->prefix}postmeta.post_id
+             where post_type like 'migla%donation' AND meta_key = 'miglad_amount'";
+ }else{
+
+     $sql = "select sum(meta_value) as total from {$wpdb->prefix}posts inner join {$wpdb->prefix}postmeta
+             on {$wpdb->prefix}posts.ID = {$wpdb->prefix}postmeta.post_id
+             where (post_type = 'migla_donation' OR post_type = 'migla_odonation') AND post_id in (
+             select post_id from {$wpdb->prefix}postmeta where meta_value = '".$cname."' and meta_key = 'miglad_campaign'
+              ) and meta_key = 'miglad_amount'";
+  }
 
   if( $posttype != '' ){
     $sql = $sql . " and post_type = '".$posttype."'";
@@ -885,7 +1017,15 @@ function migla_text_progressbar(  $cname, $posttype , $linkbtn, $btntext, $text 
 }
 
        if( $linkbtn == "yes"){
-         $url = get_option( 'migla_form_url' );
+         $c = str_replace( "'", "", $cname ); //Clean
+         $c = str_replace( " ", "", $c ); //Clean
+         $form_url = 'migla_url_' . $c;
+         $url = get_option( $form_url );
+
+         if( $url == '' || $url == false){
+	    $url = get_option('migla_form_url');
+	 }
+
          $output .= "<form action='".$url."' method='post'>";
          $output .= "<input type='hidden' name='campaign' value='".$cname."' />";
          $output .= "<input type='hidden' name='thanks' value='widget_bar' />";
@@ -948,7 +1088,7 @@ if(  $target != 0 ){
         $output .= "<div class='progress-sidebar'><p class='progress-sidebar'>";
         $output .= $content;
         $output .= "</p></div>";
-	$output .= migla_draw_progress_bar( $percent );
+ 	$output .= migla_draw_progress_bar( $percent );
         $output .= "</div>";
 }else{
   $output = "";
@@ -1029,7 +1169,6 @@ function migla_draw_textbarshortcode(  $cname, $button, $buttontext, $text )
 {
   	$total_amount = 0; 
         $target = 0;
-         $url = get_option( 'migla_form_url' );
 	
         $total_amount = migla_get_total( $cname, $posttype );
         $target = migla_get_campaign_target( $cname );
@@ -1074,6 +1213,15 @@ function migla_draw_textbarshortcode(  $cname, $button, $buttontext, $text )
         $start = $content;
         $pos1 = strpos($start , "#textlink:"); $afterform = "";
 
+         $c = str_replace( "'", "", $cname ); //Clean
+         $c = str_replace( " ", "", $c ); //Clean
+         $form_url = 'migla_url_' . $c;
+         $url = get_option( $form_url );
+ 
+         if( $url == '' || $url == false){
+	    $url = get_option('migla_form_url');
+	 }
+
         if( $pos1 >= 0)
         {
           $start = substr($start, ( $pos1 + 1) );     
@@ -1103,6 +1251,7 @@ function migla_draw_textbarshortcode(  $cname, $button, $buttontext, $text )
 
 
        if( $button == "yes"){
+
          $output .= "<form action='".$url."' method='post'>";
          $output .= "<input type='hidden' name='campaign' value='".$cname."' />";
          $output .= "<button class='migla_donate_now mg-btn-grey'>".$buttontext."</button>";
@@ -1555,7 +1704,7 @@ function mgcompareOrder($a, $b)
 
 /********************* Top Donors & Recent Donations Shortcodes **********************************************/
 
-function draw_topdonors( $title, $num_rec, $donation_type, $use_link, $btn_class, $btn_style, $btn_text )
+function mg_draw_topdonors( $title, $num_rec, $donation_type, $use_link, $btn_class, $btn_style, $btn_text, $urlLink )
 {
     $out = "";
 
@@ -1599,11 +1748,11 @@ function draw_topdonors( $title, $num_rec, $donation_type, $use_link, $btn_class
       
      $class2 = "";
      if( $btn_style == 'grey_button' ){  $class2 = ' mg-btn-grey';	  }	  
-
-      $url = get_option( 'migla_form_url' );
 	
       if( $use_link=='yes' ){
-        $out .= "<form action='".$url."' method='post'>";
+        if( $urlLink == '' || $urlLink == false ){ $urlLink = get_option('migla_form_url');  }
+
+        $out .= "<form action='".esc_url( $urlLink)."' method='post'>";
           if( $btn_text == '' ){ $btn_text = 'Donate'; }
         $out .= "<input type='hidden' name='thanks' value='widget_bar' />";
         $out .= "<button class='migla_donate_now ".$btn_class . $class2."'>".$btn_text."</button>";
@@ -1614,7 +1763,7 @@ function draw_topdonors( $title, $num_rec, $donation_type, $use_link, $btn_class
 }
 
 
-function migla_draw_donor_recent( $title, $num_rec, $donation_type, $use_link, $btn_class, $btn_style, $btn_text , $language){
+function migla_draw_donor_recent( $title, $num_rec, $donation_type, $use_link, $btn_class, $btn_style, $btn_text , $language, $url_link){
     $out = ""; 
   
     $out .= "<h3 class='mg-recent-donors-title'>";
@@ -1675,11 +1824,10 @@ function migla_draw_donor_recent( $title, $num_rec, $donation_type, $use_link, $
 
      $class2 = "";
      if( $btn_style == 'grey_btn' ){  $class2 = ' mg-btn-grey';	  }	  
-
-      $url = get_option( 'migla_form_url' );
 	
       if( $use_link == 'yes' ){
-        $out .= "<form action='".$url."' method='post'>";
+        if( $url_link == '' || $url_link == false ){   $url_link = get_option( 'migla_form_url' ); }
+        $out .= "<form action='".esc_url($url_link)."' method='post'>";
           if( $btn_text == '' ){ $btn_text = 'Donate'; }
         $out .= "<input type='hidden' name='thanks' value='widget_bar' />";
         $out .= "<button class='migla_donate_now ".$btnclass . $class2."'>".$btn_text."</button>";

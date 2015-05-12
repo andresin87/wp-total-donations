@@ -24,6 +24,42 @@ jQuery(document).ready(function() {
 
  });
 
+ jQuery('#migla_ajax_caller_setting').change(function(){
+
+   var inputValue = 'td';
+   if( jQuery(this).is(':checked') ){ inputValue = 'wp' }
+
+   jQuery.ajax({
+	type : "post",
+	url : miglaAdminAjax.ajaxurl, 
+	data : {action: "miglaA_update_me", key:'migla_ajax_caller', value:inputValue },
+	success: function() {
+           jQuery('#migla_ajax_caller_setting_').text('Saved'); 
+           setTimeout(function (){
+               jQuery('#migla_ajax_caller_setting_').text(''); 
+           }, 1000);
+	}
+    })  ; //ajax	   
+
+ });
+
+ jQuery('#migla_allow_cors_setting').change(function(){
+   var inputValue = 'no';
+   if( jQuery(this).is(':checked') ){ inputValue = 'yes' }
+
+   jQuery.ajax({
+	type : "post",
+	url : miglaAdminAjax.ajaxurl, 
+	data : {action: "miglaA_update_me", key:'migla_allow_cors', value:inputValue },
+	success: function() {
+           jQuery('#migla_allow_cors_setting_').text('Saved'); 
+           setTimeout(function (){
+               jQuery('#migla_allow_cors_setting_').text(''); 
+           }, 1000);
+	}
+    })  ; //ajax	
+ });
+
  jQuery('#miglaEraseCache').click(function(){
 
       var me = jQuery(this); 

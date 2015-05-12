@@ -52,27 +52,34 @@ class totaldonations_donation_widget extends WP_Widget {
 		extract( $args );
 
 
-  if( wp_script_is( 'mg_progress-bar', 'registered' ) ){
-  }else{
-    wp_register_style( 'mg_progress-bar', plugins_url( 'totaldonations/css/mg_progress-bar.css' , dirname(__FILE__)) );
-  }
+       if( wp_script_is( 'migla-front-end-css', 'registered' ) && wp_script_is( 'migla-front-end-css', 'queue' )  )
+       {
+       }else{
+          //make sure it only load once
+          if( wp_script_is( 'mg_progress-bar', 'registered' ) ){
+          }else{
+              wp_register_style( 'mg_progress-bar', plugins_url( 'totaldonations/css/mg_progress-bar.css' , dirname(__FILE__)) );
+          }
 
-  if( wp_script_is( 'mg_progress-bar', 'queue' ) ){}else{
-    wp_enqueue_style( 'mg_progress-bar' );
-  }
+          if( wp_script_is( 'mg_progress-bar', 'queue' ) ){
+          }else{
+              wp_enqueue_style( 'mg_progress-bar' );
+          }          
+       }
 
 		/* Our variables from the widget settings. */
         $title = apply_filters('widget_title', $instance['title'] );
         $numberOfRecords = $instance['numberOfRecords'];
-        $filter = $instance['filter'];
+        $filter      = $instance['filter'];
         $donationType = $instance['donationType'];
-        $link = $instance['link'];
-        $btnclass = $instance['btnclass'];
-	$btnstyle = $instance['btnstyle'];
-        $btntext = $instance['btntext'];
-        $language = $instance['language'];
-        $hide_date = $instance['hide_date'];
+        $link        = $instance['link'];
+        $btnclass    = $instance['btnclass'];
+	$btnstyle    = $instance['btnstyle'];
+        $btntext     = $instance['btntext'];
+        $language    = $instance['language'];
+        $hide_date   = $instance['hide_date'];
         $date_format = $instance['date_format'];
+        $urlLink     = $instance['urlLink'];
 
      /* Before widget (defined by themes). */
      echo $before_widget;
@@ -109,16 +116,16 @@ class totaldonations_donation_widget extends WP_Widget {
          echo "<section class='mg_widgetPanel'>";
 
          if($hide_date == 'on'){
-               echo "<div class='mg_widgetDate pull-right'></div> ";
+               echo "<div class='mg_widgetDate pull-right'></div>";
          }else{
-              echo "<div class='mg_widgetDate pull-right'>". strftime( $date_format , date(strtotime($datum['date'])) ). "</div> ";
+              echo "<div class='mg_widgetDate pull-right'>". strftime( $date_format , date(strtotime($datum['date'])) ). "</div>";
          }
 
          echo "<div class='mg_widgetAmount'>".$b.number_format( $datum['amount'], $dec , $decsep, $thousep ) .$a. "</div>";
 
-         echo "<div class='mg_widgetName'>". $datum['firstname']. "&nbsp;" .$datum['lastname']  . "</p>";
+         echo "<div class='mg_widgetName'>". $datum['firstname']. "&nbsp;" .$datum['lastname']. " ";
 
-         echo "</section>";
+         echo "</div></section>";
          $row++;
       }
 
@@ -129,11 +136,9 @@ class totaldonations_donation_widget extends WP_Widget {
 
      $class2 = "";
      if( $btnstyle == 'GreyButton' ){  $class2 = ' mg-btn-grey';	  }	  
-
-      $url = get_option( 'migla_form_url' );
 	
       if( $link=='on' ){
-        echo "<form action='".$url."' method='post'>";
+        echo "<form action='".esc_url($urlLink)."' method='post'>";
           if( $btntext == '' ){ $btntext = 'Donate'; }
         echo "<input type='hidden' name='thanks' value='widget_bar' />";
         echo "<button class='migla_donate_now ".$btnclass . $class2."'>".$btntext."</button>";
@@ -165,18 +170,19 @@ jQuery('.migla_donate_now').click(function(e) {
 		$instance = $old_instance;
 
 		/* Strip tags for title and name to remove HTML (important for text inputs). */
-   $instance['title'] = strip_tags( $new_instance['title'] );
-   $instance['numberOfRecords'] = strip_tags( $new_instance['numberOfRecords'] );	
-   $instance['filter'] = strip_tags( $new_instance['filter'] );	
-   $instance['donationType'] = strip_tags( $new_instance['donationType'] );
+          $instance['title']           = strip_tags( $new_instance['title'] );
+          $instance['numberOfRecords'] = strip_tags( $new_instance['numberOfRecords'] );	
+          $instance['filter']          = strip_tags( $new_instance['filter'] );	
+          $instance['donationType']    = strip_tags( $new_instance['donationType'] );
 
-        $instance['link'] =  strip_tags( $new_instance['link'] ) ;		
-        $instance['btnclass'] =  strip_tags( $new_instance['btnclass'] );
-        $instance['btnstyle'] =  strip_tags( $new_instance['btnstyle'] );
-        $instance['btntext'] = $new_instance['btntext'];
-        $instance['language'] = $new_instance['language'];
-        $instance['hide_date'] = $new_instance['hide_date'];
-        $instance['date_format'] = $new_instance['date_format'];
+          $instance['link']        =  strip_tags( $new_instance['link'] ) ;		
+          $instance['btnclass']    =  strip_tags( $new_instance['btnclass'] );
+          $instance['btnstyle']    =  strip_tags( $new_instance['btnstyle'] );
+          $instance['btntext']     = strip_tags( $new_instance['btntext'] );
+          $instance['language']    = $new_instance['language'];
+          $instance['hide_date']   = $new_instance['hide_date'];
+          $instance['date_format'] = $new_instance['date_format'];
+          $instance['urlLink']     = strip_tags( $new_instance['urlLink'] );
 
           return $instance;
 	}
@@ -194,29 +200,31 @@ jQuery('.migla_donate_now').click(function(e) {
 
       // Check values 
       if( $instance) { 
-        $title = esc_attr($instance['title']); 
-        $numberOfRecords = $instance['numberOfRecords'];
-        $filter = $instance['filter'];
-        $donationType = $instance['donationType'];
-       $link = esc_attr($instance['link']); 
-       $btnclass = esc_attr($instance['btnclass']); 
-       $btnstyle = esc_attr($instance['btnstyle']); 
-       $btntext = esc_attr($instance['btntext']);
-       $language = $instance['language'];
-       $hide_date = $instance['hide_date'];
-       $date_format = $instance['date_format'];
+          $title           = esc_attr($instance['title']); 
+          $numberOfRecords = $instance['numberOfRecords'];
+          $filter          = $instance['filter'];
+          $donationType    = $instance['donationType'];
+          $link            = esc_attr($instance['link']); 
+          $btnclass        = esc_attr($instance['btnclass']); 
+          $btnstyle        = esc_attr($instance['btnstyle']); 
+          $btntext         = esc_attr($instance['btntext']);
+          $language        = $instance['language'];
+          $hide_date       = $instance['hide_date'];
+          $date_format     = $instance['date_format'];
+          $urlLink         = $instance['urlLink'];
       } else { 
-        $title = "Total Donations Donor Wall"; 
-        $numberOfRecords = 10;
-        $filter = 'recent';
-        $donationType = 'online';
-       $link = ''; 
-       $btnclass = ''; 
-       $btnstyle = ''; 
-       $btntext = '';
-       $language = '';
-        $hide_date = '';
-        $date_format = '%B %d %Y';
+          $title = "Total Donations Donor Wall"; 
+          $numberOfRecords  = 10;
+          $filter           = 'recent';
+          $donationType     = 'online';
+          $link             = ''; 
+          $btnclass         = ''; 
+          $btnstyle         = ''; 
+          $btntext          = '';
+          $language         = '';
+          $hide_date        = '';
+          $date_format      = '%B %d %Y';
+          $urlLink          = get_option('migla_form_url');
       } 
 ?>
 
@@ -280,6 +288,10 @@ jQuery('.migla_donate_now').click(function(e) {
 	<input type="text" class="widefat" id="<?php echo $this->get_field_id( 'btntext' ); ?>" name="<?php echo $this->get_field_name( 'btntext' ); ?>" value="<?php echo $btntext; ?>" />
       </p>
 
+        <p>
+        <div><label>Url that link will open:</label>
+        <input input='text' class='widefat' type='text' id="<?php echo $this->get_field_id( 'urlLink' ); ?>" name="<?php echo $this->get_field_name( 'urlLink' ); ?>" value="<?php echo $urlLink;  ?>"></input></div> 
+        </p>
 
       <p>
 	<label for="<?php echo $this->get_field_id( 'hide_date' ); ?>"><?php _e('Hide Date:', 'localization') ?></label>
