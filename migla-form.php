@@ -648,28 +648,20 @@ function migla_get_levels_section( $label )
           $out .= "</label></div>";
           $idx = $idx + 1;
     }
-	
-   $out .= "</div><div class='col-sm-3 hidden-xs'></div></div>";	
-
-   $out .= "<div class='form-group mg_giving-levels'>";
-   $out .= "<div class='col-sm-5 col-xs-12'>";
-   
-   $out .= "<label style='display:none' class='idfield' id='miglad_camount'></label>";
- 
-	  $out .= "<div class='radio-inline miglaCustomAmount'><label for='miglaCustomAmount".$idx."' style='background-color:".$bglevelcolor.";". $borderCSS."'>";
-          $out .= "<input type='radio' value='custom' id='miglaAmount".$idx."' name='miglaAmount' class='migla_amount_choice migla_custom_amount'><div>".get_option('migla_custamounttext')."</div>";
+	 $out .= "<div class='radio-inline miglaCustomAmount'><label for='miglaCustomAmount".$idx."' style='margin-bottom: -5px !important;padding: 20px 20px 15px 40px;background-color:".$bglevelcolor.";". $borderCSS."'>";
+          $out .= "<input type='radio' value='custom' id='miglaAmount".$idx."' name='miglaAmount' class='migla_amount_choice migla_custom_amount'><div><div style='float:left;'>".get_option('migla_custamounttext')."</div>";
 
   if( strtolower( $placement ) == 'before' ){
           if( strlen($symbol) > 1 ){
               $before = ""; 
           }
-          $out .= "<div class='input-group input-group-icon ".$toogle."'><span class='input-group-addon'><span class='icon'>".$before."</span></span><input type='text' value='0' id='miglaCustomAmount' class='miglaNAD2'></div></label></div>";
+          $out .= "<div class='input-group input-group-icon ".$toogle."'><span class='input-group-addon'><span class='icon'>".$before."</span></span><input type='text' value='0' style='height:25px !important' id='miglaCustomAmount' class='miglaNAD2'></div></label></div>";
    }else{
-          $out .= "<div class='input-group input-group-icon ".$toogle."'><input type='text' value='0' id='miglaCustomAmount' class='miglaNAD2'><span class='input-group-addon'><span class='icon'>".$after."</span></span></div></label></div>";
+          $out .= "<div class='input-group input-group-icon ".$toogle."'><input type='text' style='height:25px !important' value='0' id='miglaCustomAmount' class='miglaNAD2'><span class='input-group-addon'><span class='icon'>".$after."</span></span></div></label></div>";
   }
-	
-   $out .= "</div><div class='col-sm-3 hidden-xs'></div></div>";
-	
+
+   $out .= "</div></div><div class='col-sm-3 hidden-xs'></div></div>";	
+
     return $out;
  }
 
@@ -1064,15 +1056,15 @@ function migla_tabs(){
   $out = ""; $add_class = "";
   $out .= "<div class='form-horizontal migla-payment-options' >
     <ul class='mg_nav mg_nav-tabs'>
-        <li class='mg_active'  ><a id='_sectionPaypal' style='background-color:".$bgclor2nd[0].";".$borderCSS.";'>Paypal</a></li>
-        <li ><a id='_sectionStripe' style='background-color:".$bglevelcolor.";".$borderCSS.";' >Stripe</a></li>
+        <li class='mg_active' ><a id='_sectionStripe' style='background-color:".$bgclor2nd[0].";".$borderCSS.";'>Targeta</a></li>
+        <li ><a id='_sectionPaypal' style='background-color:".$bglevelcolor.";".$borderCSS.";' >Paypal</a></li>
     </ul>
     <div class='mg_tab-content' style='".$borderCSS."' >
-        <div id='sectionPaypal' class='mg_tab-pane mg_active' style='background-color:".$bgclor2nd[0]."' >
-            ".migla_paypal( $add_class )."
-        </div>
-        <div id='sectionStripe' class='mg_tab-pane'>
+        <div id='sectionStripe' class='mg_tab-pane mg_active' style='background-color:".$bgclor2nd[0]."' >
             ".migla_stripe()."
+        </div>
+        <div id='sectionPaypal' class='mg_tab-pane'>
+            ".migla_paypal( $add_class )."
         </div>
     </div>
 </div>";

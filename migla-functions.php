@@ -1802,7 +1802,7 @@ function migla_draw_donor_recent( $title, $num_rec, $donation_type, $use_link, $
       foreach( $data as $datum ){
         if( $row > $num_rec ){ break; }
   
-         $out .= "<section class='mg_recent_donors_Panel'>";
+         $out .= "<section class='mg_recent_donors_Panel' style='text-align: left;margin-top:-10px;margin-bottom:-20px'>";
 
          if($hide_date == 'on'){
                $out .= "<div class='mg_recent_donors_date pull-right'></div> ";
